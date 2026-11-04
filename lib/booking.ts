@@ -19,6 +19,7 @@ import { slotStaffIds, pickStaffForSlot } from './availability';
 import { loadAvailabilityInput } from './booking-availability';
 import { isExclusionViolation, isForeignKeyViolation, uniqueViolationOn } from './booking-errors';
 import type { ParsedBookingInput } from './booking-schema';
+import { CONSENT_VERSION } from './gdpr';
 import { generateReference } from './reference';
 import { parseSettings } from './settings';
 import { BUSINESS_TZ, addDaysToKey, localDateKey, zonedWallTimeToUtc } from './time';
@@ -197,6 +198,10 @@ export async function createBookingRecord(params: {
               status: settings.autoConfirm ? 'CONFIRMED' : 'PENDING',
               priceCents: service.priceCents,
               source: 'ONLINE',
+              // Both consents are required by the schema, so an online booking always has them (req 9).
+              consentTermsAt: now,
+              consentMessagesAt: now,
+              consentVersion: CONSENT_VERSION,
               locale: input.locale,
               manageTokenHash: token.hash,
               idempotencyKey: input.idempotencyKey,

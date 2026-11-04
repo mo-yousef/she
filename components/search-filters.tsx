@@ -3,7 +3,7 @@
 import { useState, useTransition } from 'react';
 import { useLocale, useTranslations } from 'next-intl';
 import { usePathname, useRouter } from '@/i18n/navigation';
-import { CATEGORIES, CITIES, SORTS } from '@/lib/search';
+import { CATEGORIES, CITIES, SORTS } from '@/lib/catalogue';
 import { formatPrice } from '@/lib/money';
 
 /**

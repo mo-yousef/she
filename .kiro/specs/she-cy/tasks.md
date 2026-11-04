@@ -94,14 +94,14 @@ Verification: `next build` green (12 static pages × en/el/ru), `tsc --noEmit` c
 
 ## Phase 7 — Admin + GDPR + legal
 
-- [-] 7.1 Admin: businesses approve/suspend, reviews moderation, users, metrics. (req 5)
-- [ ] 7.2 GDPR: consent capture, data export, deletion/anonymise, retention. (req 9)
-- [ ] 7.3 Legal pages (terms, privacy, cancellation) in en/el/ru. (req 8, 9)
+- [x] 7.1 Admin: businesses approve/suspend, reviews moderation, users, metrics. (req 5)
+- [x] 7.2 GDPR: consent capture, data export, deletion/anonymise, retention. (req 9)
+- [x] 7.3 Legal pages (terms, privacy, cancellation) in en/el/ru. (req 8, 9)
 
 ## Phase 8 — Polish + hardening
 
-- [ ] 8.1 Accessibility pass (axe) light/dark, 200% text — zero blocking. (AC9, AC11)
-- [ ] 8.2 Performance budget, image/map lazy-load, Lighthouse 95+. (req 10)
+- [x] 8.1 Accessibility pass (axe) light/dark, 200% text — zero blocking. (AC9, AC11)
+- [x] 8.2 Performance budget, image/map lazy-load, Lighthouse 95+. (req 10)
 - [ ] 8.3 Error + empty states everywhere; Sentry + analytics. (req 10)
 - [ ] 8.4 Full Playwright suite green. (AC10)
 - [ ] 8.5 Security review + whole-repo Ponytail audit + Apple code-audit (translucency,

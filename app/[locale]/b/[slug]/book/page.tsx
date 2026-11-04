@@ -24,7 +24,10 @@ export async function generateMetadata({
   const { locale, slug } = await params;
   const t = await getTranslations({ locale, namespace: 'booking' });
   const b = await db.business.findUnique({ where: { slug }, select: { name: true, status: true } });
-  if (!b || b.status !== 'PUBLISHED') return { title: 'Not found', robots: { index: false } };
+  if (!b || b.status !== 'PUBLISHED') {
+    const e = await getTranslations({ locale, namespace: 'errors' });
+    return { title: e('notFoundTitle'), robots: { index: false } };
+  }
   return { title: t('pageTitle', { name: b.name }), robots: { index: false, follow: false } };
 }
 

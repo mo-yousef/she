@@ -11,6 +11,7 @@
  *
  * Returns counts only: no ids, no PII.
  */
+import { captureError } from '@/lib/monitoring';
 import { db } from './db';
 import type { Notifier } from './notify/types';
 import { isDue, queryWindow, type NotificationKind } from './reminder-windows';
@@ -72,6 +73,7 @@ async function processKind(kind: NotificationKind, now: Date, batch: number, sen
       // Name only: Prisma messages can echo values. The claim stays, so a crash here
       // loses at most this one notice rather than risking a duplicate.
       console.error(`[cron] ${kind} item failed`, e instanceof Error ? e.name : 'unknown');
+      captureError(e, { area: 'cron', action: kind });
       counts.failed += 1;
     }
   };

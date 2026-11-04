@@ -74,6 +74,7 @@ export function BookingStepper(props: BookingStepperProps) {
   const { state, services, staff, staffByService, locale, slug } = props;
   const t = useTranslations('booking');
   const tb = useTranslations('business');
+  const tl = useTranslations('legal');
   const router = useRouter();
   const pathname = usePathname();
   const [pending, startTransition] = useTransition();
@@ -534,6 +535,19 @@ export function BookingStepper(props: BookingStepperProps) {
               error={errors.consentMessages}
               onChange={(v) => change('consentMessages', v)}
             />
+            <p className="flex flex-wrap gap-x-4">
+              {(['terms', 'cancellation', 'privacy'] as const).map((p) => (
+                <Link
+                  key={p}
+                  href={`/legal/${p}`}
+                  target="_blank"
+                  rel="noopener"
+                  className="inline-flex min-h-11 items-center text-[length:var(--text-subhead)] font-medium text-[color:var(--b1)]"
+                >
+                  {tl(p)}
+                </Link>
+              ))}
+            </p>
             <button type="submit" className={primaryBtn}>
               {t('continue')}
             </button>

@@ -4,6 +4,11 @@ Every deliberate shortcut is marked in code with a `shortcut:` comment and liste
 When a shortcut is resolved, move it to the "Resolved" section with a date.
 
 ## Open
+- **Monitoring + analytics (task 8.3).** (1) Sentry is initialised without the `withSentryConfig` build
+  plugin: no source-map upload, so stack traces are minified (revisit with `SENTRY_AUTH_TOKEN` in CI).
+  (2) `app/global-error.tsx` is English-only (no i18n context once the root layout fails).
+  (3) Unknown studio pages are a 200 soft 404 (`b/[slug]/loading.tsx` streams first). (4) Only
+  createBooking, notifications and cron call `captureError`; other actions rely on `onRequestError`.
 
 - **Calendar (task 6.2).** (1) No drag-and-drop to move bookings; no edit/reschedule from the
   calendar (6.3 may add). (2) Recurring blocks are expanded into plain rows (no series id), so
@@ -28,11 +33,6 @@ When a shortcut is resolved, move it to the "Resolved" section with a date.
   shared with manual bookings and block creation), not by the DB. Revisit by
   folding blocks into `Booking` as a `BLOCK`-like status so one constraint covers both.
 
-- **Business page 404 for unpublished** (`app/[locale]/b/[slug]/page.tsx`): unpublished
-  or missing businesses both fall through to the generic `not-found.tsx` ("We couldn't
-  find that page") with no business-specific copy or "browse studios" action. Revisit
-  in phase 3/8.3 error-and-empty pass.
-
 - **Phase 2 design-audit leftovers** (see `docs/design-audit-phase2.md`): no h2 between
   the search h1 and card h3s; search text state does not resync on back/forward;
   results count is not a live region; home search fields use placeholder-only visible
@@ -44,7 +44,16 @@ When a shortcut is resolved, move it to the "Resolved" section with a date.
   legible but tile colours are imprecise). Revisit only if a dark tile provider becomes
   a hard requirement — design marks this nice-to-have, not required.
 
+- **GDPR (task 7.2).** (1) Owners cannot self-delete (`OWNS_BUSINESS`): they contact support; there is no business soft-delete yet. (2) Deleting an account sends no cancellation email for its future bookings (the customer PII is erased in the same step); the business sees them as cancelled in the calendar. (3) Staff-linked profiles keep the row, `userId` becomes null. (4) Exports and deletes match guest bookings by the user's VERIFIED email only. (5) Retention runs only when the daily cron is called; not tested against Vercel Cron. (6) Review `ownerReply` is kept when the body is blanked. (7) `/legal/privacy` is linked but 404s until 7.3. (8) Bookings made before 7.2 have null consent columns.
 ## Resolved
+- **Business page 404 for unpublished (8.3).** `b/[slug]/not-found.tsx` now says "This studio isn't available"
+  with a Browse studios link; the "Not found" metadata titles are translated; unknown locale paths hit the
+  translated not-found via `app/[locale]/[...rest]`.
+
+- **8.1 accessibility pass (see `docs/a11y-report.md`).** axe (light/dark, 1440 and 360) and the 200% text check pass on the
+  key-page set. Resolved: hard-coded English "Skip to content" and nav label (now i18n), home h1 overflow at 200%/360px, and the
+  "no axe/browser/200% run" notes from the phase 2/3/4 audits for that page set. Still open: screen-reader/real-device testing,
+  pages and states outside the set, search h1 to card h3 heading jump (not flagged by axe), home city field is free text.
 
 - **Sign-in page missing (2026-11-05, task 6.1).** `app/[locale]/account/page.tsx` now
   exists: email magic link + Google, signed-in state, open-redirect-safe `callbackUrl`.
@@ -135,7 +144,7 @@ When a shortcut is resolved, move it to the "Resolved" section with a date.
   real Resend/Twilio here; SDK calls are mocked in tests.
 
 - **Notification log (5.2 → 5.4):** `recordResult()` in `lib/notify/booking-notices.ts` is a no-op; 5.4 writes `NotificationLog` there.
-- **Consent (5.2):** Booking has no consent column. ONLINE = consented to WhatsApp/SMS, MANUAL = email-only. Still true after 6.2: manual bookings capture no consent, so they stay email-only (the calendar form only offers an email confirmation).
+- **Consent (5.2) (column part resolved in 7.2: `consentTermsAt/consentMessagesAt/consentVersion`):** ONLINE = consented to WhatsApp/SMS, MANUAL = email-only. Still true after 6.2: manual bookings capture no consent, so they stay email-only (the calendar form only offers an email confirmation).
 - **Notices run in `after()` with no retry (5.2):** a failed send is logged by name only and not retried. 5.3/5.4 may add retries.
 - **Business phone (5.2):** business notices use `Business.whatsapp`, else the owner's `User.phone`, only if it looks like E.164. No format validation upstream yet.
 - **Email client rendering (5.2):** templates are not tested in real clients (Gmail, Outlook, Apple Mail); `@react-email/components` 1.0.12 is marked deprecated upstream (successor package not adopted).
@@ -155,12 +164,12 @@ When a shortcut is resolved, move it to the "Resolved" section with a date.
   (7) Results are logged to NotificationLog since 5.4.
 - **NotificationLog + webhooks (5.4).** (1) Audience is encoded as a `:business` template suffix, not
   a column; if the owner dashboard (6.x) needs to filter by audience in SQL, add a nullable column
-  then. (2) No retention/purge of log rows (they cascade with the booking); revisit with GDPR (7.2).
+  then. (2) ~~No retention/purge of log rows~~ resolved in 7.2: rows older than 24 months are purged daily.
   (3) `RESEND_WEBHOOK_SECRET` and Twilio webhooks are untested against live providers. (4) A failed
   log write is dropped (error name logged), not retried. (5) Resend `email.delivery_delayed`,
   `opened`, `clicked` are ignored on purpose.
 
-- **Review OTP (5.5).** (1) Dev-only console print of the code when no Twilio keys and `NODE_ENV=development`. (2) Per-IP OTP/submit limits use the in-memory limiter (per instance); per-booking limits and attempts are persisted. (3) The receipt lives in client state, so a page reload after verifying means verifying again. (4) No cleanup job for expired `PhoneVerification` rows (they cascade with the booking); add with GDPR retention (7.2). (5) Review window equals the manage-token lifetime (30 days), so `WINDOW_PASSED` is only reachable at the boundary.
+- **Review OTP (5.5).** (1) Dev-only console print of the code when no Twilio keys and `NODE_ENV=development`. (2) Per-IP OTP/submit limits use the in-memory limiter (per instance); per-booking limits and attempts are persisted. (3) The receipt lives in client state, so a page reload after verifying means verifying again. (4) ~~No cleanup job for expired `PhoneVerification` rows~~ resolved in 7.2 (purged after 7 days); old text: (they cascade with the booking); add with GDPR retention (7.2). (5) Review window equals the manage-token lifetime (30 days), so `WINDOW_PASSED` is only reachable at the boundary.
 
 - **Onboarding / dashboard shell (task 6.1).** (1) **Photos: RESOLVED in 6.7 part 2.** The checklist photo item now
   links to `/dashboard/profile#photos`, where the owner can upload (needs the Cloudinary env vars; see docs/decisions.md). (2) **No admin approval UI yet:** "Submit for review"
@@ -292,3 +301,7 @@ When a shortcut is resolved, move it to the "Resolved" section with a date.
 - Business search is `contains` (ILIKE) on name/slug and user search on email: no trigram index yet.
 - Report reasons are read from `review.flag` audit rows with one JSON-path OR query per page (max 20 ids).
 - No admin UI to change OWNER/STAFF/CUSTOMER roles; no impersonation. Admin actions have no per-action rate limit.
+## Task 7.3 — Legal pages
+- **The legal text (terms, privacy, cancellation in en/el/ru) is a template and must be reviewed by a lawyer before launch.** Placeholders to fill: `[Company name]`, `[Registered address]` (and el/ru equivalents), `support@she.cy`, `privacy@she.cy`. Bump `CONSENT_VERSION` in `lib/gdpr.ts` and the `updated` dates in `messages/*.json` when the text changes.
+- Resolved: the 4.2 "terms/cancellation consent has no link" and the 7.2 "/legal/privacy 404s" shortcuts.
+- The Greek and Russian text is not reviewed by a native legal translator.

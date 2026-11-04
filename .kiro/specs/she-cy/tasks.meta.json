@@ -633,6 +633,11 @@
         "executionId": "4a59cd71-43ad-4f87-90d1-6ff0ead33910",
         "chatSessionId": "sess_95b56234-d07f-4980-9d9f-1b11c403b79a",
         "timestamp": 1793796229760
+      },
+      {
+        "executionId": "4a59cd71-43ad-4f87-90d1-6ff0ead33910",
+        "chatSessionId": "sess_95b56234-d07f-4980-9d9f-1b11c403b79a",
+        "timestamp": 1793796834082
       }
     ],
     "7.2 GDPR: consent capture, data export, deletion/anonymise, retention. (req 9)": [
@@ -640,6 +645,16 @@
         "executionId": "d51d1da2-bfa4-4741-9855-c74bfa7c24a3",
         "chatSessionId": "sess_95b56234-d07f-4980-9d9f-1b11c403b79a",
         "timestamp": 1793716936495
+      },
+      {
+        "executionId": "4a59cd71-43ad-4f87-90d1-6ff0ead33910",
+        "chatSessionId": "sess_95b56234-d07f-4980-9d9f-1b11c403b79a",
+        "timestamp": 1793796839025
+      },
+      {
+        "executionId": "4a59cd71-43ad-4f87-90d1-6ff0ead33910",
+        "chatSessionId": "sess_95b56234-d07f-4980-9d9f-1b11c403b79a",
+        "timestamp": 1793797668146
       }
     ],
     "7.3 Legal pages (terms, privacy, cancellation) in en/el/ru. (req 8, 9)": [
@@ -647,6 +662,16 @@
         "executionId": "d51d1da2-bfa4-4741-9855-c74bfa7c24a3",
         "chatSessionId": "sess_95b56234-d07f-4980-9d9f-1b11c403b79a",
         "timestamp": 1793716936540
+      },
+      {
+        "executionId": "4a59cd71-43ad-4f87-90d1-6ff0ead33910",
+        "chatSessionId": "sess_95b56234-d07f-4980-9d9f-1b11c403b79a",
+        "timestamp": 1793797673395
+      },
+      {
+        "executionId": "4a59cd71-43ad-4f87-90d1-6ff0ead33910",
+        "chatSessionId": "sess_95b56234-d07f-4980-9d9f-1b11c403b79a",
+        "timestamp": 1793798367532
       }
     ],
     "8.1 Accessibility pass (axe) light/dark, 200% text — zero blocking. (AC9, AC11)": [
@@ -654,6 +679,16 @@
         "executionId": "d51d1da2-bfa4-4741-9855-c74bfa7c24a3",
         "chatSessionId": "sess_95b56234-d07f-4980-9d9f-1b11c403b79a",
         "timestamp": 1793716936587
+      },
+      {
+        "executionId": "4a59cd71-43ad-4f87-90d1-6ff0ead33910",
+        "chatSessionId": "sess_95b56234-d07f-4980-9d9f-1b11c403b79a",
+        "timestamp": 1793798372880
+      },
+      {
+        "executionId": "4a59cd71-43ad-4f87-90d1-6ff0ead33910",
+        "chatSessionId": "sess_95b56234-d07f-4980-9d9f-1b11c403b79a",
+        "timestamp": 1793799101191
       }
     ],
     "8.2 Performance budget, image/map lazy-load, Lighthouse 95+. (req 10)": [
@@ -661,6 +696,16 @@
         "executionId": "d51d1da2-bfa4-4741-9855-c74bfa7c24a3",
         "chatSessionId": "sess_95b56234-d07f-4980-9d9f-1b11c403b79a",
         "timestamp": 1793716936647
+      },
+      {
+        "executionId": "4a59cd71-43ad-4f87-90d1-6ff0ead33910",
+        "chatSessionId": "sess_95b56234-d07f-4980-9d9f-1b11c403b79a",
+        "timestamp": 1793799106740
+      },
+      {
+        "executionId": "4a59cd71-43ad-4f87-90d1-6ff0ead33910",
+        "chatSessionId": "sess_95b56234-d07f-4980-9d9f-1b11c403b79a",
+        "timestamp": 1793799939176
       }
     ],
     "8.3 Error + empty states everywhere; Sentry + analytics. (req 10)": [
@@ -668,6 +713,11 @@
         "executionId": "d51d1da2-bfa4-4741-9855-c74bfa7c24a3",
         "chatSessionId": "sess_95b56234-d07f-4980-9d9f-1b11c403b79a",
         "timestamp": 1793716936711
+      },
+      {
+        "executionId": "4a59cd71-43ad-4f87-90d1-6ff0ead33910",
+        "chatSessionId": "sess_95b56234-d07f-4980-9d9f-1b11c403b79a",
+        "timestamp": 1793799944623
       }
     ],
     "8.4 Full Playwright suite green. (AC10)": [

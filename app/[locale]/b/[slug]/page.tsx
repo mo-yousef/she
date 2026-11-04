@@ -65,7 +65,8 @@ export async function generateMetadata({
   const { locale, slug } = await params;
   const business = await findPublishedBusiness(slug);
   if (!business || business.status !== 'PUBLISHED') {
-    return { title: 'Not found', robots: { index: false, follow: false } };
+    const e = await getTranslations({ locale, namespace: 'errors' });
+    return { title: e('notFoundTitle'), robots: { index: false, follow: false } };
   }
 
   const t = await getTranslations({ locale, namespace: 'seo' });
