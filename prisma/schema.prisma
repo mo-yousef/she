@@ -1,0 +1,417 @@
+// she.cy — data model (requirements §7).
+// Times are timestamptz (UTC). Opening hours are minutes-from-local-midnight,
+// interpreted in Europe/Nicosia. Money is integer cents, EUR.
+// The double-booking exclusion constraints live in a raw-SQL migration
+// (prisma/migrations/*_exclusion_constraints) because Prisma cannot express a
+// GiST EXCLUDE constraint natively.
+
+generator client {
+  provider = "prisma-client-js"
+}
+
+datasource db {
+  provider = "postgresql"
+  url      = env("DATABASE_URL")
+}
+
+enum Role {
+  CUSTOMER
+  OWNER
+  STAFF
+  ADMIN
+}
+
+enum BusinessStatus {
+  DRAFT
+  PENDING
+  PUBLISHED
+  SUSPENDED
+}
+
+enum BookingStatus {
+  PENDING
+  CONFIRMED
+  COMPLETED
+  CANCELLED_BY_CUSTOMER
+  CANCELLED_BY_BUSINESS
+  NO_SHOW
+}
+
+enum BookingSource {
+  ONLINE
+  MANUAL
+}
+
+enum ReviewStatus {
+  VISIBLE
+  HIDDEN
+  FLAGGED
+}
+
+enum NotificationChannel {
+  EMAIL
+  WHATSAPP
+  SMS
+}
+
+// ---- Auth.js (NextAuth) models ----
+
+model User {
+  id              String    @id @default(cuid())
+  name            String?
+  email           String?   @unique
+  emailVerified   DateTime?
+  phone           String?
+  phoneVerifiedAt DateTime?
+  role            Role      @default(CUSTOMER)
+  locale          String    @default("en")
+  image           String?
+  createdAt       DateTime  @default(now())
+
+  accounts      Account[]
+  sessions      Session[]
+  businesses    Business[]    @relation("BusinessOwner")
+  staffProfiles StaffMember[]
+  bookings      Booking[]
+  favourites    Favourite[]
+}
+
+model Account {
+  id                String  @id @default(cuid())
+  userId            String
+  type              String
+  provider          String
+  providerAccountId String
+  refresh_token     String?
+  access_token      String?
+  expires_at        Int?
+  token_type        String?
+  scope             String?
+  id_token          String?
+  session_state     String?
+
+  user User @relation(fields: [userId], references: [id], onDelete: Cascade)
+
+  @@unique([provider, providerAccountId])
+}
+
+model Session {
+  id           String   @id @default(cuid())
+  sessionToken String   @unique
+  userId       String
+  expires      DateTime
+  user         User     @relation(fields: [userId], references: [id], onDelete: Cascade)
+}
+
+model VerificationToken {
+  identifier String
+  token      String   @unique
+  expires    DateTime
+
+  @@unique([identifier, token])
+}
+
+// ---- Domain models ----
+
+model Business {
+  id           String         @id @default(cuid())
+  slug         String         @unique
+  ownerId      String
+  name         String
+  tagline      String?
+  about        String?
+  category     String
+  city         String
+  address      String?
+  lat          Float?
+  lng          Float?
+  phone        String?
+  whatsapp     String?
+  website      String?
+  instagram    String?
+  languages    String[]       @default([])
+  brandPrimary String         @default("#4a2c6d")
+  brandAccent  String         @default("#a98bd6")
+  logoUrl      String?
+  status       BusinessStatus @default(DRAFT)
+  settings     Json // validated by Zod BusinessSettings
+  ratingAvg    Float          @default(0)
+  ratingCount  Int            @default(0)
+  createdAt    DateTime       @default(now())
+
+  owner        User                  @relation("BusinessOwner", fields: [ownerId], references: [id])
+  translations BusinessTranslation[]
+  photos       Photo[]
+  services     Service[]
+  staff        StaffMember[]
+  openingHours OpeningHours[]
+  closures     Closure[]
+  blocks       Block[]
+  bookings     Booking[]
+  reviews      Review[]
+  favourites   Favourite[]
+
+  @@index([status, city])
+  @@index([category])
+}
+
+model BusinessTranslation {
+  businessId String
+  locale     String
+  tagline    String?
+  about      String?
+
+  business Business @relation(fields: [businessId], references: [id], onDelete: Cascade)
+
+  @@id([businessId, locale])
+}
+
+model Photo {
+  id         String @id @default(cuid())
+  businessId String
+  url        String
+  alt        String @default("")
+  sortOrder  Int    @default(0)
+
+  business Business @relation(fields: [businessId], references: [id], onDelete: Cascade)
+
+  @@index([businessId, sortOrder])
+}
+
+model Service {
+  id          String  @id @default(cuid())
+  businessId  String
+  category    String
+  name        String
+  description String?
+  durationMin Int
+  bufferMin   Int     @default(0)
+  priceCents  Int
+  currency    String  @default("EUR")
+  active      Boolean @default(true)
+  sortOrder   Int     @default(0)
+
+  business     Business             @relation(fields: [businessId], references: [id], onDelete: Cascade)
+  translations ServiceTranslation[]
+  staffLinks   StaffService[]
+  bookings     Booking[]
+
+  @@index([businessId, active])
+}
+
+model ServiceTranslation {
+  serviceId   String
+  locale      String
+  name        String?
+  description String?
+
+  service Service @relation(fields: [serviceId], references: [id], onDelete: Cascade)
+
+  @@id([serviceId, locale])
+}
+
+model StaffMember {
+  id         String  @id @default(cuid())
+  businessId String
+  userId     String?
+  name       String
+  role       String  @default("Specialist")
+  photoUrl   String?
+  active     Boolean @default(true)
+  sortOrder  Int     @default(0)
+
+  business   Business       @relation(fields: [businessId], references: [id], onDelete: Cascade)
+  user       User?          @relation(fields: [userId], references: [id])
+  services   StaffService[]
+  staffHours StaffHours[]
+  daysOff    StaffDayOff[]
+  blocks     Block[]
+  bookings   Booking[]
+
+  @@index([businessId, active])
+}
+
+model StaffService {
+  staffId   String
+  serviceId String
+
+  staff   StaffMember @relation(fields: [staffId], references: [id], onDelete: Cascade)
+  service Service     @relation(fields: [serviceId], references: [id], onDelete: Cascade)
+
+  @@id([staffId, serviceId])
+}
+
+model OpeningHours {
+  id         String  @id @default(cuid())
+  businessId String
+  weekday    Int // 0 = Sunday .. 6 = Saturday
+  opensMin   Int
+  closesMin  Int
+  closed     Boolean @default(false)
+
+  business Business @relation(fields: [businessId], references: [id], onDelete: Cascade)
+
+  @@unique([businessId, weekday])
+}
+
+model StaffHours {
+  id        String  @id @default(cuid())
+  staffId   String
+  weekday   Int
+  opensMin  Int
+  closesMin Int
+  closed    Boolean @default(false)
+
+  staff StaffMember @relation(fields: [staffId], references: [id], onDelete: Cascade)
+
+  @@unique([staffId, weekday])
+}
+
+/// A staff member's time off, as local 'YYYY-MM-DD' keys (same modelling as Closure).
+model StaffDayOff {
+  id        String   @id @default(cuid())
+  staffId   String
+  fromDate  String // local 'YYYY-MM-DD' inclusive
+  toDate    String // local 'YYYY-MM-DD' inclusive, >= fromDate
+  reason    String? // owner-only, never shown publicly
+  createdAt DateTime @default(now())
+
+  staff StaffMember @relation(fields: [staffId], references: [id], onDelete: Cascade)
+
+  @@index([staffId])
+}
+
+model Closure {
+  id         String  @id @default(cuid())
+  businessId String
+  fromDate   String // local 'YYYY-MM-DD' inclusive
+  toDate     String // local 'YYYY-MM-DD' inclusive
+  reason     String?
+
+  business Business @relation(fields: [businessId], references: [id], onDelete: Cascade)
+
+  @@index([businessId])
+}
+
+model Block {
+  id         String   @id @default(cuid())
+  businessId String
+  staffId    String
+  startsAt   DateTime @db.Timestamptz(3)
+  endsAt     DateTime @db.Timestamptz(3)
+  reason     String?
+
+  business Business    @relation(fields: [businessId], references: [id], onDelete: Cascade)
+  staff    StaffMember @relation(fields: [staffId], references: [id], onDelete: Cascade)
+
+  @@index([staffId, startsAt])
+}
+
+model Booking {
+  id                String        @id @default(cuid())
+  reference         String        @unique
+  businessId        String
+  serviceId         String
+  staffId           String
+  customerId        String?
+  guestName         String?
+  guestPhone        String?
+  guestEmail        String?
+  note              String?
+  startsAt          DateTime      @db.Timestamptz(3)
+  endsAt            DateTime      @db.Timestamptz(3)
+  status            BookingStatus @default(CONFIRMED)
+  priceCents        Int
+  source            BookingSource @default(ONLINE)
+  locale            String        @default("en")
+  manageTokenHash   String
+  idempotencyKey    String?       @unique
+  createdAt         DateTime      @default(now())
+  cancelledAt       DateTime?
+  cancelReason      String?
+  // Cron idempotency claims (task 5.3): set atomically BEFORE sending, cleared if the
+  // send hard-fails so the next run retries. NotificationLog (5.4) stays the audit trail.
+  reminder24SentAt  DateTime?
+  reminder2SentAt   DateTime?
+  reviewRequestedAt DateTime?
+
+  business           Business            @relation(fields: [businessId], references: [id], onDelete: Cascade)
+  service            Service             @relation(fields: [serviceId], references: [id])
+  staff              StaffMember         @relation(fields: [staffId], references: [id])
+  customer           User?               @relation(fields: [customerId], references: [id])
+  review             Review?
+  logs               NotificationLog[]
+  phoneVerifications PhoneVerification[]
+
+  @@index([businessId, startsAt])
+  @@index([staffId, startsAt])
+}
+
+model Review {
+  id         String       @id @default(cuid())
+  businessId String
+  bookingId  String       @unique
+  authorName String
+  rating     Int // 1..5
+  body       String?
+  ownerReply String?
+  status     ReviewStatus @default(VISIBLE)
+  createdAt  DateTime     @default(now())
+
+  business Business @relation(fields: [businessId], references: [id], onDelete: Cascade)
+  booking  Booking  @relation(fields: [bookingId], references: [id], onDelete: Cascade)
+
+  @@index([businessId, status])
+}
+
+// One-time phone codes proving a reviewer controls the number on a COMPLETED booking
+// (task 5.5). Only the HMAC of the code is stored.
+model PhoneVerification {
+  id         String    @id @default(cuid())
+  bookingId  String
+  codeHash   String
+  expiresAt  DateTime  @db.Timestamptz(3)
+  attempts   Int       @default(0)
+  consumedAt DateTime? @db.Timestamptz(3)
+  createdAt  DateTime  @default(now()) @db.Timestamptz(3)
+
+  booking Booking @relation(fields: [bookingId], references: [id], onDelete: Cascade)
+
+  @@index([bookingId, createdAt])
+}
+
+model Favourite {
+  userId     String
+  businessId String
+  createdAt  DateTime @default(now())
+
+  user     User     @relation(fields: [userId], references: [id], onDelete: Cascade)
+  business Business @relation(fields: [businessId], references: [id], onDelete: Cascade)
+
+  @@id([userId, businessId])
+}
+
+model NotificationLog {
+  id         String              @id @default(cuid())
+  bookingId  String
+  channel    NotificationChannel
+  template   String
+  status     String
+  providerId String?
+  sentAt     DateTime            @default(now())
+
+  booking Booking @relation(fields: [bookingId], references: [id], onDelete: Cascade)
+
+  @@index([bookingId])
+}
+
+model AuditLog {
+  id         String   @id @default(cuid())
+  actorId    String?
+  businessId String?
+  action     String
+  meta       Json?
+  createdAt  DateTime @default(now())
+
+  @@index([businessId, createdAt])
+}

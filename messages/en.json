@@ -1,0 +1,1570 @@
+{
+  "common": {
+    "appName": "she.cy",
+    "tagline": "Book beauty, your way, across Cyprus.",
+    "bookNow": "Book now",
+    "book": "Book",
+    "search": "Search",
+    "loading": "Loading…",
+    "new": "New",
+    "from": "from {price}",
+    "openNow": "Open now",
+    "closedNow": "Closed now",
+    "retry": "Try again",
+    "cancel": "Cancel",
+    "confirm": "Confirm",
+    "back": "Back",
+    "next": "Next",
+    "save": "Save"
+  },
+  "nav": {
+    "explore": "Explore",
+    "saved": "Saved",
+    "bookings": "Bookings",
+    "account": "Account",
+    "forBusiness": "List your business",
+    "signIn": "Sign in",
+    "language": "Language"
+  },
+  "home": {
+    "heroTitle": "Find and book beauty appointments in Cyprus",
+    "heroSubtitle": "Nails, lashes, hair, makeup and skin — from studios you can trust.",
+    "searchPlaceholder": "Search treatments or studios",
+    "cityPlaceholder": "Any city",
+    "categories": "Browse by category",
+    "resultsTitle": "Featured studios",
+    "exploreAll": "Explore all",
+    "trustTitle": "Why book with she.cy",
+    "trustInstant": "Real-time availability",
+    "trustInstantBody": "See genuine open slots and book in seconds.",
+    "trustVerified": "Verified reviews",
+    "trustVerifiedBody": "Only guests who visited can leave a review.",
+    "trustLocal": "Made for Cyprus",
+    "trustLocalBody": "Three languages, local studios, prices in euro.",
+    "listCta": "Run a beauty business? List it on she.cy",
+    "listCtaButton": "Get started",
+    "loadingResults": "Loading studios…"
+  },
+  "search": {
+    "resultsCount": "{count, plural, =0 {No results} one {# result} other {# results}}",
+    "filters": "Filters",
+    "category": "Category",
+    "city": "City",
+    "openNow": "Open now",
+    "price": "Price",
+    "rating": "Minimum rating",
+    "language": "Language spoken",
+    "sort": "Sort",
+    "sortRecommended": "Recommended",
+    "sortTopRated": "Top rated",
+    "sortLowestPrice": "Lowest price",
+    "sortSoonest": "Soonest available",
+    "emptyTitle": "No studios match your search",
+    "emptyBody": "Try removing a filter or searching a nearby city.",
+    "noStudiosTitle": "No studios yet in Cyprus",
+    "noStudiosBody": "New studios are joining she.cy soon. Check back shortly.",
+    "clearFilters": "Clear filters",
+    "loadingResults": "Loading studios…",
+    "anyCity": "Any city",
+    "anyCategory": "Any category",
+    "anyRating": "Any rating",
+    "ratingStars": "{count}+ stars",
+    "apply": "Apply filters",
+    "resultsHeading": "Studios",
+    "searchLabel": "Search",
+    "searchPlaceholder": "Search treatments or studios",
+    "anyPrice": "Any price",
+    "priceUpTo": "Up to {price}",
+    "anyLanguage": "Any language",
+    "langEn": "English",
+    "langEl": "Greek",
+    "langRu": "Russian"
+  },
+  "card": {
+    "reviews": "{count, plural, =0 {No reviews yet} one {# review} other {# reviews}}",
+    "nextSlot": "Next slot {when}",
+    "noSlots": "No slots in the next two weeks",
+    "addFavourite": "Save to favourites",
+    "removeFavourite": "Remove from favourites",
+    "favouriteError": "Couldn't update favourites. Try again.",
+    "rating": "Rated {rating} out of 5"
+  },
+  "cities": {
+    "Larnaca": "Larnaca",
+    "Limassol": "Limassol",
+    "Nicosia": "Nicosia",
+    "Paphos": "Paphos",
+    "Famagusta": "Famagusta"
+  },
+  "favourites": {
+    "title": "Saved studios",
+    "emptyTitle": "No saved studios yet",
+    "emptyBody": "Tap the heart on any studio to save it here.",
+    "browse": "Browse studios",
+    "signInTitle": "Sign in to save studios",
+    "signInBody": "Your favourites are kept to your account across devices.",
+    "signIn": "Sign in",
+    "loadingFavourites": "Loading saved studios…"
+  },
+  "categories": {
+    "nails": "Nails",
+    "lashes": "Lashes",
+    "hair": "Hair",
+    "makeup": "Makeup",
+    "facials": "Facials",
+    "blowdry": "Blow-dry"
+  },
+  "seo": {
+    "businessTitle": "{name} · {category} · {city}",
+    "businessDescription": "Book online at {name} ({category}, {city}). Real-time availability on she.cy.",
+    "ogCta": "Book on she.cy"
+  },
+  "theme": {
+    "toggle": "Switch theme",
+    "light": "Light",
+    "dark": "Dark",
+    "system": "System"
+  },
+  "errors": {
+    "generic": "Something went wrong. Please try again.",
+    "notFound": "We couldn’t find that page.",
+    "slotTaken": "That time was just taken. Please pick another."
+  },
+  "business": {
+    "loadingProfile": "Loading studio…",
+    "gallery": "Gallery",
+    "galleryComingSoon": "Photos coming soon.",
+    "galleryPhotoAlt": "{name} photo {n}",
+    "galleryDialog": "{name} photo gallery",
+    "galleryClose": "Close gallery",
+    "galleryPrev": "Previous photo",
+    "galleryNext": "Next photo",
+    "galleryCounter": "{n} of {total}",
+    "about": "About",
+    "services": "Services",
+    "team": "Team",
+    "reviews": "Reviews",
+    "reviewsEmpty": "No reviews yet. Reviews appear after a completed visit.",
+    "starsCount": "{count}★",
+    "distributionBarLabel": "{stars, plural, one {# star} other {# stars}}: {percent}% of reviews",
+    "durationMin": "{count} min",
+    "bookServiceNamed": "Book {name}",
+    "verifiedVisit": "Verified visit",
+    "ownerReplyLabel": "Response from {name}",
+    "showMoreReviews": "Show all reviews",
+    "bookService": "Book",
+    "sidebarBook": "Book now",
+    "nextSlot": "Next slot {when}",
+    "noSlots": "No slots in the next two weeks",
+    "hours": "Opening hours",
+    "address": "Address",
+    "call": "Call",
+    "whatsapp": "WhatsApp",
+    "instagram": "Instagram",
+    "openInMaps": "Open in Maps",
+    "mapLoading": "Loading map…",
+    "mapLabel": "Map showing the business location",
+    "closed": "Closed",
+    "from": "from {price}",
+    "weekdayMon": "Monday",
+    "weekdayTue": "Tuesday",
+    "weekdayWed": "Wednesday",
+    "weekdayThu": "Thursday",
+    "weekdayFri": "Friday",
+    "weekdaySat": "Saturday",
+    "weekdaySun": "Sunday",
+    "closedOn": "Closed on {dates}.",
+    "closureRange": "{from} to {to}"
+  },
+  "booking": {
+    "dateLabel": "Choose a date",
+    "timeLabel": "Choose a time",
+    "noTimesShort": "No times",
+    "dayNoTimes": "{date}, no times available",
+    "slotUnavailable": "{time}, unavailable",
+    "noTimesLeftTitle": "No times left on this date",
+    "noTimesLeftBody": "Pick another date to see more times.",
+    "pageTitle": "Book at {name}",
+    "back": "Back",
+    "continue": "Continue",
+    "confirmBooking": "Confirm booking",
+    "confirming": "Confirming…",
+    "progressLabel": "Booking progress",
+    "stepOf": "Step {current} of {total}",
+    "stepAnnounce": "Step {current} of {total}: {name}",
+    "step": {
+      "service": "Choose a service",
+      "team": "Choose a team member",
+      "datetime": "Pick a date and time",
+      "details": "Your details",
+      "review": "Review your booking"
+    },
+    "noServices": "This business has no services to book yet. Try again later or contact them directly.",
+    "noTimesAtAll": "No times are available right now. Go back to try another team member or service, or contact the business.",
+    "securityCheck": "Security check",
+    "securityCheckLoading": "Loading the security check…",
+    "securityCheckFailed": "The security check could not load. Check your connection or disable content blockers, then retry.",
+    "securityCheckRetry": "Retry security check",
+    "noStaff": "No team member offers this service right now. Go back and choose another service.",
+    "staffAny": "Any available",
+    "staffAnyHint": "We'll pick the first free team member.",
+    "staffAnyShort": "First available team member",
+    "moreDates": "Show more dates",
+    "timezoneNote": "Times are shown in Cyprus time (Europe/Nicosia).",
+    "prefilled": "We filled in your details from your account. You can change them.",
+    "fullName": "Full name",
+    "mobile": "Mobile number",
+    "mobileHint": "International format, for example +357 99 123456",
+    "email": "Email",
+    "note": "Note for the business (optional)",
+    "consentTerms": "I agree to the terms and the cancellation policy",
+    "consentMessages": "I agree to receive booking confirmations and reminders by email, WhatsApp or SMS",
+    "summaryService": "Service",
+    "summaryStaff": "With",
+    "summaryWhen": "When",
+    "summaryPrice": "Price",
+    "validation": {
+      "nameRequired": "Enter your full name, at least 2 characters.",
+      "emailInvalid": "Enter a valid email address, like name@example.com.",
+      "phoneInvalid": "Enter a mobile number in international format, like +357 99 123456.",
+      "noteTooLong": "Shorten the note to 500 characters or fewer.",
+      "consentTerms": "Agree to the terms to continue.",
+      "consentMessages": "Agree to receive booking messages to continue."
+    },
+    "confirmError": {
+      "VALIDATION": "Some details are not valid. Go back and check them.",
+      "SLOT_TAKEN": "That time was just taken. Please pick another.",
+      "RATE_LIMITED": "Too many attempts. Wait a minute and try again.",
+      "VERIFICATION_FAILED": "Verification failed. Complete the check and try again.",
+      "NOT_IMPLEMENTED": "Booking is not available yet. Try again later.",
+      "UNKNOWN": "Something went wrong. Try again.",
+      "DAILY_LIMIT": "You've reached the daily booking limit for this business. Pick another day."
+    }
+  },
+  "booked": {
+    "pageTitle": "Booking confirmation",
+    "headingConfirmed": "You're booked",
+    "headingPending": "Request received",
+    "statusConfirmed": "Confirmed",
+    "statusPending": "Request received - waiting for the business to confirm",
+    "statusInactive": "This booking is no longer active",
+    "referenceLabel": "Booking reference",
+    "copyReference": "Copy reference",
+    "copied": "Reference copied",
+    "service": "Service",
+    "staff": "With",
+    "when": "Date and time",
+    "duration": "Duration",
+    "price": "Price",
+    "where": "Location",
+    "durationMin": "{count} min",
+    "addToCalendar": "Add to calendar",
+    "googleCalendar": "Google Calendar",
+    "downloadIcs": "Download .ics file",
+    "shareWhatsApp": "Share on WhatsApp",
+    "manageBooking": "Manage booking",
+    "manageHint": "Keep this page's link to change or cancel later.",
+    "backToBusiness": "Back to {name}",
+    "externalLink": "opens in a new tab",
+    "icsSummary": "{service} at {business}",
+    "icsDescription": "Booking reference: {reference}\nWith: {staff}",
+    "shareMessage": "I booked {service} at {business} on {when}. Reference: {reference}"
+  },
+  "manage": {
+    "pageTitle": "Manage booking",
+    "heading": "Manage your booking",
+    "heading_completed": "Past booking",
+    "heading_cancelledByCustomer": "Booking cancelled",
+    "heading_cancelledByBusiness": "Booking cancelled",
+    "heading_noShow": "Missed booking",
+    "rescheduleHeading": "Choose a new time",
+    "rescheduled": "Your booking has a new time.",
+    "statusLabel": "Status:",
+    "status": {
+      "pending": "Request received",
+      "confirmed": "Confirmed",
+      "completed": "Completed",
+      "cancelledByCustomer": "Cancelled by you",
+      "cancelledByBusiness": "Cancelled by the business",
+      "noShow": "Marked as no-show"
+    },
+    "referenceLabel": "Booking reference",
+    "copyReference": "Copy reference",
+    "copied": "Reference copied",
+    "reschedule": "Reschedule",
+    "cancelBooking": "Cancel booking",
+    "cancelSheetTitle": "Cancel this booking?",
+    "cancelSheetBody": "This cancels your appointment and frees the time slot right away. This cannot be undone.",
+    "cancelConfirm": "Cancel booking",
+    "cancelling": "Cancelling…",
+    "keepBooking": "Keep booking",
+    "policyHint": "Free to reschedule or cancel up to {hours} hours before your appointment.",
+    "pastCutoffTitle": "This is past the cancellation window",
+    "pastCutoffBody": "Please contact the business directly to change or cancel this booking.",
+    "readOnly_completed": "This booking is completed and can no longer be changed.",
+    "readOnly_cancelledByCustomer": "This booking was cancelled and can no longer be changed.",
+    "readOnly_cancelledByBusiness": "This booking was cancelled by the business. Contact them for more information.",
+    "readOnly_noShow": "This booking was marked as a no-show and can no longer be changed.",
+    "noTimesBody": "No other times are available right now. Please contact the business.",
+    "newTime": "New time: {when}",
+    "confirmReschedule": "Confirm new time",
+    "confirmingReschedule": "Confirming…",
+    "keepCurrentTime": "Keep current time",
+    "error": {
+      "PAST_CUTOFF": "This is past the cancellation window. Please contact the business.",
+      "NOT_CHANGEABLE": "This booking can no longer be changed.",
+      "SLOT_TAKEN": "That time was just taken. Please pick another.",
+      "VALIDATION": "Something was not valid. Please try again.",
+      "UNKNOWN": "Something went wrong. Please try again."
+    },
+    "backToBusiness": "Back to {name}"
+  },
+  "review": {
+    "pageTitle": "Review your visit",
+    "heading": "How was your visit?",
+    "summary": "{service} with {staff} on {date}",
+    "otpMessage": "she.cy: your code to review {business} is {code}. It expires in {minutes} minutes. Don't share it with anyone.",
+    "otpHeading": "Verify your phone",
+    "otpIntro": "We'll send a 6-digit code to {phone}, the number used for this booking.",
+    "sendCode": "Send code",
+    "sending": "Sending…",
+    "resendCode": "Resend code",
+    "resendIn": "Resend code in {seconds}s",
+    "codeSent": "Code sent to {phone}.",
+    "codeLabel": "6-digit code",
+    "verifyCode": "Verify code",
+    "verifying": "Verifying…",
+    "verified": "Phone verified.",
+    "alreadyVerified": "Your phone is already verified.",
+    "ratingLegend": "Your rating",
+    "ratingOption": "{count, plural, one {# star} other {# stars}}",
+    "commentLabel": "Comment (optional)",
+    "commentHint": "What went well? What could be better?",
+    "charCount": "{count} of {max}",
+    "submit": "Submit review",
+    "submitting": "Submitting…",
+    "thanksHeading": "Thanks for your review",
+    "thanksBody": "It will appear on the page for {business} shortly.",
+    "alreadyHeading": "You've already reviewed this visit",
+    "alreadyBody": "Each visit can have one review.",
+    "notCompletedHeading": "This visit isn't completed yet",
+    "notCompletedBody": "You can leave a review once {business} marks your visit as completed.",
+    "expiredHeading": "The review period has ended",
+    "expiredBody": "Reviews can be left up to {days} days after your visit.",
+    "viewBooking": "View booking",
+    "backToBusiness": "Back to {name}",
+    "error": {
+      "NO_PHONE": "This booking has no phone number on file, so we can't send a code. Contact the business instead.",
+      "COOLDOWN": "Please wait {seconds} seconds before asking for another code.",
+      "CAP": "You've asked for too many codes. Try again later.",
+      "SEND_FAILED": "We couldn't send the code. Check your connection and try again.",
+      "RATE_LIMITED": "Too many attempts. Wait a few minutes and try again.",
+      "NO_CODE": "Request a code first, then enter it here.",
+      "EXPIRED": "That code has expired. Request a new one.",
+      "LOCKED": "Too many wrong codes. Request a new one.",
+      "WRONG": "That code isn't right. {left, plural, one {# attempt} other {# attempts}} left.",
+      "codeFormat": "Enter the 6 digits from the message.",
+      "ratingRequired": "Choose a rating from 1 to 5 stars.",
+      "bodyTooLong": "Keep your comment under {max} characters.",
+      "VERIFICATION_REQUIRED": "Verify your phone first, then submit your review.",
+      "NOT_ELIGIBLE": "This visit can't be reviewed right now. Reload the page to see why.",
+      "NOT_COMPLETED": "This visit isn't completed yet.",
+      "WINDOW_PASSED": "The review period for this visit has ended.",
+      "ALREADY_REVIEWED": "You've already reviewed this visit.",
+      "NOT_FOUND": "We couldn't find this booking. Open the link from your message again.",
+      "VALIDATION": "Something wasn't valid. Check your rating and comment and try again.",
+      "UNKNOWN": "Something went wrong. Please try again."
+    },
+    "ownerReply": {
+      "label": "Your reply",
+      "hint": "Replies are public and shown under the review.",
+      "save": "Save reply",
+      "saving": "Saving…",
+      "remove": "Remove reply",
+      "removing": "Removing…",
+      "saved": "Reply saved.",
+      "removed": "Reply removed.",
+      "error": {
+        "empty": "Write a reply before saving.",
+        "tooLong": "Keep your reply under {max} characters.",
+        "UNAUTHENTICATED": "Sign in again to reply.",
+        "FORBIDDEN": "You can only reply to reviews of your own business.",
+        "NOT_FOUND": "This review no longer exists.",
+        "VALIDATION": "Check your reply and try again.",
+        "UNKNOWN": "Something went wrong. Please try again."
+      }
+    }
+  },
+  "emails": {
+    "greeting": "Hi {name},",
+    "greetingNoName": "Hello,",
+    "labels": {
+      "service": "Service",
+      "staff": "With",
+      "when": "Date and time",
+      "previously": "Previous time",
+      "duration": "Duration",
+      "price": "Price",
+      "where": "Location",
+      "reference": "Booking reference",
+      "customer": "Customer",
+      "phone": "Phone",
+      "email": "Email",
+      "note": "Note"
+    },
+    "durationMin": "{count} min",
+    "whenValue": "{date}, {time}",
+    "manage": "Manage booking",
+    "bookAgain": "Book again",
+    "linkFallback": "Button not working? Copy this link: {url}",
+    "footer": "You are receiving this message about booking {reference} at {business}.",
+    "footerBusiness": "You are receiving this message as the owner of {business}. Booking {reference}.",
+    "confirmed": {
+      "subject": "Booking confirmed: {service} at {business}",
+      "preheader": "{when} with {staff}",
+      "heading": "You're booked",
+      "intro": "Your booking at {business} is confirmed. Here are the details.",
+      "phone": "she.cy: your booking at {business} is confirmed for {when}. Reference {reference}. Manage it: {url}"
+    },
+    "pending": {
+      "subject": "Request received: {service} at {business}",
+      "preheader": "Waiting for {business} to confirm",
+      "heading": "Request received",
+      "intro": "{business} needs to confirm your booking. We will message you as soon as they do.",
+      "phone": "she.cy: request received for {service} at {business}, {when}. Waiting for the business to confirm. Reference {reference}. Manage it: {url}"
+    },
+    "newBooking": {
+      "subject": "New booking: {service}, {when}",
+      "subjectPending": "New booking request: {service}, {when}",
+      "preheader": "{customer} with {staff}",
+      "heading": "New booking",
+      "headingPending": "New booking request",
+      "intro": "{customer} booked {service} for {when}.",
+      "introPending": "{customer} requested {service} for {when}. Review the request in your dashboard.",
+      "phone": "she.cy: new booking at {business}. {customer}, {service}, {when}. Reference {reference}.",
+      "phonePending": "she.cy: new booking request at {business}. {customer}, {service}, {when}. Reference {reference}."
+    },
+    "rescheduled": {
+      "subject": "Booking moved: {service} at {business}",
+      "preheader": "New time: {when}",
+      "heading": "Your booking has a new time",
+      "intro": "Your booking at {business} now starts on {when}.",
+      "phone": "she.cy: your booking at {business} moved to {when}. Reference {reference}. Manage it: {url}",
+      "businessSubject": "Booking rescheduled: {customer}, {when}",
+      "businessPreheader": "New time: {when}",
+      "businessHeading": "Booking rescheduled",
+      "businessIntro": "{customer} moved {service} to {when}.",
+      "businessPhone": "she.cy: {customer} moved a booking at {business} to {when}. Reference {reference}."
+    },
+    "cancelled": {
+      "subject": "Booking cancelled: {service} at {business}",
+      "preheader": "Reference {reference}",
+      "heading": "Booking cancelled",
+      "intro": "Your booking at {business} for {when} is cancelled. You can book another time whenever you like.",
+      "phone": "she.cy: your booking at {business} for {when} is cancelled. Reference {reference}.",
+      "businessSubject": "Booking cancelled: {customer}, {when}",
+      "businessPreheader": "Reference {reference}",
+      "businessHeading": "Booking cancelled",
+      "businessIntro": "{customer} cancelled {service} on {when}. The time is open again.",
+      "businessPhone": "she.cy: {customer} cancelled a booking at {business} for {when}. Reference {reference}."
+    },
+    "reminder": {
+      "subject": "Reminder: {service} at {business} in {hours, plural, one {# hour} other {# hours}}",
+      "preheader": "{when} with {staff}",
+      "heading": "Your appointment is coming up",
+      "intro": "Your appointment at {business} starts in {hours, plural, one {# hour} other {# hours}}. If your plans change, you can reschedule or cancel from the link below.",
+      "phone": "she.cy: reminder. {service} at {business} in {hours, plural, one {# hour} other {# hours}}, {when}. Manage it: {url}"
+    },
+    "reviewRequest": {
+      "subject": "How was your visit to {business}?",
+      "preheader": "A short review helps others choose",
+      "heading": "How was your visit?",
+      "intro": "Thanks for visiting {business}. A short review helps other people choose, and the business hears from you.",
+      "cta": "Leave a review",
+      "phone": "she.cy: how was {service} at {business}? Leave a review: {url}"
+    }
+  },
+  "account": {
+    "title": "Account",
+    "signInTitle": "Sign in to she.cy",
+    "signInIntro": "Use your email and we'll send you a link. No password needed.",
+    "emailLabel": "Email address",
+    "emailSubmit": "Email me a sign-in link",
+    "or": "or",
+    "google": "Continue with Google",
+    "sentTitle": "Check your email",
+    "sentBody": "We sent you a sign-in link. Open it on this device to continue. The link works once and expires in 24 hours.",
+    "useAnotherEmail": "Use a different email",
+    "youHeading": "You",
+    "signedInAs": "Signed in as {email}",
+    "openDashboard": "Open dashboard",
+    "listBusiness": "List your business",
+    "favourites": "Saved studios",
+    "signOut": "Sign out",
+    "error": {
+      "EmailInvalid": "Enter a valid email address, like name@example.com.",
+      "EmailSignin": "We couldn't send the sign-in link. Check the address and try again.",
+      "RateLimited": "Too many attempts. Wait a few minutes and try again.",
+      "Verification": "That sign-in link has expired or was already used. Request a new one.",
+      "AccessDenied": "You don't have access to sign in. Contact support if this is a mistake.",
+      "Configuration": "Sign-in isn't available right now. Try again later.",
+      "OAuthAccountNotLinked": "This email is already registered with another sign-in method. Use the method you used before.",
+      "Default": "We couldn't sign you in. Please try again."
+    }
+  },
+  "dashboard": {
+    "viewPublicPage": "View public page",
+    "nav": {
+      "label": "Dashboard",
+      "overview": "Overview",
+      "calendar": "Calendar",
+      "bookings": "Bookings",
+      "services": "Services",
+      "team": "Team",
+      "hours": "Hours",
+      "profile": "Profile",
+      "reviews": "Reviews",
+      "settings": "Settings"
+    },
+    "status": {
+      "DRAFT": "Draft",
+      "PENDING": "Pending approval",
+      "PUBLISHED": "Published",
+      "SUSPENDED": "Suspended"
+    },
+    "overview": {
+      "title": "Overview",
+      "draftTitle": "Get your listing ready",
+      "draftBody": "Complete every item below, then submit your listing for review.",
+      "pendingTitle": "Waiting for approval",
+      "pendingBody": "We're reviewing your listing. It goes live as soon as it's approved.",
+      "suspendedTitle": "Your listing is suspended",
+      "suspendedBody": "Your listing isn't visible to customers. Contact support to find out why.",
+      "editDetails": "Edit listing details",
+      "today": "Bookings today",
+      "thisWeek": "Bookings in the next 7 days"
+    }
+  },
+  "calendar": {
+    "title": "Calendar",
+    "nav": {
+      "label": "Calendar controls",
+      "previous": "Previous",
+      "next": "Next",
+      "today": "Today",
+      "viewLabel": "Calendar view",
+      "day": "Day",
+      "week": "Week",
+      "staffLabel": "Team member",
+      "allStaff": "All team members",
+      "showCancelled": "Show cancelled",
+      "hideCancelled": "Hide cancelled"
+    },
+    "grid": {
+      "labelDay": "Schedule for {date}",
+      "labelWeek": "Week schedule for {staff}, {from} to {to}",
+      "closed": "Closed",
+      "emptyNoStaff": "Add a team member and a service to start using the calendar.",
+      "emptyNoServices": "Add a service to start taking bookings from the calendar.",
+      "timeColumn": "Time",
+      "blocked": "Blocked",
+      "blockedNoReason": "Blocked time",
+      "walkIn": "Added by you",
+      "tapToAdd": "Select an empty time to add a booking."
+    },
+    "status": {
+      "PENDING": "Pending",
+      "CONFIRMED": "Confirmed",
+      "COMPLETED": "Completed",
+      "CANCELLED_BY_CUSTOMER": "Cancelled by customer",
+      "CANCELLED_BY_BUSINESS": "Cancelled by you",
+      "NO_SHOW": "No-show"
+    },
+    "actions": {
+      "addBooking": "Add booking",
+      "blockTime": "Block time"
+    },
+    "details": {
+      "bookingTitle": "Booking details",
+      "blockTitle": "Blocked time",
+      "close": "Close",
+      "reference": "Reference",
+      "customer": "Customer",
+      "phone": "Phone",
+      "email": "Email",
+      "service": "Service",
+      "staff": "Team member",
+      "time": "Time",
+      "price": "Price",
+      "status": "Status",
+      "note": "Note",
+      "source": "Source",
+      "sourceManual": "Added by you",
+      "sourceOnline": "Online booking",
+      "reason": "Reason",
+      "noReason": "No reason given",
+      "markCompleted": "Mark completed",
+      "markNoShow": "Mark no-show",
+      "confirmBooking": "Confirm booking",
+      "cancelBooking": "Cancel booking",
+      "removeBlock": "Remove block",
+      "working": "Saving…"
+    },
+    "cancelSheet": {
+      "title": "Cancel this booking?",
+      "body": "The time opens up for new bookings. If the customer left an email, we'll tell them it was cancelled.",
+      "confirm": "Cancel booking",
+      "keep": "Keep booking"
+    },
+    "removeSheet": {
+      "title": "Remove this block?",
+      "body": "The time opens up for online bookings again.",
+      "confirm": "Remove block",
+      "keep": "Keep block"
+    },
+    "bookingForm": {
+      "title": "Add booking",
+      "service": "Service",
+      "staff": "Team member",
+      "date": "Date",
+      "time": "Start time",
+      "name": "Customer name",
+      "phone": "Phone (optional)",
+      "email": "Email (optional)",
+      "note": "Note (optional)",
+      "status": "Status",
+      "statusConfirmed": "Confirmed",
+      "statusPending": "Pending",
+      "price": "Price in euros",
+      "priceHint": "Leave empty to use {price}.",
+      "sendConfirmation": "Email the customer a confirmation",
+      "needsEmail": "Add an email address to send a confirmation.",
+      "submit": "Add booking",
+      "saving": "Adding…",
+      "cancel": "Cancel",
+      "outsideHoursHint": "You can book outside opening hours. Overlaps are still blocked."
+    },
+    "blockForm": {
+      "title": "Block time",
+      "staff": "Team member",
+      "allStaff": "All team members",
+      "date": "Date",
+      "start": "From",
+      "end": "Until",
+      "reason": "Reason (optional)",
+      "repeat": "Repeat",
+      "none": "Does not repeat",
+      "daily": "Every day",
+      "weekly": "Every week",
+      "until": "Repeat until",
+      "untilHint": "Up to 90 days and 60 repeats.",
+      "submit": "Block time",
+      "saving": "Blocking…",
+      "cancel": "Cancel"
+    },
+    "result": {
+      "bookingAdded": "Booking {reference} added.",
+      "blocksAdded": "{count, plural, one {# block added.} other {# blocks added.}}",
+      "blockRemoved": "Block removed.",
+      "statusChanged": "Booking updated.",
+      "bookingCancelled": "Booking cancelled."
+    },
+    "validation": {
+      "required": "Choose an option.",
+      "nameRequired": "Enter the customer's name.",
+      "emailInvalid": "Enter a valid email address.",
+      "phoneInvalid": "Enter a valid phone number, for example 99 123456.",
+      "noteTooLong": "Keep the note under 500 characters.",
+      "priceInvalid": "Enter a price like 25 or 25.50.",
+      "invalidDate": "Choose a valid date.",
+      "invalidTime": "Choose a valid time.",
+      "tooFarInPast": "That date is too far in the past.",
+      "tooFarAhead": "That date is too far ahead.",
+      "doesNotOfferService": "This team member doesn't offer that service.",
+      "reasonTooLong": "Keep the reason under 120 characters.",
+      "endBeforeStart": "The end time must be after the start time.",
+      "untilRequired": "Choose when the repeat ends.",
+      "untilBeforeStart": "The repeat can't end before it starts.",
+      "untilTooFar": "A repeat can run for at most 90 days.",
+      "tooManyOccurrences": "That's too many blocks at once. Shorten the repeat or pick one team member.",
+      "invalidTimes": "Choose a start and end time on the same day.",
+      "notFound": "We couldn't find that team member."
+    },
+    "error": {
+      "OVERLAP": "That time overlaps another booking or block for this team member. Pick another time.",
+      "BLOCK_OVERLAP": "{count, plural, one {This block overlaps an existing booking or block on # date} other {This block overlaps existing bookings or blocks on # dates}}: {dates}. Move or cancel them first.",
+      "INVALID_TRANSITION": "That change isn't possible for this booking.",
+      "NOT_STARTED": "You can mark a booking completed or no-show once it has started.",
+      "CHANGED": "This booking changed in the meantime. Reload the page and try again.",
+      "FORBIDDEN": "You don't have access to do that.",
+      "UNAUTHENTICATED": "Sign in again to continue.",
+      "NOT_FOUND": "We couldn't find that item. Reload the calendar.",
+      "VALIDATION": "Check the highlighted fields and try again.",
+      "UNKNOWN": "Something went wrong. Please try again."
+    }
+  },
+  "forBusiness": {
+    "title": "Grow your beauty business on she.cy",
+    "intro": "Create your listing in a few minutes. Customers across Cyprus can find you and book real, open slots.",
+    "pointBookingsTitle": "Online bookings",
+    "pointBookingsBody": "Customers book around your hours and your team. No double bookings.",
+    "pointPageTitle": "Your own page",
+    "pointPageBody": "A branded page in English, Greek and Russian with services, prices and photos.",
+    "pointToolsTitle": "Simple tools",
+    "pointToolsBody": "Manage your team, services, hours and reviews from one dashboard.",
+    "cta": "List your business",
+    "haveAccount": "Already listed? Sign in"
+  },
+  "onboarding": {
+    "saving": "Saving…",
+    "submitting": "Submitting…",
+    "submit": "Submit for review",
+    "submitDisabledHint": "Complete every item in the checklist to submit.",
+    "choose": "Choose…",
+    "continue": "Save and continue",
+    "progress": "Setup progress",
+    "stepOf": "Step {current} of {total}",
+    "steps": {
+      "basics": "Basics",
+      "location": "Location and contact",
+      "hours": "Opening hours",
+      "services": "First service and team member",
+      "review": "Review and submit"
+    },
+    "notAllowedTitle": "This account can't list a business",
+    "notAllowedBody": "Team member accounts can't create a business listing. Ask the business owner for access, or sign in with a different account.",
+    "basics": {
+      "name": "Business name",
+      "category": "Main category",
+      "city": "City",
+      "languages": "Languages spoken",
+      "languagesHint": "Pick every language your team speaks with customers.",
+      "tagline": "Tagline (optional)",
+      "taglineHint": "One short line shown under your name.",
+      "about": "About your business (optional)"
+    },
+    "location": {
+      "address": "Street address",
+      "phone": "Phone (optional)",
+      "phoneHint": "International format, for example +357 99 123456. Local numbers get +357.",
+      "whatsapp": "WhatsApp number (optional)",
+      "instagram": "Instagram handle (optional)",
+      "instagramHint": "Without the @, for example studio.cy",
+      "website": "Website (optional)",
+      "lat": "Latitude (optional)",
+      "lng": "Longitude (optional)",
+      "coordsHint": "Add both coordinates to show a map on your page. Leave both empty to hide the map."
+    },
+    "hours": {
+      "closed": "Closed",
+      "opens": "Opens",
+      "closes": "Closes",
+      "copyToAll": "Copy {day} to all days",
+      "timezoneNote": "Times are in Cyprus time (Europe/Nicosia)."
+    },
+    "services": {
+      "serviceName": "Service name",
+      "serviceCategory": "Service category",
+      "duration": "Duration (minutes)",
+      "durationHint": "Between 5 and 480 minutes.",
+      "price": "Price (EUR)",
+      "priceHint": "For example 25 or 25.50.",
+      "staffName": "Team member name",
+      "staffHint": "Who performs this service. You can add more people and services later."
+    },
+    "review": {
+      "intro": "Everything below must be done before you can submit your listing.",
+      "approvalNote": "After you submit, we review your listing. It goes live once it's approved."
+    },
+    "checklist": {
+      "name": "Business name",
+      "category": "Category",
+      "city": "City",
+      "address": "Street address",
+      "service": "At least one service",
+      "staff": "At least one team member who performs a service",
+      "hours": "Opening hours with at least one open day",
+      "photo": "At least one photo"
+    },
+    "checklistDone": " (done)",
+    "checklistNotDone": " (to do)",
+    "checklistFix": "Fix this",
+    "checklistFixNamed": "Fix this: {item}",
+    "validation": {
+      "invalid": "This value isn't valid. Check it and try again.",
+      "required": "This field is required.",
+      "nameRequired": "Enter a business name between 2 and 80 characters.",
+      "categoryRequired": "Choose a category.",
+      "cityRequired": "Choose a city.",
+      "languagesRequired": "Choose at least one language.",
+      "taglineTooLong": "Shorten the tagline to 120 characters or fewer.",
+      "aboutTooLong": "Shorten the description to 2000 characters or fewer.",
+      "addressRequired": "Enter the street address, at least 3 characters.",
+      "phoneInvalid": "Enter a phone number in international format, like +357 99 123456.",
+      "instagramInvalid": "Use only letters, numbers, dots and underscores, up to 30 characters.",
+      "websiteInvalid": "Enter a full website address, like www.example.com.",
+      "coordInvalid": "Enter coordinates in Cyprus, as decimal degrees like 34.9 or 33.6.",
+      "coordPair": "Enter both latitude and longitude, or leave both empty.",
+      "serviceNameRequired": "Enter a service name between 2 and 80 characters.",
+      "durationInvalid": "Enter a whole number of minutes between 5 and 480.",
+      "priceInvalid": "Enter a price in euros above 0, like 25 or 25.50.",
+      "staffNameRequired": "Enter a name between 2 and 60 characters.",
+      "closeBeforeOpen": "Set a closing time after the opening time.",
+      "range": "Enter a valid opening and closing time.",
+      "allClosed": "Open at least one day of the week.",
+      "weekdays": "Opening hours must cover all seven days."
+    },
+    "error": {
+      "UNAUTHENTICATED": "Sign in again to continue.",
+      "FORBIDDEN": "You can only change your own business.",
+      "VALIDATION": "Some details aren't valid. Check the highlighted fields.",
+      "NOT_ALLOWED": "This listing can't be submitted in its current state.",
+      "INCOMPLETE": "Some checklist items are still missing. Finish them and try again.",
+      "UNKNOWN": "Something went wrong. Please try again."
+    }
+  },
+  "bookings": {
+    "title": "Bookings",
+    "filters": {
+      "label": "Filter bookings",
+      "statusLabel": "Show bookings",
+      "search": "Search",
+      "searchPlaceholder": "Name, phone or reference",
+      "from": "From date",
+      "to": "To date",
+      "staff": "Team member",
+      "allStaff": "All team members",
+      "sort": "Sort by",
+      "apply": "Apply filters",
+      "clear": "Clear filters"
+    },
+    "status": {
+      "upcoming": "Upcoming",
+      "pending": "Pending",
+      "confirmed": "Confirmed",
+      "completed": "Completed",
+      "cancelled": "Cancelled",
+      "no-show": "No-show",
+      "all": "All"
+    },
+    "sort": {
+      "date": "Date",
+      "created": "Newest booked"
+    },
+    "summary": "{count, plural, one {# booking} other {# bookings}}",
+    "pagination": {
+      "label": "Pagination",
+      "previous": "Previous page",
+      "next": "Next page",
+      "pageOf": "Page {page} of {count}"
+    },
+    "table": {
+      "caption": "Bookings",
+      "open": "Open details for booking {reference}",
+      "reference": "Reference",
+      "customer": "Customer",
+      "phone": "Phone",
+      "service": "Service",
+      "staff": "Team member",
+      "when": "Date and time",
+      "price": "Price",
+      "status": "Status",
+      "source": "Source"
+    },
+    "empty": {
+      "noneTitle": "No bookings yet",
+      "noneBody": "Share your page to get your first booking.",
+      "viewPage": "View public page",
+      "filteredTitle": "No bookings match these filters",
+      "filteredBody": "Try a wider date range or clear the filters.",
+      "upcomingTitle": "No upcoming bookings",
+      "upcomingBody": "New bookings show up here as soon as they come in.",
+      "viewAll": "View all bookings"
+    }
+  },
+  "services": {
+    "title": "Services",
+    "summary": "{count, plural, one {# service} other {# services}}",
+    "add": "Add service",
+    "empty": {
+      "title": "No services yet",
+      "body": "Customers book from your services. Add one to get started.",
+      "action": "Add your first service"
+    },
+    "row": {
+      "duration": "{count} min",
+      "buffer": "{count, plural, =0 {No buffer} other {Buffer # min}}",
+      "free": "Free",
+      "staff": "Team: {names}",
+      "noStaff": "No team members assigned",
+      "visible": "Visible",
+      "hidden": "Hidden",
+      "edit": "Edit",
+      "editNamed": "Edit {name}",
+      "hide": "Hide service",
+      "hideNamed": "Hide service {name}",
+      "show": "Show service",
+      "showNamed": "Show service {name}",
+      "moveUp": "Move up",
+      "moveUpNamed": "Move {name} up",
+      "moveDown": "Move down",
+      "moveDownNamed": "Move {name} down",
+      "delete": "Delete service",
+      "deleteNamed": "Delete service {name}"
+    },
+    "form": {
+      "addTitle": "Add service",
+      "editTitle": "Edit service",
+      "close": "Close",
+      "name": "Name",
+      "category": "Category",
+      "description": "Description (optional)",
+      "duration": "Duration (minutes)",
+      "durationHint": "5 to 480, in steps of 5.",
+      "buffer": "Buffer after (minutes)",
+      "bufferHint": "Time kept free after each booking. 0 to 120.",
+      "price": "Price (EUR)",
+      "priceHint": "Enter 0 for a free service.",
+      "visible": "Visible to customers",
+      "visibleHint": "Hidden services can't be booked online. Existing bookings stay as they are.",
+      "staff": "Who can do this service",
+      "noStaff": "Add a team member first to make this service bookable.",
+      "translations": "Translations (optional)",
+      "translationsHint": "English is the main text. Customers viewing the page in Greek or Russian see these instead, and the English text where a field is empty.",
+      "lang": {
+        "el": "Greek",
+        "ru": "Russian"
+      },
+      "cancel": "Cancel",
+      "saving": "Saving…",
+      "save": "Save changes",
+      "add": "Add service"
+    },
+    "validation": {
+      "nameRequired": "Enter a name of 2 to 80 characters.",
+      "categoryRequired": "Choose a category.",
+      "descriptionTooLong": "Use 500 characters or fewer.",
+      "durationInvalid": "Enter a duration from 5 to 480 minutes, in steps of 5.",
+      "bufferInvalid": "Enter a buffer from 0 to 120 minutes.",
+      "priceInvalid": "Enter a price from 0 to 5000, like 25 or 25.50.",
+      "staffRequired": "Choose at least one team member, or hide this service.",
+      "staffInvalid": "One of the selected team members isn't part of your business.",
+      "translationNameTooLong": "Use 80 characters or fewer.",
+      "invalid": "Check this field."
+    },
+    "warnings": {
+      "noVisible": "You have no visible services, so customers can't book online. Show a service to take bookings again.",
+      "lastVisible": "This is your only visible service. Hiding it stops all online bookings.",
+      "noEligibleStaff": "No active team member can do this service, so customers can't book it. Assign someone."
+    },
+    "status": {
+      "created": "Service added.",
+      "updated": "Changes saved.",
+      "shown": "{name} is visible again.",
+      "hidden": "{name} is hidden. Existing bookings are unchanged.",
+      "moved": "Moved {name} {direction, select, up {up} other {down}}.",
+      "deleted": "{name} was deleted.",
+      "archived": "{name} has booking history, so it was hidden instead of deleted."
+    },
+    "deleteSheet": {
+      "title": "Delete {name}?",
+      "body": "This removes the service and its translations for good. If it has booking history, it will be hidden instead so past bookings stay intact.",
+      "confirm": "Delete service",
+      "keep": "Keep service"
+    },
+    "blockedSheet": {
+      "title": "Can't delete {name}",
+      "body": "{count, plural, one {# upcoming booking uses} other {# upcoming bookings use}} this service. Hide it instead: no new bookings, and existing ones stay as they are.",
+      "hide": "Hide service",
+      "close": "Close"
+    },
+    "error": {
+      "FORBIDDEN": "You don't have access to this business.",
+      "UNAUTHENTICATED": "Sign in again to continue.",
+      "VALIDATION": "Some details aren't valid. Check the highlighted fields.",
+      "NOT_FOUND": "This service no longer exists. Reload the page.",
+      "HAS_FUTURE_BOOKINGS": "This service has upcoming bookings. Hide it instead.",
+      "UNKNOWN": "Something went wrong. Please try again.",
+      "showNeedsStaff": "Assign at least one active team member to {name} before showing it."
+    }
+  },
+  "team": {
+    "title": "Team",
+    "summary": "{count, plural, one {# team member} other {# team members}}",
+    "add": "Add team member",
+    "empty": {
+      "title": "No team members yet",
+      "body": "Customers book with a team member. Add the people who perform your services.",
+      "action": "Add your first team member"
+    },
+    "row": {
+      "edit": "Edit",
+      "editNamed": "Edit {name}",
+      "activate": "Activate",
+      "activateNamed": "Activate {name}",
+      "deactivate": "Deactivate",
+      "deactivateNamed": "Deactivate {name}",
+      "moveUp": "Move up",
+      "moveUpNamed": "Move {name} up",
+      "moveDown": "Move down",
+      "moveDownNamed": "Move {name} down",
+      "delete": "Delete",
+      "deleteNamed": "Delete {name}",
+      "active": "Active",
+      "inactive": "Inactive",
+      "services": "Performs: {names}",
+      "noServices": "Performs no services yet",
+      "businessHours": "Same as business hours",
+      "customHours": "Custom hours"
+    },
+    "status": {
+      "created": "Team member added.",
+      "updated": "Team member saved.",
+      "activated": "{name} is active again.",
+      "deactivated": "{name} was deactivated. They no longer appear for new bookings.",
+      "moved": "Moved {name} {direction, select, up {up} other {down}}.",
+      "deleted": "{name} was deleted.",
+      "archived": "{name} has booking history, so they were deactivated instead of deleted. Past bookings are unchanged."
+    },
+    "warnings": {
+      "noActiveStaff": "Your listing has no active team member, so customers can't book. Activate or add someone.",
+      "serviceWithoutStaff": "Some visible services now have no active team member, so customers can't book them. Assign someone or hide those services.",
+      "soleProvider": "Only active provider of: {names}. Deactivating or deleting them stops bookings for these services.",
+      "lastActive": "This is your only active team member. Deactivating them stops all online bookings."
+    },
+    "form": {
+      "addTitle": "Add team member",
+      "editTitle": "Edit team member",
+      "close": "Close",
+      "name": "Name",
+      "role": "Role or title",
+      "roleHint": "Shown on your public page. For example Nail technician.",
+      "active": "Active",
+      "activeHint": "Inactive team members can't be booked and are hidden from your public page.",
+      "services": "Services they perform",
+      "noServices": "Add a service first, then choose who performs it.",
+      "hiddenService": "hidden",
+      "hours": "Working hours",
+      "useBusinessHours": "Use business hours",
+      "hoursHint": "Turn this off to set different hours for this person. Their hours must fall within your business hours.",
+      "closed": "Closed",
+      "opens": "Opens",
+      "closes": "Closes",
+      "copyToAll": "Copy {day} to all days",
+      "cancel": "Cancel",
+      "saving": "Saving…",
+      "save": "Save changes",
+      "add": "Add team member"
+    },
+    "deleteSheet": {
+      "title": "Delete {name}?",
+      "body": "This removes the team member, their hours and days off for good. If they have booking history, they will be deactivated instead so past bookings stay intact.",
+      "confirm": "Delete team member",
+      "keep": "Keep team member"
+    },
+    "blockedSheet": {
+      "title": "Can't change {name} yet",
+      "deleteBody": "{count, plural, one {# upcoming booking is} other {# upcoming bookings are}} assigned to this person. Reschedule or cancel them from the calendar or bookings page, then try again.",
+      "deactivateBody": "{count, plural, one {# upcoming booking is} other {# upcoming bookings are}} assigned to this person. Reschedule or cancel them from the calendar or bookings page, then deactivate.",
+      "close": "Close"
+    },
+    "daysOff": {
+      "title": "Days off",
+      "none": "No upcoming days off.",
+      "afterSave": "Save this team member first, then add days off.",
+      "from": "From",
+      "to": "To",
+      "reason": "Reason (optional)",
+      "reasonHint": "Only you can see this.",
+      "add": "Add days off",
+      "added": "Days off added.",
+      "remove": "Remove",
+      "removeRange": "Remove days off {range}",
+      "removed": "Days off removed.",
+      "range": "{from} to {to}",
+      "hasBookings": "{count, plural, one {# upcoming booking falls} other {# upcoming bookings fall}} in this period ({dates}). Reschedule or cancel them first, then add the days off."
+    },
+    "validation": {
+      "nameRequired": "Enter a name of 2 to 60 characters.",
+      "roleTooLong": "Use 60 characters or fewer.",
+      "serviceInvalid": "One of the selected services isn't part of your business.",
+      "invalid": "Check this field.",
+      "invalidDate": "Choose a date.",
+      "toBeforeFrom": "The end date can't be before the start date.",
+      "inPast": "Choose dates that aren't in the past.",
+      "tooLong": "Days off can last up to one year.",
+      "reasonTooLong": "Use 120 characters or fewer.",
+      "tooMany": "This person has too many days off saved. Remove some first.",
+      "outsideBusinessHours": "Hours must fall within your business hours for this day.",
+      "range": "Enter valid times.",
+      "closeBeforeOpen": "Closing time must be after opening time.",
+      "weekdays": "Hours must cover all seven days.",
+      "allClosed": "Leave at least one day open, or deactivate this person.",
+      "hoursProblems": "Fix the highlighted days."
+    },
+    "error": {
+      "FORBIDDEN": "You don't have access to this business.",
+      "UNAUTHENTICATED": "Sign in again to continue.",
+      "VALIDATION": "Some details aren't valid. Check the highlighted fields.",
+      "NOT_FOUND": "This team member no longer exists. Reload the page.",
+      "HAS_FUTURE_BOOKINGS": "This person has upcoming bookings. Reschedule or cancel them first.",
+      "HAS_BOOKINGS": "Upcoming bookings fall in this period. Reschedule or cancel them first.",
+      "deactivateHasBookings": "{count, plural, one {# upcoming booking is} other {# upcoming bookings are}} assigned to this person. Reschedule or cancel them before deactivating.",
+      "UNKNOWN": "Something went wrong. Please try again."
+    }
+  },
+  "hours": {
+    "title": "Opening hours",
+    "weekly": {
+      "title": "Weekly hours",
+      "hint": "Set one opening window per day. Customers can only book inside these hours.",
+      "closed": "Closed",
+      "opens": "Opens",
+      "closes": "Closes",
+      "copyToAll": "Copy to all days",
+      "copyToAllNamed": "Copy {day} hours to all days",
+      "copied": "Copied {day} hours to every day. Save to keep them.",
+      "save": "Save hours",
+      "saving": "Saving…",
+      "saved": "Hours saved.",
+      "timezoneNote": "Times are in Cyprus time (Europe/Nicosia)."
+    },
+    "status": {
+      "adjusted": "{count, plural, one {# team member's custom hours were adjusted} other {# team members' custom hours were adjusted}} to fit.",
+      "outside": "{count, plural, one {# upcoming booking falls} other {# upcoming bookings fall}} outside the new hours; {count, plural, one {it is} other {they are}} kept."
+    },
+    "warnings": {
+      "label": "Heads up:",
+      "noOpenDays": "Every day is closed, so customers can't book. Open at least one day."
+    },
+    "closures": {
+      "title": "Holidays and closures",
+      "hint": "Close the whole business on specific dates. Customers can't book on these days.",
+      "none": "No upcoming closures.",
+      "addTitle": "Add closure",
+      "from": "From",
+      "to": "To",
+      "reason": "Reason (optional)",
+      "reasonHint": "Only you can see this.",
+      "add": "Add closure",
+      "adding": "Adding…",
+      "added": "Closure added.",
+      "remove": "Remove",
+      "removeRange": "Remove closure {range}",
+      "removed": "Closure removed.",
+      "range": "{from} to {to}",
+      "hasBookings": "{count, plural, one {# upcoming booking falls} other {# upcoming bookings fall}} in this period ({dates}). Reschedule or cancel them first, then add the closure."
+    },
+    "validation": {
+      "range": "Enter valid times.",
+      "closeBeforeOpen": "Closing time must be after opening time.",
+      "weekdays": "Hours must cover all seven days.",
+      "invalid": "Check this field.",
+      "invalidDate": "Choose a date.",
+      "toBeforeFrom": "The end date can't be before the start date.",
+      "inPast": "Choose dates that aren't in the past.",
+      "tooLong": "A closure can last up to one year.",
+      "reasonTooLong": "Use 120 characters or fewer.",
+      "tooMany": "You have too many closures saved. Remove some first."
+    },
+    "error": {
+      "FORBIDDEN": "You don't have access to this business.",
+      "UNAUTHENTICATED": "Sign in again to continue.",
+      "VALIDATION": "Some details aren't valid. Check the highlighted fields.",
+      "NOT_FOUND": "This closure no longer exists. Reload the page.",
+      "HAS_BOOKINGS": "Upcoming bookings fall in this period. Reschedule or cancel them first.",
+      "UNKNOWN": "Something went wrong. Please try again."
+    }
+  },
+  "profile": {
+    "title": "Business profile",
+    "details": {
+      "title": "Details",
+      "hint": "This is what customers see on your public page. Changes appear straight away.",
+      "contact": "Contact and location",
+      "translations": "Translations (optional)",
+      "translationsHint": "English is the main text. Customers viewing your page in Greek or Russian see these instead, and the English text where a field is empty.",
+      "save": "Save profile",
+      "saving": "Saving…",
+      "saved": "Profile saved."
+    },
+    "languageNames": {
+      "en": "English",
+      "el": "Ελληνικά",
+      "ru": "Русский"
+    },
+    "brand": {
+      "title": "Brand colours",
+      "hint": "Your main colour sits behind white text on your page, so it must be dark enough to read. We check this for you.",
+      "primary": "Main colour",
+      "primaryHint": "Used for your header, buttons and selected states.",
+      "accent": "Accent colour",
+      "accentHint": "Blended into the gradient on your search card and share image.",
+      "pickerLabel": "Pick {field}",
+      "preview": "Preview of your page header",
+      "previewButton": "Book now",
+      "readout": {
+        "pass": "{ratio}:1, passes",
+        "failPrimary": "{ratio}:1, too low, needs {min}:1 against white text",
+        "failAccent": "{ratio}:1 once blended into the gradient, too low, needs {min}:1",
+        "waiting": "Enter a valid main colour first."
+      },
+      "useSuggested": "Use suggested colour",
+      "reset": "Reset to default",
+      "save": "Save colours",
+      "saving": "Saving…",
+      "saved": "Colours saved.",
+      "error": {
+        "hexInvalid": "Enter a colour like #4a2c6d.",
+        "fix": "Fix the colours marked above, then save again.",
+        "FORBIDDEN": "You don't have access to this business.",
+        "UNAUTHENTICATED": "Sign in again to continue.",
+        "VALIDATION": "Some colours aren't valid. Check the readouts.",
+        "NOT_FOUND": "We couldn't find this business. Reload the page.",
+        "UNKNOWN": "Something went wrong. Please try again."
+      }
+    },
+    "photos": {
+      "title": "Photos",
+      "hint": "Show your work. The first photo is your cover on search results and your page. You need at least one photo to go live.",
+      "count": "{n} of {max} photos",
+      "formats": "JPG, PNG or WebP, up to {mb} MB each.",
+      "empty": "No photos yet. Add your first photo so customers can see your work and your listing can go live.",
+      "add": "Add photo",
+      "uploading": "Uploading…",
+      "uploaded": "Photo added.",
+      "notConfigured": "Photo uploads are not configured yet. You can still reorder, describe and delete existing photos.",
+      "full": "You have reached the limit of {max} photos. Delete one to add another.",
+      "position": "Photo {n} of {total}",
+      "fallbackAlt": "Photo {n}",
+      "cover": "Cover",
+      "setCover": "Set as cover",
+      "coverSet": "Photo {n} is now the cover.",
+      "moveEarlier": "Move earlier",
+      "moveLater": "Move later",
+      "moved": "Photo moved to position {n} of {total}.",
+      "altLabel": "Description for screen readers",
+      "altHint": "Describe this photo for screen readers",
+      "altSave": "Save description",
+      "altSaved": "Description saved.",
+      "delete": "Delete",
+      "deleteTitle": "Delete this photo?",
+      "deleteBody": "It disappears from your public page straight away. This can't be undone.",
+      "deleteConfirm": "Delete photo",
+      "deleteKeep": "Keep photo",
+      "deleted": "Photo deleted.",
+      "noPhotosWarning": "Your listing has no photos now. Add one so customers can see your work.",
+      "error": {
+        "typeNotAllowed": "Use a JPG, PNG or WebP image.",
+        "tooLarge": "This file is larger than {mb} MB. Choose a smaller image.",
+        "uploadFailed": "The upload didn't finish. Check your connection and try again.",
+        "altTooLong": "Keep the description to {max} characters or fewer.",
+        "duplicate": "This photo is already in your gallery.",
+        "FORBIDDEN": "You don't have access to this business.",
+        "UNAUTHENTICATED": "Sign in again to continue.",
+        "VALIDATION": "We couldn't accept this photo. Try a different image.",
+        "NOT_FOUND": "This photo no longer exists. Reload the page.",
+        "QUOTA_EXCEEDED": "You have reached the limit of {max} photos. Delete one to add another.",
+        "NOT_CONFIGURED": "Photo uploads are not configured yet.",
+        "UNKNOWN": "Something went wrong. Please try again."
+      }
+    },
+    "error": {
+      "FORBIDDEN": "You don't have access to this business.",
+      "UNAUTHENTICATED": "Sign in again to continue.",
+      "VALIDATION": "Some details aren't valid. Check the highlighted fields.",
+      "NOT_FOUND": "We couldn't find this business. Reload the page.",
+      "UNKNOWN": "Something went wrong. Please try again."
+    }
+  },
+  "reviewsManage": {
+    "title": "Reviews",
+    "summary": {
+      "title": "Rating summary",
+      "none": "No ratings yet. Your average appears here after your first review.",
+      "rated": "Rated {rating} out of 5",
+      "count": "{count, plural, one {# review} other {# reviews}}",
+      "distribution": "Ratings by number of stars",
+      "stars": "{stars} stars"
+    },
+    "filters": {
+      "label": "Filter reviews",
+      "all": "All",
+      "needsReply": "Needs reply",
+      "replied": "Replied",
+      "reported": "Reported"
+    },
+    "empty": {
+      "noneTitle": "No reviews yet",
+      "noneBody": "Customers are invited to review 2 hours after a completed appointment. Mark appointments as completed in Bookings to start collecting reviews.",
+      "filteredTitle": "No reviews match this filter",
+      "filteredBody": "Try another filter to see your other reviews.",
+      "showAll": "Show all reviews"
+    },
+    "review": {
+      "rated": "Rated {rating} out of 5",
+      "verified": "Verified visit",
+      "reported": "Reported, pending review",
+      "hidden": "Hidden by moderation",
+      "hiddenBody": "This review is not shown on your page. Only our team can change that.",
+      "reportedBody": "You reported this review. It stays public until our team has looked at it.",
+      "noText": "No written comment.",
+      "groupLabel": "Review by {author}, {rating} out of 5"
+    },
+    "report": {
+      "button": "Report review",
+      "title": "Report this review?",
+      "body": "Use this for spam, abuse or reviews from people who were not your customers. The review stays public until our team has looked at it. You can report up to 5 reviews at a time.",
+      "reasonLabel": "Reason",
+      "reasons": {
+        "spam": "Spam",
+        "offensive": "Offensive or abusive",
+        "not_customer": "Not a customer",
+        "other": "Other"
+      },
+      "keep": "Cancel",
+      "confirm": "Report review",
+      "reporting": "Reporting…",
+      "error": {
+        "UNAUTHENTICATED": "Sign in again to report a review.",
+        "FORBIDDEN": "You can only report reviews of your own business.",
+        "VALIDATION": "Choose a reason and try again.",
+        "NOT_FOUND": "This review no longer exists. Refresh the page.",
+        "NOT_ALLOWED": "This review can't be reported.",
+        "LIMIT_REACHED": "You have 5 open reports. Wait for our team to look at them, then report again.",
+        "UNKNOWN": "Something went wrong. Try again."
+      }
+    },
+    "pagination": {
+      "label": "Reviews pages",
+      "previous": "Previous page",
+      "next": "Next page",
+      "page": "Page {page} of {count}"
+    }
+  },
+  "settings": {
+    "title": "Settings",
+    "rules": {
+      "title": "Booking rules",
+      "intro": "These rules apply to new bookings and to the times customers can pick.",
+      "autoConfirm": {
+        "label": "How new bookings are accepted",
+        "instant": "Confirm instantly",
+        "instantHint": "Customers get a confirmed booking straight away.",
+        "manual": "I approve each booking",
+        "manualHint": "New bookings stay pending until you confirm them in Bookings."
+      },
+      "slotIntervalMin": {
+        "label": "Time between start times",
+        "option": "{minutes} min",
+        "hint": "Customers can start an appointment every 15, 30 or 60 minutes."
+      },
+      "bufferMin": {
+        "label": "Break after each appointment",
+        "hint": "Between {min} and {max} minutes, in steps of 5. Services can set their own break."
+      },
+      "minLeadMin": {
+        "label": "Shortest notice for a booking",
+        "hint": "Between {min} and {max} minutes, in steps of 15."
+      },
+      "minLeadPreview": "That is {hours} h {minutes} min.",
+      "maxAdvanceDays": {
+        "label": "How far ahead customers can book",
+        "hint": "Between {min} and {max} days.",
+        "stripNote": "The date picker shows at most {days} days."
+      },
+      "cancellationWindowHours": {
+        "label": "Free changes until",
+        "hint": "Hours before the appointment, from {min} to {max}. Customers can cancel or reschedule until then."
+      },
+      "maxPerCustomerPerDay": {
+        "label": "Most bookings per customer per day",
+        "hint": "Between {min} and {max}. Counted by account, email or phone."
+      },
+      "units": {
+        "minutes": "min",
+        "days": "days",
+        "hours": "hours"
+      },
+      "existingNote": "Changes apply to new bookings only. Bookings that already exist keep their time and status.",
+      "save": "Save booking rules",
+      "saving": "Saving…",
+      "saved": "Booking rules saved.",
+      "unchanged": "No changes to save.",
+      "validation": {
+        "required": "Enter a number.",
+        "whole": "Enter a whole number.",
+        "range": "Enter a number from {min} to {max}.",
+        "step": "Use steps of {step}, starting at {min}.",
+        "choice": "Choose one of the options."
+      },
+      "error": {
+        "fix": "Fix the highlighted fields and save again.",
+        "UNAUTHENTICATED": "Sign in again to save.",
+        "FORBIDDEN": "You can only change settings of your own business.",
+        "VALIDATION": "Check the highlighted fields and try again.",
+        "NOT_ALLOWED": "These settings can't be changed right now.",
+        "UNKNOWN": "Something went wrong. Try again."
+      }
+    },
+    "status": {
+      "title": "Listing status",
+      "current": "Status:",
+      "body": {
+        "DRAFT": "Your listing is not public. Complete the checklist, then submit it for review.",
+        "PENDING": "Your listing is waiting for approval. It is not public yet.",
+        "PUBLISHED": "Your listing is public and customers can book online.",
+        "SUSPENDED": "Your listing is suspended. Contact support to find out why. You can't change this status."
+      },
+      "unpublish": {
+        "button": "Take my listing offline",
+        "title": "Take your listing offline?",
+        "bodyPublished": "Your listing goes back to draft.",
+        "bodyPending": "Your submission is withdrawn and the listing goes back to draft.",
+        "consequence": {
+          "page": "Your public page stops loading.",
+          "booking": "Customers can't book online.",
+          "existing": "{count, plural, =0 {You have no upcoming bookings.} one {Your # upcoming booking stays valid.} other {Your # upcoming bookings stay valid.}} Customers can still manage them and you keep getting notices."
+        },
+        "republish": "To go live again, submit your listing for review.",
+        "keep": "Keep online",
+        "confirm": "Take offline",
+        "working": "Taking offline…",
+        "error": {
+          "UNAUTHENTICATED": "Sign in again to continue.",
+          "FORBIDDEN": "You can only change your own listing.",
+          "NOT_ALLOWED": "This listing can't be taken offline from its current status. Refresh the page.",
+          "UNKNOWN": "Something went wrong. Try again."
+        }
+      }
+    }
+  },
+  "admin": {
+    "nav": {
+      "label": "Admin",
+      "overview": "Overview",
+      "businesses": "Businesses",
+      "reviews": "Reviews",
+      "users": "Users"
+    },
+    "overview": {
+      "title": "Admin overview",
+      "pending": "Pending approvals",
+      "reports": "Open review reports",
+      "bookings7": "Bookings, last 7 days",
+      "bookings30": "Bookings, last 30 days",
+      "users30": "New users, last 30 days",
+      "businessesIn": "Businesses: {status}"
+    },
+    "list": {
+      "pagination": "Pagination",
+      "previous": "Previous",
+      "next": "Next",
+      "pageOf": "Page {page} of {pages}",
+      "all": "All",
+      "apply": "Apply",
+      "count": "{count, plural, one {# result} other {# results}}"
+    },
+    "businesses": {
+      "title": "Businesses",
+      "search": "Search by name or slug",
+      "status": "Status",
+      "empty": "No businesses match. Try another status or search.",
+      "view": "View public page"
+    },
+    "reviews": {
+      "title": "Review moderation",
+      "filters": "Review filters",
+      "filter": {
+        "flagged": "Flagged",
+        "hidden": "Hidden",
+        "all": "All"
+      },
+      "empty": "No reviews here. Try another filter.",
+      "status": {
+        "FLAGGED": "Reported",
+        "HIDDEN": "Hidden",
+        "VISIBLE": "Visible"
+      },
+      "meta": "{rating} of 5 · {author} · {date}",
+      "reason": "Report reason: {reason}",
+      "reasons": {
+        "spam": "Spam",
+        "offensive": "Offensive",
+        "not_customer": "Not a customer",
+        "other": "Other"
+      }
+    },
+    "users": {
+      "title": "Users",
+      "search": "Search by email",
+      "empty": "No users match that email.",
+      "noEmail": "No email",
+      "meta": "{role} · joined {date}",
+      "role": {
+        "CUSTOMER": "Customer",
+        "OWNER": "Owner",
+        "STAFF": "Staff",
+        "ADMIN": "Admin"
+      },
+      "you": "This is you. Another admin must remove your admin role."
+    },
+    "error": {
+      "UNAUTHENTICATED": "Sign in again to continue.",
+      "FORBIDDEN": "You don't have access to this action.",
+      "VALIDATION": "That request wasn't valid. Reload the page and try again.",
+      "NOT_FOUND": "This item no longer exists. Reload the page.",
+      "NOT_ALLOWED": "This item changed since you loaded the page. Reload to see its current status.",
+      "INCOMPLETE": "The listing is incomplete, so it can't be approved. Ask the owner to finish the publish checklist.",
+      "SELF_DEMOTE": "You can't remove your own admin role.",
+      "LAST_ADMIN": "This is the last admin. Make someone else an admin first.",
+      "UNKNOWN": "Something went wrong. Try again."
+    },
+    "action": {
+      "keep": "Keep as is",
+      "business": {
+        "approve": {
+          "label": "Approve"
+        },
+        "reject": {
+          "label": "Reject",
+          "title": "Reject this listing?",
+          "body": "The listing goes back to draft. The owner can fix it and submit again."
+        },
+        "suspend": {
+          "label": "Suspend",
+          "title": "Suspend this business?",
+          "body": "The public page and new online bookings stop. Existing bookings stay valid."
+        },
+        "unsuspend": {
+          "label": "Unsuspend"
+        }
+      },
+      "review": {
+        "keep": {
+          "label": "Keep visible"
+        },
+        "hide": {
+          "label": "Hide",
+          "title": "Hide this review?",
+          "body": "It disappears from the public page and the rating is recalculated."
+        },
+        "restore": {
+          "label": "Restore"
+        }
+      },
+      "user": {
+        "makeAdmin": {
+          "label": "Make admin",
+          "title": "Make this user an admin?",
+          "body": "Admins can approve or suspend businesses, moderate reviews and manage admin roles."
+        },
+        "removeAdmin": {
+          "label": "Remove admin",
+          "title": "Remove admin role?",
+          "body": "This user loses all admin access."
+        }
+      }
+    }
+  }
+}

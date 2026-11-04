@@ -1,0 +1,291 @@
+@import 'tailwindcss';
+
+/*
+  Design tokens — Apple HIG language (see .kiro/steering/apple-design.md).
+  Semantic colour tokens with true light/dark themes, Apple text scale in rem,
+  concentric radii and an 4/8/12/16/24/32/48 spacing scale. Per-business brand
+  colours are injected as --b1/--b2 on the business page root.
+*/
+
+@theme {
+  /* Spacing scale */
+  --spacing-1: 4px;
+  --spacing-2: 8px;
+  --spacing-3: 12px;
+  --spacing-4: 16px;
+  --spacing-6: 24px;
+  --spacing-8: 32px;
+  --spacing-12: 48px;
+
+  /* Radii — concentric-friendly */
+  --radius-input: 10px;
+  --radius-button: 14px;
+  --radius-card: 20px;
+  --radius-sheet: 24px;
+
+  /* Apple text scale (size / line-height) */
+  --text-large-title: 2.125rem;
+  /* 34 */
+  --text-large-title--line-height: 2.5625rem;
+  /* 41 */
+  --text-title1: 1.75rem;
+  /* 28 */
+  --text-title1--line-height: 2.125rem;
+  /* 34 */
+  --text-title2: 1.375rem;
+  /* 22 */
+  --text-title2--line-height: 1.75rem;
+  /* 28 */
+  --text-title3: 1.25rem;
+  /* 20 */
+  --text-title3--line-height: 1.5625rem;
+  /* 25 */
+  --text-headline: 1.0625rem;
+  /* 17 */
+  --text-headline--line-height: 1.375rem;
+  /* 22 */
+  --text-body: 1.0625rem;
+  /* 17 */
+  --text-body--line-height: 1.375rem;
+  --text-callout: 1rem;
+  /* 16 */
+  --text-callout--line-height: 1.3125rem;
+  /* 21 */
+  --text-subhead: 0.9375rem;
+  /* 15 */
+  --text-subhead--line-height: 1.25rem;
+  /* 20 */
+  --text-footnote: 0.8125rem;
+  /* 13 */
+  --text-footnote--line-height: 1.125rem;
+  /* 18 */
+  --text-caption: 0.75rem;
+  /* 12 */
+  --text-caption--line-height: 1rem;
+  /* 16 */
+
+  --font-sans:
+    -apple-system, BlinkMacSystemFont, 'SF Pro Text', 'SF Pro Display', system-ui,
+    var(--font-inter), 'Segoe UI', Roboto, sans-serif;
+}
+
+:root {
+  color-scheme: light dark;
+
+  /* Light theme (Apple grouped backgrounds) */
+  --bg: #f2f2f7;
+  --surface: #ffffff;
+  --surface-elevated: #ffffff;
+  --label: #000000;
+  --label-secondary: rgba(60, 60, 67, 0.75);
+  --separator: rgba(60, 60, 67, 0.18);
+  --control-border: rgba(60, 60, 67, 0.6);
+  /* >= 3:1 for input/select boundaries */
+  --tint: #4a2c6d;
+  --tint-contrast: #ffffff;
+  --success: #16705a;
+  --danger: #b3261e;
+
+  /* Per-business brand colours default to the platform tint. */
+  --b1: var(--tint);
+  --b2: #a98bd6;
+  --b1-contrast: #ffffff;
+}
+
+@media (prefers-color-scheme: dark) {
+  :root {
+    --bg: #000000;
+    --surface: #1c1c1e;
+    --surface-elevated: #2c2c2e;
+    --label: #ffffff;
+    --label-secondary: rgba(235, 235, 245, 0.6);
+    --separator: rgba(84, 84, 88, 0.6);
+    --control-border: rgba(235, 235, 245, 0.45);
+    --tint: #a98bd6;
+    --tint-contrast: #1c1c1e;
+    --success: #6fd3b0;
+    --danger: #ff8a80;
+    --b1: var(--tint);
+    --b2: #8e6fc0;
+    --b1-contrast: var(--tint-contrast);
+  }
+}
+
+/* Manual theme override via data-theme on <html>. */
+:root[data-theme='light'] {
+  color-scheme: light;
+  --bg: #f2f2f7;
+  --surface: #ffffff;
+  --surface-elevated: #ffffff;
+  --label: #000000;
+  --label-secondary: rgba(60, 60, 67, 0.75);
+  --separator: rgba(60, 60, 67, 0.18);
+  --control-border: rgba(60, 60, 67, 0.6);
+  --tint: #4a2c6d;
+  --tint-contrast: #ffffff;
+  --success: #16705a;
+  --danger: #b3261e;
+}
+
+:root[data-theme='dark'] {
+  color-scheme: dark;
+  --bg: #000000;
+  --surface: #1c1c1e;
+  --surface-elevated: #2c2c2e;
+  --label: #ffffff;
+  --label-secondary: rgba(235, 235, 245, 0.6);
+  --separator: rgba(84, 84, 88, 0.6);
+  --control-border: rgba(235, 235, 245, 0.45);
+  --tint: #a98bd6;
+  --tint-contrast: #1c1c1e;
+  --success: #6fd3b0;
+  --danger: #ff8a80;
+  --b1-contrast: var(--tint-contrast);
+}
+
+/* Increased contrast: stronger secondary text and borders. */
+@media (prefers-contrast: more) {
+  :root {
+    --label-secondary: var(--label);
+    --separator: var(--control-border);
+    --control-border: var(--label);
+  }
+}
+
+html,
+body {
+  background: var(--bg);
+  color: var(--label);
+  font-family: var(--font-sans);
+  -webkit-font-smoothing: antialiased;
+  text-rendering: optimizeLegibility;
+}
+
+/* Visible keyboard focus everywhere (accessibility, non-negotiable). */
+:focus-visible {
+  outline: 2px solid var(--tint);
+  outline-offset: 2px;
+}
+
+/*
+  Business pages: --b1-text is the brand colour as used for TEXT, thin graphics and
+  focus rings on the page surface. Light theme: the brand colour itself. Dark theme:
+  lightened 50% toward white so seeded brand colours reach >= 6:1 on #1c1c1e (the
+  worst case, pure black, still reaches 4.3:1). Filled buttons keep --b1 + white.
+  Owner-chosen colours are validated at save time (lib/brand.ts): >= 4.5:1 against white, so
+  white --b1-contrast is always correct and --b1 reads as text on white surfaces.
+*/
+.brand-scope {
+  /* Light: 12% toward black. A colour validated at exactly 4.5:1 on white is only ~4.0:1 on the
+     #f2f2f7 grouped background; this lifts it to ~5.0:1 (measured in the 6.11 audit). */
+  --b1-text: color-mix(in srgb, var(--b1) 88%, black);
+  /* Business colours are validated against white text, in light and dark. */
+  --b1-contrast: #ffffff;
+}
+
+@media (prefers-color-scheme: dark) {
+  :root:not([data-theme='light']) .brand-scope {
+    --b1-text: color-mix(in srgb, var(--b1) 50%, white);
+  }
+}
+
+:root[data-theme='dark'] .brand-scope {
+  --b1-text: color-mix(in srgb, var(--b1) 50%, white);
+}
+
+/* Programmatic page-heading focus (FocusHeading / StepHeading, tabindex=-1) is for screen
+   readers; the heading is not interactive, so it gets no ring. */
+h1[tabindex='-1']:focus-visible {
+  outline: none;
+}
+/* Business pages: focus rings take the business brand colour. */
+.brand-scope :focus-visible {
+  outline-color: var(--b1-text);
+}
+
+/* Keep focused elements clear of the sticky top bar and the mobile bottom bar. */
+html {
+  scroll-padding-top: 5rem;
+}
+
+@media (max-width: 1023px) {
+  html:has(.brand-scope) {
+    scroll-padding-bottom: 6rem;
+  }
+}
+
+/* Sticky profile sidebar: only when the viewport is tall enough to show all of it,
+   otherwise its lower part (hours, contact, map) would be cut off and unreachable. */
+@media (min-width: 1024px) and (min-height: 56rem) {
+  .profile-sticky {
+    position: sticky;
+    top: 6rem;
+  }
+}
+
+.brand-scope .brand-on-dark :focus-visible {
+  outline-color: #ffffff;
+}
+
+/* Honour reduced motion. */
+@media (prefers-reduced-motion: reduce) {
+
+  *,
+  *::before,
+  *::after {
+    animation-duration: 0.001ms !important;
+    animation-iteration-count: 1 !important;
+    transition-duration: 0.001ms !important;
+    scroll-behavior: auto !important;
+  }
+}
+
+/*
+  Liquid Glass — navigation layer ONLY (top bar, tab bar, floating Book bar).
+  Solid fallback when backdrop-filter is unsupported or transparency is reduced.
+*/
+.glass {
+  background: color-mix(in srgb, var(--surface) 72%, transparent);
+}
+
+@supports (backdrop-filter: blur(1px)) {
+  .glass {
+    background: color-mix(in srgb, var(--surface) 60%, transparent);
+    backdrop-filter: blur(20px) saturate(180%);
+    -webkit-backdrop-filter: blur(20px) saturate(180%);
+  }
+}
+
+@media (prefers-reduced-transparency: reduce) {
+  .glass {
+    background: var(--surface);
+    backdrop-filter: none;
+    -webkit-backdrop-filter: none;
+  }
+}
+
+/* Map zoom buttons: Leaflet's 30px default is below the 44px touch target. */
+.map-tiles .leaflet-bar a {
+  width: 44px;
+  height: 44px;
+  line-height: 44px;
+}
+
+/* Map container is keyboard focusable (arrows pan, +/- zoom): show a ring. */
+.map-tiles:focus-visible,
+.map-tiles .leaflet-container:focus-visible {
+  outline: 2px solid var(--b1-text, var(--tint));
+  outline-offset: -2px;
+}
+
+/* Map: OSM has no official dark tiles, so invert the tile pane in dark mode.
+   Markers/attribution live in other panes and are unaffected. */
+:root[data-theme='dark'] .map-tiles .leaflet-tile-pane {
+  filter: invert(1) hue-rotate(180deg) brightness(0.95) contrast(0.9);
+}
+
+@media (prefers-color-scheme: dark) {
+  :root:not([data-theme='light']) .map-tiles .leaflet-tile-pane {
+    filter: invert(1) hue-rotate(180deg) brightness(0.95) contrast(0.9);
+  }
+}

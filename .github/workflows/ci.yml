@@ -1,0 +1,61 @@
+name: CI
+
+on:
+  push:
+    branches: [main]
+  pull_request:
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+    env:
+      DATABASE_URL: postgresql://postgres:postgres@localhost:5432/shecy
+      DIRECT_URL: postgresql://postgres:postgres@localhost:5432/shecy
+      AUTH_SECRET: ci-secret-ci-secret-ci-secret-ci-secret=
+      MANAGE_TOKEN_SECRET: ci-manage-secret-ci-manage-secret-ci-ms=
+      CRON_SECRET: ci-cron-secret
+      NEXT_PUBLIC_SITE_URL: http://localhost:3000
+    services:
+      postgres:
+        image: postgres:16
+        env:
+          POSTGRES_PASSWORD: postgres
+          POSTGRES_DB: shecy
+        ports:
+          - 5432:5432
+        options: >-
+          --health-cmd pg_isready
+          --health-interval 10s
+          --health-timeout 5s
+          --health-retries 5
+    steps:
+      - uses: actions/checkout@v4
+      - uses: pnpm/action-setup@v4
+        with:
+          version: 9
+      - uses: actions/setup-node@v4
+        with:
+          node-version: 22
+          cache: pnpm
+      - run: pnpm install --frozen-lockfile
+      - run: pnpm db:generate
+      - run: pnpm check:messages
+      - run: pnpm lint
+      - run: pnpm typecheck
+      - run: pnpm test
+      - run: pnpm db:deploy
+      - run: pnpm build
+      # Booking concurrency e2e (task 4.7). Uses its own scratch DB: the suite refuses
+      # to run unless the database name contains "test".
+      # shortcut: written but not yet run on GitHub (see docs/shortcuts.md).
+      - name: Create e2e database
+        run: psql "postgresql://postgres:postgres@localhost:5432/postgres" -c "CREATE DATABASE shecy_test"
+      - name: Migrate e2e database
+        run: pnpm db:deploy
+        env:
+          DATABASE_URL: postgresql://postgres:postgres@localhost:5432/shecy_test
+          DIRECT_URL: postgresql://postgres:postgres@localhost:5432/shecy_test
+      - run: pnpm exec playwright install --with-deps chromium
+      - run: pnpm test:e2e
+        env:
+          E2E_DATABASE_URL: postgresql://postgres:postgres@localhost:5432/shecy_test
