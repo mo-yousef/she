@@ -17,7 +17,7 @@ export async function SiteHeader({ locale }: { locale: string }) {
         href="#main"
         className="sr-only focus:not-sr-only focus:absolute focus:left-4 focus:top-2 focus:z-50 focus:rounded-md focus:bg-[color:var(--surface)] focus:px-3 focus:py-2"
       >
-        Skip to content
+        {t('skipToContent')}
       </a>
       <div className="mx-auto flex h-16 max-w-6xl items-center justify-between gap-3 px-4">
         <Link
@@ -27,7 +27,7 @@ export async function SiteHeader({ locale }: { locale: string }) {
         >
           {c('appName')}
         </Link>
-        <nav className="flex items-center gap-1" aria-label="Primary">
+        <nav className="flex items-center gap-1" aria-label={t('primary')}>
           <Link
             href="/for-business"
             locale={locale}

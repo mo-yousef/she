@@ -4,7 +4,7 @@ import { useTransition } from 'react';
 import { useSearchParams } from 'next/navigation';
 import { useLocale, useTranslations } from 'next-intl';
 import { usePathname, useRouter } from '@/i18n/navigation';
-import { SORTS, type Sort } from '@/lib/search';
+import { SORTS, type Sort } from '@/lib/catalogue';
 
 /**
  * Sort control (requirement §1.1). A segmented control per the Apple HIG for a

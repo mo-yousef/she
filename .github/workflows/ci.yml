@@ -45,6 +45,7 @@ jobs:
       - run: pnpm test
       - run: pnpm db:deploy
       - run: pnpm build
+      - run: pnpm check:budget
       # Booking concurrency e2e (task 4.7). Uses its own scratch DB: the suite refuses
       # to run unless the database name contains "test".
       # shortcut: written but not yet run on GitHub (see docs/shortcuts.md).

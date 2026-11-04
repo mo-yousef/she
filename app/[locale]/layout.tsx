@@ -7,6 +7,8 @@ import { getMessages, setRequestLocale } from 'next-intl/server';
 import { routing } from '@/i18n/routing';
 import { siteUrl } from '@/lib/seo';
 import { SiteHeader } from '@/components/site-header';
+import { SiteFooter } from '@/components/site-footer';
+import { Analytics } from '@vercel/analytics/next';
 import { ThemeScript } from '@/components/theme-script';
 import '../globals.css';
 
@@ -54,7 +56,10 @@ export default async function LocaleLayout({
         <NextIntlClientProvider messages={messages}>
           <SiteHeader locale={locale} />
           <main id="main">{children}</main>
+          <SiteFooter locale={locale} />
         </NextIntlClientProvider>
+        {/* Cookie-less page views only; off unless NEXT_PUBLIC_ANALYTICS=vercel. */}
+        {process.env.NEXT_PUBLIC_ANALYTICS === 'vercel' ? <Analytics /> : null}
       </body>
     </html>
   );

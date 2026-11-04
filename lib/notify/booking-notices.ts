@@ -6,6 +6,7 @@
  * booking action that triggered it, so callers use `queueBookingNotice` (runs after the
  * response via Next's `after()`).
  */
+import { captureError } from '@/lib/monitoring';
 import { after } from 'next/server';
 import type { Prisma } from '@prisma/client';
 import { db } from '../db';
@@ -167,6 +168,7 @@ export async function sendBookingReminder(
     return !anyOk && anyRetriable ? 'retry' : 'done';
   } catch (e) {
     console.error(`[notify] ${kind} failed`, e instanceof Error ? e.name : 'unknown');
+    captureError(e, { area: 'notify', action: kind });
     return 'retry';
   }
 }
@@ -253,7 +255,7 @@ export async function sendBookingNotice(
     };
 
     // Consent: online bookings require the messages-consent checkbox, so ONLINE counts as
-    // consented. Booking has no consent column; MANUAL bookings (task 6.2) are email-only.
+    // consented (also stored in Booking.consentMessagesAt, 7.2). MANUAL bookings (task 6.2) are email-only.
     const customerPhone = b.source === 'ONLINE' ? cleanPhone(b.guestPhone) : null;
     deliver(customerKind, 'customer', customerLocale, b.guestEmail, customerPhone);
 

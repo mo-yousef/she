@@ -1,10 +1,13 @@
 import { getTranslations } from 'next-intl/server';
 
-/** Route-level loading state for a business page: header block plus service rows. */
+/**
+ * Route-level loading state for a business page: header block plus service rows.
+ * min-h-dvh keeps the footer below the fold so it does not jump when content streams in (CLS).
+ */
 export default async function Loading() {
   const t = await getTranslations('business');
   return (
-    <div role="status" aria-busy="true" className="mx-auto max-w-5xl px-4 pb-24 pt-10">
+    <div role="status" aria-busy="true" className="mx-auto min-h-dvh max-w-5xl px-4 pb-24 pt-10">
       <span className="sr-only">{t('loadingProfile')}</span>
       <div aria-hidden>
         <div className="h-40 w-full animate-pulse rounded-[var(--radius-card)] bg-[color:var(--separator)]" />

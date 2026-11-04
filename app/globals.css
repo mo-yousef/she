@@ -195,9 +195,17 @@ body {
 
 /* Programmatic page-heading focus (FocusHeading / StepHeading, tabindex=-1) is for screen
    readers; the heading is not interactive, so it gets no ring. */
+/* Long words (el/ru, 200% text) wrap instead of forcing horizontal scroll (WCAG 1.4.4 / 1.4.10). */
+h1,
+h2,
+h3 {
+  overflow-wrap: break-word;
+}
+
 h1[tabindex='-1']:focus-visible {
   outline: none;
 }
+
 /* Business pages: focus rings take the business brand colour. */
 .brand-scope :focus-visible {
   outline-color: var(--b1-text);

@@ -1,6 +1,7 @@
 import type { MetadataRoute } from 'next';
 import { db } from '@/lib/db';
 import { routing } from '@/i18n/routing';
+import { LEGAL_PAGES } from '@/lib/legal';
 import { languageAlternates, localizedUrl } from '@/lib/seo';
 
 // Built per request/ISR window; needs the DB, so don't prerender at build time.
@@ -22,6 +23,7 @@ export default async function sitemap(): Promise<MetadataRoute.Sitemap> {
   return [
     ...entry('/'),
     ...entry('/search'),
+    ...LEGAL_PAGES.flatMap((p) => entry(`/legal/${p}`)),
     // shortcut: Business has no updatedAt column yet, so createdAt is used for lastModified.
     ...businesses.flatMap((b) => entry(`/b/${b.slug}`, b.createdAt)),
   ];

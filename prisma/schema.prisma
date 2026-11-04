@@ -334,6 +334,10 @@ model Booking {
   reminder24SentAt  DateTime?
   reminder2SentAt   DateTime?
   reviewRequestedAt DateTime?
+  // GDPR consent capture (7.2): set for online bookings only; manual bookings leave them null.
+  consentTermsAt    DateTime?
+  consentMessagesAt DateTime?
+  consentVersion    String?
 
   business           Business            @relation(fields: [businessId], references: [id], onDelete: Cascade)
   service            Service             @relation(fields: [serviceId], references: [id])

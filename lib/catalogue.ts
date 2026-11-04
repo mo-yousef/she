@@ -2,3 +2,5 @@
 export const CITIES = ['Larnaca', 'Limassol', 'Nicosia', 'Paphos', 'Famagusta'] as const;
 
 export const CATEGORIES = ['nails', 'lashes', 'hair', 'makeup', 'facials', 'blowdry'] as const;
+export const SORTS = ['recommended', 'rating', 'price', 'soonest'] as const;
+export type Sort = (typeof SORTS)[number];

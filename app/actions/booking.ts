@@ -1,4 +1,5 @@
 'use server';
+import { captureError } from '@/lib/monitoring';
 import { revalidateTag } from 'next/cache';
 import { headers } from 'next/headers';
 import { BOOKING_IP_LIMIT, BOOKING_PHONE_LIMIT, clientIp, rateLimit } from '@/lib/rate-limit';
@@ -71,6 +72,7 @@ export async function createBooking(input: unknown): Promise<CreateBookingResult
   } catch (e) {
     // No PII in logs: error name only, never the input or the message (may echo values).
     console.error('createBooking failed', e instanceof Error ? e.name : 'unknown');
+    captureError(e, { area: 'createBooking' });
     return { ok: false, code: 'UNKNOWN' };
   }
 }

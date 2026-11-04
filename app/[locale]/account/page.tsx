@@ -4,6 +4,8 @@ import { getTranslations, setRequestLocale } from 'next-intl/server';
 import { auth } from '@/lib/auth';
 import { Link } from '@/i18n/navigation';
 import { localeOfPath, safeCallbackPath } from '@/lib/callback-url';
+import { DeleteAccount } from '@/components/account/delete-account';
+import { db } from '@/lib/db';
 import { signInWithEmailAction, signInWithGoogleAction, signOutAction } from '@/app/actions/auth';
 
 export const dynamic = 'force-dynamic';
@@ -29,7 +31,7 @@ const secondaryButton =
 
 /**
  * Account page: sign-in when signed out, account home when signed in. It is built as a stack
- * of <section>s so task 7.2 can add the GDPR export/delete sections below "Your account".
+ * of <section>s with the GDPR data-export and delete sections (task 7.2) below "You".
  */
 export default async function AccountPage({
   params,
@@ -63,6 +65,7 @@ export default async function AccountPage({
 
   if (session?.user?.id) {
     const isOwner = session.user.role === 'OWNER' || session.user.role === 'ADMIN';
+    const ownedBusinesses = await db.business.count({ where: { ownerId: session.user.id } });
     return (
       <div className="mx-auto max-w-xl px-4 pb-24 pt-10">
         <h1 className="text-[length:var(--text-title1)] font-bold tracking-tight">{t('title')}</h1>
@@ -100,6 +103,26 @@ export default async function AccountPage({
             </button>
           </form>
         </section>
+        <section aria-labelledby="account-data" className="mt-4 rounded-[var(--radius-card)] bg-[color:var(--surface)] p-6 shadow-sm">
+          <h2 id="account-data" className="text-[length:var(--text-headline)] font-semibold">
+            {t('data.heading')}
+          </h2>
+          <p className="mt-1 text-[color:var(--label-secondary)]">{t('data.body')}</p>
+          <a href="/api/account/export" download="she-cy-data.json" className={`${secondaryButton} mt-4`}>
+            {t('data.download')}
+          </a>
+          <p className="mt-3 text-[length:var(--text-footnote)] text-[color:var(--label-secondary)]">
+            <Link href="/legal/privacy" locale={locale} className="inline-flex min-h-11 items-center text-[color:var(--tint)]">
+              {t('data.privacy')}
+            </Link>
+          </p>
+        </section>
+        <section aria-labelledby="account-delete" className="mt-4 rounded-[var(--radius-card)] bg-[color:var(--surface)] p-6 shadow-sm">
+          <h2 id="account-delete" className="text-[length:var(--text-headline)] font-semibold">
+            {t('delete.heading')}
+          </h2>
+          <DeleteAccount locale={locale} email={session.user.email ?? ''} ownsBusiness={ownedBusinesses > 0} />
+        </section>
       </div>
     );
   }
@@ -111,6 +134,11 @@ export default async function AccountPage({
     <div className="mx-auto max-w-md px-4 pb-24 pt-10">
       <h1 className="text-[length:var(--text-title1)] font-bold tracking-tight">{t('signInTitle')}</h1>
       <p className="mt-2 text-[color:var(--label-secondary)]">{t('signInIntro')}</p>
+      {first(sp.deleted) === '1' ? (
+        <p role="status" className="mt-5 rounded-[var(--radius-input)] border border-[color:var(--control-border)] p-3">
+          {t('delete.done')}
+        </p>
+      ) : null}
 
       {errorKey ? (
         <p role="alert" className="mt-5 rounded-[var(--radius-input)] border border-[color:var(--danger)] p-3 text-[color:var(--danger)]">

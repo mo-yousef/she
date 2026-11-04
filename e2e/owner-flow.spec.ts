@@ -202,7 +202,7 @@ test('A. a new owner goes from the landing page to a pending listing entirely th
     // (Content check, not HTTP status: b/[slug]/loading.tsx streams, so notFound() is a 200
     // "soft 404" in Next. Logged in docs/shortcuts.md for 6.11/8.x.)
     await page.goto(`/en/b/${biz.slug}`);
-    await expect(page.getByRole('heading', { level: 1, name: en.errors.notFound })).toBeVisible();
+    await expect(page.getByRole('heading', { level: 1, name: en.errors.studioUnavailableTitle })).toBeVisible();
 
     // Admin approval is task 7.1 (no admin UI yet): simulate it in the DB.
     await db.business.update({ where: { id: businessId }, data: { status: 'PUBLISHED' } });
@@ -485,7 +485,7 @@ test.describe('B. owner edits show up publicly', () => {
     await expect.poll(statusOf).toBe('DRAFT');
 
     await page.goto(publicUrl());
-    await expect(page.getByRole('heading', { level: 1, name: en.errors.notFound })).toBeVisible();
+    await expect(page.getByRole('heading', { level: 1, name: en.errors.studioUnavailableTitle })).toBeVisible();
 
     // The customer's manage link still works for the existing booking.
     await page.goto(manageHref);

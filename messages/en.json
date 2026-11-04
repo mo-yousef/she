@@ -18,6 +18,8 @@
     "save": "Save"
   },
   "nav": {
+    "skipToContent": "Skip to content",
+    "primary": "Primary",
     "explore": "Explore",
     "saved": "Saved",
     "bookings": "Bookings",
@@ -128,7 +130,15 @@
   "errors": {
     "generic": "Something went wrong. Please try again.",
     "notFound": "We couldn’t find that page.",
-    "slotTaken": "That time was just taken. Please pick another."
+    "slotTaken": "That time was just taken. Please pick another.",
+    "boundaryTitle": "Something went wrong",
+    "boundaryBody": "This page didn’t load. Try again, or go back to the home page.",
+    "tryAgain": "Try again",
+    "backHome": "Back to home",
+    "studioUnavailableTitle": "This studio isn’t available",
+    "studioUnavailableBody": "The page may have moved or isn’t published yet. Browse other studios to find your next appointment.",
+    "browseStudios": "Browse studios",
+    "notFoundTitle": "Page not found"
   },
   "business": {
     "loadingProfile": "Loading studio…",
@@ -510,6 +520,30 @@
       "Configuration": "Sign-in isn't available right now. Try again later.",
       "OAuthAccountNotLinked": "This email is already registered with another sign-in method. Use the method you used before.",
       "Default": "We couldn't sign you in. Please try again."
+    },
+    "data": {
+      "heading": "Download your data",
+      "body": "Get a JSON file with your profile, bookings, reviews and saved studios.",
+      "download": "Download my data",
+      "privacy": "Read the privacy policy"
+    },
+    "delete": {
+      "heading": "Delete your account",
+      "consequences": "Deleting your account is permanent. Upcoming bookings are cancelled. Your past bookings stay with the studios but without your name, email, phone or notes. Your reviews stay as ratings only, without your name or text. Saved studios and sign-in details are removed.",
+      "ownerNotice": "You own a business, so you can't delete your account here. Contact support and we'll help you close it.",
+      "open": "Delete my account",
+      "sheetTitle": "Delete your account?",
+      "sheetBody": "This can't be undone. Your upcoming bookings will be cancelled.",
+      "typeEmail": "Type {email} to confirm",
+      "keep": "Keep my account",
+      "confirm": "Delete my account",
+      "done": "Your account has been deleted.",
+      "error": {
+        "EMAIL_MISMATCH": "That email doesn't match your account. Type it exactly as shown.",
+        "OWNS_BUSINESS": "You own a business, so you can't delete your account here. Contact support.",
+        "UNAUTHENTICATED": "Sign in again, then retry.",
+        "UNKNOWN": "We couldn't delete your account. Try again later."
+      }
     }
   },
   "dashboard": {
@@ -1564,6 +1598,213 @@
           "title": "Remove admin role?",
           "body": "This user loses all admin access."
         }
+      }
+    }
+  },
+  "legal": {
+    "nav": "Legal",
+    "footerLabel": "Legal and policies",
+    "terms": "Terms of use",
+    "privacy": "Privacy policy",
+    "cancellation": "Cancellation policy",
+    "lastUpdated": "Last updated: {date}",
+    "pages": {
+      "terms": {
+        "title": "Terms of use",
+        "updated": "2026-11-01",
+        "intro": "These terms govern your use of she.cy, a website where you can discover beauty businesses in Cyprus and book appointments with them. By making a booking or using the site you agree to them. The operator details below are placeholders that the operator must complete before launch.",
+        "sections": [
+          {
+            "heading": "Who we are",
+            "paragraphs": [
+              "she.cy is operated by [Company name], [Registered address], Cyprus (the operator, \"we\", \"us\"). You can reach us at support@she.cy.",
+              "[Placeholder: replace the company name, address and registration number with the real legal entity details before launch.]"
+            ]
+          },
+          {
+            "heading": "What she.cy is",
+            "paragraphs": [
+              "she.cy is a marketplace. We provide the platform that lets you find a business, see its services, prices and available times, and request a booking. The beauty service itself is provided by the business you book with, not by us.",
+              "The business is responsible for the service, its quality, its price, its premises and its own policies. Any contract for the service is between you and the business."
+            ]
+          },
+          {
+            "heading": "Booking as a guest or with an account",
+            "paragraphs": [
+              "You can book as a guest. You need to give your name and phone number, and we ask for an email address so we can send you a confirmation and a link to manage your booking. You can also sign in with an email link or with Google to see your bookings in one place.",
+              "You must give accurate details. You may only book for yourself or for someone who has agreed to be booked. Each booking has a reference in the form SC-XXXXX. Keep it, because you need it to find or change the booking."
+            ]
+          },
+          {
+            "heading": "Confirmation, prices and payment",
+            "paragraphs": [
+              "Some businesses confirm bookings automatically and others confirm them by hand. Your booking page tells you which status applies. Before we create the booking we check again that the time is still free.",
+              "Prices are shown in euro and include the taxes that apply to the business. Payment is made to the business at the appointment unless the business tells you otherwise. she.cy does not take payment for the service."
+            ]
+          },
+          {
+            "heading": "Changing or cancelling a booking",
+            "paragraphs": [
+              "You can reschedule or cancel from the link in your confirmation message until the cut-off time set by the business. The rules, including what happens after the cut-off and when you do not attend, are in our cancellation policy, which forms part of these terms."
+            ]
+          },
+          {
+            "heading": "Reminders and messages",
+            "paragraphs": [
+              "When you book you agree to receive confirmations, reminders and changes about that booking by email, WhatsApp or SMS. These are service messages about your appointment, not marketing. If WhatsApp cannot reach you we may use SMS instead."
+            ]
+          },
+          {
+            "heading": "Reviews",
+            "paragraphs": [
+              "Only customers with a completed booking can leave a review. Reviews must be honest, based on your own visit and free of abuse, personal data of others and advertising. Businesses may reply publicly. We may hide a review that breaks these rules."
+            ]
+          },
+          {
+            "heading": "Rules for using the site",
+            "paragraphs": [
+              "Do not misuse the site. That includes making bookings you do not intend to keep, using automated tools to book or to copy content, trying to get around security or abuse protection, or uploading unlawful content. We may refuse or cancel bookings and suspend accounts that break these rules."
+            ]
+          },
+          {
+            "heading": "Businesses on she.cy",
+            "paragraphs": [
+              "Businesses are responsible for the accuracy of their profile, prices, photos, opening hours and availability, and for holding the licences their work requires. We may approve, suspend or remove a business listing if it breaks these terms or harms customers."
+            ]
+          },
+          {
+            "heading": "Our responsibility",
+            "paragraphs": [
+              "We work to keep the site available and accurate, but we do not guarantee that it will always be free of errors or interruptions. We are not responsible for the service a business provides. Nothing in these terms limits liability that cannot be limited by law, including your rights as a consumer."
+            ]
+          },
+          {
+            "heading": "Changes, law and complaints",
+            "paragraphs": [
+              "We may update these terms. The date at the top shows the latest version, and the version you agreed to is stored with your booking. Changes do not affect bookings already made.",
+              "These terms are governed by the laws of the Republic of Cyprus, and the courts of Cyprus have jurisdiction, without taking away any consumer rights you have under the law of your country of residence. If you have a complaint, write to support@she.cy and we will reply as soon as we can."
+            ]
+          }
+        ]
+      },
+      "privacy": {
+        "title": "Privacy policy",
+        "updated": "2026-11-01",
+        "intro": "This policy explains what personal data she.cy collects, why, who receives it and what rights you have under the General Data Protection Regulation (GDPR). We collect only what we need to run bookings.",
+        "sections": [
+          {
+            "heading": "Who is responsible",
+            "paragraphs": [
+              "The controller for the platform is [Company name], [Registered address], Cyprus. Privacy questions go to privacy@she.cy.",
+              "[Placeholder: replace the company details and confirm the contact address before launch.]",
+              "When you book, the business you book with also receives your details and uses them to provide your appointment. For that use the business is responsible for its own handling of your data."
+            ]
+          },
+          {
+            "heading": "What we collect",
+            "paragraphs": [
+              "For a booking: your name, phone number, email address, an optional note for the business, the service, staff member, time and price, and the booking reference. If you have an account we also store your sign-in email, name, language and role, your saved studios and your reviews.",
+              "Consents: when you book we record that you accepted the terms and agreed to booking messages, the time you did so and the version of the policy you saw (currently 2026-11).",
+              "Technical data: our hosting and security tools process your IP address and basic request data to deliver the site and to block abuse. We do not build advertising profiles."
+            ]
+          },
+          {
+            "heading": "Why we use it and on what basis",
+            "paragraphs": [
+              "To create and manage your booking and send you confirmations, reminders and changes we rely on performing the contract with you. To send these messages on WhatsApp or SMS we also rely on the consent you give when you book.",
+              "To keep the site secure, prevent abuse and spam, and to keep records of messages we sent, we rely on our legitimate interest. To meet legal obligations, such as accounting or answering authorities, we rely on the law."
+            ]
+          },
+          {
+            "heading": "Who receives your data",
+            "paragraphs": [
+              "The business you book with receives your booking details. We also use service providers, called processors, that act on our instructions: Vercel (hosting), a PostgreSQL database provider (storage), Resend (email), Twilio (WhatsApp and SMS), Cloudinary (business photos) and Cloudflare Turnstile (bot protection on forms), Sentry (error monitoring) and Vercel Web Analytics (cookie-free page-view statistics).",
+              "Some of these providers are based outside the European Economic Area. Where that happens we rely on safeguards such as the European Commission's standard contractual clauses or an adequacy decision. We do not sell your data."
+            ]
+          },
+          {
+            "heading": "How long we keep it",
+            "paragraphs": [
+              "Phone verification codes are deleted after 7 days. Records of messages we sent are deleted after 24 months. Personal details on a booking (name, email, phone and note) are anonymised 24 months after the appointment ended; we keep the non-personal booking record for statistics and accounting.",
+              "If you have an account, we keep it until you delete it. We may keep some data longer where the law requires it."
+            ]
+          },
+          {
+            "heading": "Cookies",
+            "paragraphs": [
+              "We use only the cookies that are needed to run the site: a session cookie that keeps you signed in, and a preference cookie for your language and light or dark theme. We do not use advertising or tracking cookies, so there is no cookie banner to accept."
+            ]
+          },
+          {
+            "heading": "Your rights",
+            "paragraphs": [
+              "You have the right to access your data, to have it corrected, to have it erased, to restrict or object to its use, and to receive it in a portable format. If we rely on your consent you can withdraw it at any time, which does not affect earlier use.",
+              "If you have an account, open the account page to download a file with your data and to delete your account. Deleting your account cancels your future bookings, anonymises your bookings and removes your saved studios. Your reviews stay as an anonymous \"Former customer\" rating without text. Account owners of a business must first transfer or delete the business.",
+              "For anything else, write to privacy@she.cy. We reply within one month."
+            ]
+          },
+          {
+            "heading": "Complaints",
+            "paragraphs": [
+              "You can complain to the supervisory authority in Cyprus: the Office of the Commissioner for Personal Data Protection, 15 Kypranoros Street, 1061 Nicosia (www.dataprotection.gov.cy). You can also contact the authority in the country where you live or work."
+            ]
+          },
+          {
+            "heading": "Changes to this policy",
+            "paragraphs": [
+              "When we change this policy in a way that matters, we update the date above and the policy version stored with new bookings."
+            ]
+          }
+        ]
+      },
+      "cancellation": {
+        "title": "Cancellation policy",
+        "updated": "2026-11-01",
+        "intro": "This policy explains how to cancel or reschedule a booking made on she.cy, and what happens if you cannot attend. Every business sets its own cancellation window within the rules below.",
+        "sections": [
+          {
+            "heading": "The cancellation window",
+            "paragraphs": [
+              "Each business sets a cancellation window, which is how many hours before the appointment you can still cancel or reschedule yourself. The default is 24 hours. The window for your booking is shown on the booking page and in your confirmation."
+            ]
+          },
+          {
+            "heading": "Before the cut-off",
+            "paragraphs": [
+              "Until the cut-off time you can cancel or reschedule for free using the manage link in your confirmation email or message, or from your account if you signed in. When you reschedule, we check again that the new time is available. Cancelling frees the slot for other customers straight away."
+            ]
+          },
+          {
+            "heading": "After the cut-off",
+            "paragraphs": [
+              "After the cut-off the manage link no longer lets you change the booking. Please contact the business directly using the phone number on its page. The business decides whether it can move or cancel the appointment, and it may apply its own late-cancellation terms."
+            ]
+          },
+          {
+            "heading": "If you do not attend",
+            "paragraphs": [
+              "If you do not arrive and have not cancelled, the business may mark the booking as a no-show. she.cy does not charge you. The business may refuse later bookings from customers who repeatedly do not attend, and any fee it asks for must have been agreed with you."
+            ]
+          },
+          {
+            "heading": "If the business cancels",
+            "paragraphs": [
+              "A business can cancel a booking, for example because of illness or a closure. If that happens we tell you by email, WhatsApp or SMS and the slot is released. You owe nothing, and you can book another time with any business."
+            ]
+          },
+          {
+            "heading": "Late arrival and changes to the service",
+            "paragraphs": [
+              "If you arrive late, the business may shorten the service or move you to another time so as not to affect other customers. Changing the service itself is arranged with the business at the appointment."
+            ]
+          },
+          {
+            "heading": "Questions",
+            "paragraphs": [
+              "If you think a booking was cancelled or marked as a no-show by mistake, write to support@she.cy with your booking reference."
+            ]
+          }
+        ]
       }
     }
   }

@@ -4,10 +4,9 @@ import { getNextSlotIso } from './availability-cache';
 import { isOpenNow } from './hours';
 import { BUSINESS_TZ, localDateKey } from './time';
 
-export { CITIES, CATEGORIES } from './catalogue';
-
-export const SORTS = ['recommended', 'rating', 'price', 'soonest'] as const;
-export type Sort = (typeof SORTS)[number];
+import type { Sort } from './catalogue';
+export { CITIES, CATEGORIES, SORTS } from './catalogue';
+export type { Sort } from './catalogue';
 
 /** Relations the card query needs. Next slot is loaded separately, from a cache. */
 const cardInclude = (todayKey: string) => ({
