@@ -1,0 +1,27 @@
+name: Notification cron
+
+# Vercel Hobby only allows daily crons, so the 10-minute reminder run is triggered from here.
+# Set two repository secrets: SITE_URL (e.g. https://she.cy, no trailing slash) and CRON_SECRET
+# (the same value as the CRON_SECRET env var on Vercel). Without them the job exits quietly.
+# On Vercel Pro you can delete this file and set vercel.json back to "*/10 * * * *".
+on:
+  schedule:
+    - cron: '*/10 * * * *'
+  workflow_dispatch:
+
+jobs:
+  notifications:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Call /api/cron/notifications
+        env:
+          SITE_URL: ${{ secrets.SITE_URL }}
+          CRON_SECRET: ${{ secrets.CRON_SECRET }}
+        run: |
+          if [ -z "$SITE_URL" ] || [ -z "$CRON_SECRET" ]; then
+            echo "SITE_URL / CRON_SECRET secrets not set; skipping."
+            exit 0
+          fi
+          curl --fail --silent --show-error --max-time 60 \
+            -H "Authorization: Bearer $CRON_SECRET" \
+            "$SITE_URL/api/cron/notifications"
