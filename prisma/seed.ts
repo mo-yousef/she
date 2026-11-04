@@ -14,6 +14,7 @@ import { createManageToken } from '../lib/tokens';
 import { DEFAULT_SETTINGS } from '../lib/settings';
 import { zonedWallTimeToUtc, localDateKey, addDaysToKey } from '../lib/time';
 
+import { galleryFor } from '../lib/stock-photos';
 const db = new PrismaClient();
 
 // Placeholder gallery images (picsum, deterministic per seed).
@@ -456,7 +457,7 @@ async function main() {
         settings,
         photos: {
           create: [0, 1, 2, 3].map((i) => ({
-            url: img(`${slugify(b.name)}-${i}`),
+            url: galleryFor(b.category)[i]!,
             alt: `${b.name} photo ${i + 1}`,
             sortOrder: i,
           })),

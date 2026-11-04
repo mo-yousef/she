@@ -11,7 +11,6 @@
 import type { Prisma } from '@prisma/client';
 import { db } from './db';
 import { writeAudit } from './audit';
-import { checkBrand, type BrandCheck } from './brand';
 import { assertOwnsBusiness, ownerAuthCode, type OwnedBusiness, type OwnerAuthCode } from './owner-auth';
 import { PROFILE_TRANSLATION_LOCALES, parseProfile, type ProfileFieldErrors } from './profile-schema';
 
@@ -19,8 +18,6 @@ type Fail = {
   ok: false;
   code: OwnerAuthCode | 'VALIDATION' | 'NOT_FOUND' | 'UNKNOWN';
   errors?: ProfileFieldErrors;
-  /** Brand failures: the computed ratio and a passing suggestion per field. */
-  brand?: BrandCheck;
 };
 export type ProfileResult<T = object> = ({ ok: true; businessId: string; slug: string } & T) | Fail;
 const fail = (code: Fail['code'], extra: Omit<Fail, 'ok' | 'code'> = {}): Fail => ({ ok: false, code, ...extra });
@@ -99,28 +96,6 @@ async function writeTranslations(
     }
   }
   return changed;
-}
-
-// ---- brand colours ---------------------------------------------------------------------
-
-export async function saveBrandCore(userId: string | null | undefined, businessId: string, raw: unknown): Promise<ProfileResult<{ brandPrimary: string; brandAccent: string }>> {
-  return run(userId, businessId, async (o) => {
-    const obj = (raw && typeof raw === 'object' ? raw : {}) as Record<string, unknown>;
-    const check = checkBrand(String(obj.brandPrimary ?? ''), String(obj.brandAccent ?? ''));
-    if (!check.ok) {
-      const errors: ProfileFieldErrors = {};
-      if (check.brandPrimary.error) errors.brandPrimary = check.brandPrimary.error;
-      if (check.brandAccent.error) errors.brandAccent = check.brandAccent.error;
-      return fail('VALIDATION', { errors, brand: check });
-    }
-    const brandPrimary = check.brandPrimary.hex!;
-    const brandAccent = check.brandAccent.hex!;
-    await db.$transaction(async (tx) => {
-      await tx.business.update({ where: { id: o.business.id }, data: { brandPrimary, brandAccent } });
-      await writeAudit({ actorId: o.user.id, businessId: o.business.id, action: 'business.brand', meta: { fields: ['brandPrimary', 'brandAccent'] } }, tx);
-    });
-    return { ok: true, businessId: o.business.id, slug: o.business.slug, brandPrimary, brandAccent };
-  });
 }
 
 // ---- dashboard read --------------------------------------------------------------------

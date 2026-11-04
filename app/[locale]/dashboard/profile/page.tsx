@@ -5,7 +5,6 @@ import { loadPhotosForDashboard } from '@/lib/photos';
 import { cloudinaryConfig } from '@/lib/cloudinary';
 import { PhotosManager } from '@/components/profile/photos-manager';
 import { ProfileForm, type ProfileValues } from '@/components/profile/profile-form';
-import { BrandForm } from '@/components/profile/brand-form';
 import { FocusHeading } from '@/components/focus-heading';
 
 export const dynamic = 'force-dynamic';
@@ -53,14 +52,6 @@ export default async function ProfilePage({ params }: { params: Promise<{ locale
         </h2>
         <p className="text-[color:var(--label-secondary)]">{t('details.hint')}</p>
         <ProfileForm initial={initial} />
-      </section>
-
-      <section aria-labelledby="profile-brand" className="space-y-3">
-        <h2 id="profile-brand" className="text-[length:var(--text-title3)] font-semibold">
-          {t('brand.title')}
-        </h2>
-        <p className="text-[color:var(--label-secondary)]">{t('brand.hint')}</p>
-        <BrandForm businessName={p.name} initial={{ brandPrimary: p.brandPrimary, brandAccent: p.brandAccent }} />
       </section>
 
       <section id="photos" aria-labelledby="profile-photos" className="scroll-mt-6 space-y-3">

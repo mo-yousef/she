@@ -1,12 +1,11 @@
 /**
- * DB-backed tests for the owner profile + brand colours (task 6.7 part 1, req 5.1 / 10 / 8).
+ * DB-backed tests for the owner profile + brand colours (task 6.7 part 1, req 5.1 / 10 / 8); brand colours were removed (one platform palette).
  * Real Postgres; the lib cores behind the 'use server' wrappers are called directly with
  * explicit user ids. No browser. The photos describe block at the end covers task 6.7 part 2.
  */
 import { test, expect } from '@playwright/test';
 import { db } from '../lib/db';
-import { contrastRatio, mixColors } from '../lib/contrast';
-import { saveBrandCore, saveProfileCore } from '../lib/profile';
+import { saveProfileCore } from '../lib/profile';
 import {
   addPhotoCore,
   createUploadSignatureCore,
@@ -110,59 +109,18 @@ test.describe('profile details', () => {
     const before = await db.business.findUniqueOrThrow({ where: { id: fx.businessId } });
     expect(await saveProfileCore(otherOwnerId, fx.businessId, validProfile())).toMatchObject({ ok: false, code: 'FORBIDDEN' });
     expect(await saveProfileCore(null, fx.businessId, validProfile())).toMatchObject({ ok: false, code: 'UNAUTHENTICATED' });
-    expect(await saveBrandCore(otherOwnerId, fx.businessId, { brandPrimary: '#000000', brandAccent: '#000000' })).toMatchObject({ ok: false, code: 'FORBIDDEN' });
-    expect(await saveBrandCore(null, fx.businessId, { brandPrimary: '#000000', brandAccent: '#000000' })).toMatchObject({ ok: false, code: 'UNAUTHENTICATED' });
     expect(await db.business.findUniqueOrThrow({ where: { id: fx.businessId } })).toEqual(before);
-  });
-});
-
-test.describe('brand colours', () => {
-  test('rejects a low-contrast primary with the ratio and a passing suggestion', async () => {
-    const res = await saveBrandCore(ownerId, fx.businessId, { brandPrimary: '#d4af37', brandAccent: '#4a2c6d' });
-    expect(res.ok).toBe(false);
-    if (res.ok) return;
-    expect(res.code).toBe('VALIDATION');
-    expect(res.errors?.brandPrimary).toBe('brandContrastLow');
-    expect(res.brand?.brandPrimary.ratio).toBeCloseTo(2.1, 1);
-    expect(contrastRatio(res.brand!.brandPrimary.suggestion!, '#ffffff')).toBeGreaterThanOrEqual(4.5);
-    const b = await db.business.findUniqueOrThrow({ where: { id: fx.businessId } });
-    expect(b.brandPrimary).toBe('#4a2c6d'); // schema default, untouched
-  });
-
-  test('rejects an accent whose 35% blend is too light, with a suggestion', async () => {
-    const res = await saveBrandCore(ownerId, fx.businessId, { brandPrimary: '#6b4d92', brandAccent: '#ffff00' });
-    expect(res.ok).toBe(false);
-    if (res.ok) return;
-    expect(res.errors).toEqual({ brandAccent: 'brandAccentContrastLow' });
-    const s = res.brand!.brandAccent.suggestion!;
-    expect(contrastRatio(mixColors('#6b4d92', s, 0.35), '#ffffff')).toBeGreaterThanOrEqual(4.5);
-  });
-
-  test('rejects a malformed colour', async () => {
-    const res = await saveBrandCore(ownerId, fx.businessId, { brandPrimary: 'red', brandAccent: '#a98bd6' });
-    expect(res).toMatchObject({ ok: false, code: 'VALIDATION', errors: { brandPrimary: 'hexInvalid' } });
-  });
-
-  test('accepts good colours (normalised to lowercase #rrggbb) and audits field names only', async () => {
-    const res = await saveBrandCore(ownerId, fx.businessId, { brandPrimary: '#3A4A7A', brandAccent: '#8CA0D9' });
-    expect(res.ok).toBe(true);
-    const b = await db.business.findUniqueOrThrow({ where: { id: fx.businessId } });
-    expect([b.brandPrimary, b.brandAccent]).toEqual(['#3a4a7a', '#8ca0d9']);
-    const audit = await db.auditLog.findMany({ where: { businessId: fx.businessId, action: 'business.brand' } });
-    expect(audit).toHaveLength(1);
-    expect(audit[0]!.meta).toEqual({ fields: ['brandPrimary', 'brandAccent'] });
   });
 });
 
 test('audit rows hold ids and field names only (no names, taglines, translations or hex values)', async () => {
   await saveProfileCore(ownerId, fx.businessId, validProfile());
-  await saveBrandCore(ownerId, fx.businessId, { brandPrimary: '#3a4a7a', brandAccent: '#8ca0d9' });
-  const rows = await db.auditLog.findMany({ where: { businessId: fx.businessId, action: { in: ['business.profile', 'business.brand'] } } });
-  expect(rows.map((r) => r.action).sort()).toEqual(['business.brand', 'business.profile']);
+  const rows = await db.auditLog.findMany({ where: { businessId: fx.businessId, action: { in: ['business.profile'] } } });
+  expect(rows.map((r) => r.action).sort()).toEqual(['business.profile']);
   const profile = rows.find((r) => r.action === 'business.profile')!;
   expect((profile.meta as { fields: string[] }).fields).toEqual(expect.arrayContaining(['name', 'tagline', 'about', 'translations']));
   const dump = JSON.stringify(rows);
-  for (const secret of [SECRET_NAME, SECRET_TAGLINE, SECRET_ABOUT, SECRET_EL, '#3a4a7a', '#8ca0d9', '99123456', 'Ledra', 'example.com']) {
+  for (const secret of [SECRET_NAME, SECRET_TAGLINE, SECRET_ABOUT, SECRET_EL, '99123456', 'Ledra', 'example.com']) {
     expect(dump).not.toContain(secret);
   }
 });

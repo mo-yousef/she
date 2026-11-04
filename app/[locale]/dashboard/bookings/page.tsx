@@ -74,7 +74,7 @@ export default async function BookingsPage({
         <div
           role="group"
           aria-label={t('filters.statusLabel')}
-          className="flex flex-wrap gap-2"
+          className="chip-rail"
         >
           {BOOKING_FILTERS.map((s) => (
             <Link
@@ -91,9 +91,9 @@ export default async function BookingsPage({
 
         {/* Plain GET form: works without JS and produces a shareable URL. Changing a filter
             always returns to page 1 because `page` is not a field. */}
-        <form method="get" className="grid gap-3 sm:grid-cols-2 lg:grid-cols-6">
+        <form method="get" className="grid grid-cols-2 gap-3 lg:grid-cols-6">
           <input type="hidden" name="status" value={p.status} />
-          <div className="space-y-1 sm:col-span-2">
+          <div className="col-span-2 space-y-1">
             <label htmlFor="b-q" className="block text-[length:var(--text-subhead)] font-medium">
               {t('filters.search')}
             </label>
@@ -166,7 +166,7 @@ export default async function BookingsPage({
               ))}
             </select>
           </div>
-          <div className="flex flex-wrap items-center gap-2 sm:col-span-2 lg:col-span-6">
+          <div className="flex flex-wrap items-center gap-2 col-span-2 lg:col-span-6">
             <button type="submit" className={primaryBtn}>
               {t('filters.apply')}
             </button>

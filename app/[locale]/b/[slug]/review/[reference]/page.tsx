@@ -1,4 +1,3 @@
-import type { CSSProperties } from 'react';
 import type { Metadata } from 'next';
 import { notFound } from 'next/navigation';
 import { CheckCircle2, Hourglass, Clock } from 'lucide-react';
@@ -106,7 +105,6 @@ export default async function ReviewPage({
   return (
     <div
       className="brand-scope mx-auto max-w-2xl px-4 py-10"
-      style={{ '--b1': booking.business.brandPrimary, '--b2': booking.business.brandAccent } as CSSProperties}
     >
       {content}
       <div className="mt-8 border-t border-[color:var(--separator)] pt-6">

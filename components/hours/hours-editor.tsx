@@ -102,15 +102,15 @@ export function HoursEditor({ days, stepSeconds, listingLive }: { days: DayHours
           const err = shown(field);
           const dayName = biz(`weekday${WEEKDAY_KEY[r.weekday]}`);
           return (
-            <li key={r.weekday} className="flex flex-wrap items-center gap-x-4 gap-y-2 p-3">
-              <span className="w-28 font-medium">{dayName}</span>
+            <li key={r.weekday} className="grid grid-cols-2 items-end gap-x-3 gap-y-2 p-3 sm:flex sm:flex-wrap sm:items-center sm:gap-x-4">
+              <span className="font-medium sm:w-28">{dayName}</span>
               <label className="inline-flex min-h-11 items-center gap-2">
                 <input type="checkbox" className="h-5 w-5" checked={r.closed} onChange={(e) => patch(r.weekday, { closed: e.target.checked })} />
                 {t('weekly.closed')}
                 <span className="sr-only"> {dayName}</span>
               </label>
               {(['open', 'close'] as const).map((k) => (
-                <label key={k} className="inline-flex items-center gap-2">
+                <label key={k} className="inline-flex flex-col items-start gap-1 sm:flex-row sm:items-center sm:gap-2">
                   <span className="text-[color:var(--label-secondary)]">{t(k === 'open' ? 'weekly.opens' : 'weekly.closes')}</span>
                   <span className="sr-only">{dayName}</span>
                   <input
@@ -122,13 +122,13 @@ export function HoursEditor({ days, stepSeconds, listingLive }: { days: DayHours
                     value={r[k]}
                     aria-invalid={err ? true : undefined}
                     aria-describedby={err ? `${field}-err` : undefined}
-                    className={`${inputClass} !w-auto`}
+                    className={`${inputClass} !w-full sm:!w-auto`}
                     onChange={(e) => patch(r.weekday, { [k]: e.target.value })}
                     onBlur={() => setTouched((p) => ({ ...p, [field]: true }))}
                   />
                 </label>
               ))}
-              <button type="button" className={`${secondaryBtn} !px-3 text-[length:var(--text-subhead)]`} onClick={() => copyFrom(r.weekday)} aria-label={t('weekly.copyToAllNamed', { day: dayName })}>
+              <button type="button" className={`${secondaryBtn} col-span-2 !px-3 text-[length:var(--text-subhead)] sm:col-span-1`} onClick={() => copyFrom(r.weekday)} aria-label={t('weekly.copyToAllNamed', { day: dayName })}>
                 {t('weekly.copyToAll')}
               </button>
               {err ? (

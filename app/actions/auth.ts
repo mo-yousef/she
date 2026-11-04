@@ -39,7 +39,12 @@ export async function signInWithEmailAction(fd: FormData): Promise<void> {
   }
 
   try {
-    await signIn('nodemailer', { email: email.data, redirect: false, redirectTo: callback });
+    // With redirect:false Auth.js v5 returns the target URL; a failed send comes back as an
+    // error URL (…?error=…) instead of throwing, so it must be checked explicitly.
+    const result = await signIn('nodemailer', { email: email.data, redirect: false, redirectTo: callback });
+    if (typeof result === 'string' && /[?&]error=/.test(result)) {
+      redirect(accountUrl(locale, callback, { error: 'EmailSignin' }));
+    }
   } catch (e) {
     if (!(e instanceof AuthError)) throw e;
     redirect(accountUrl(locale, callback, { error: 'EmailSignin' }));

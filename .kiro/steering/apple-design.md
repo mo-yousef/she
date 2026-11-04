@@ -9,8 +9,7 @@ familiar — without looking like a template. Treat Apple's eight principles as 
 review checklist: purpose, agency, responsibility, familiarity, flexibility,
 simplicity, craft, delight.
 
-One signature element: each business page takes on its own brand colour; the platform
-chrome stays neutral.
+One palette for the whole product: businesses are differentiated by their photos, not by colour.
 
 ## Typography
 
@@ -32,9 +31,8 @@ Line length under ~75 characters.
   secondary label `rgba(60,60,67,0.6)`, separator `rgba(60,60,67,0.18)`.
 - Dark: background `#000000`, surface `#1c1c1e`, elevated `#2c2c2e`,
   label `#ffffff`, secondary label `rgba(235,235,245,0.6)`.
-- One platform tint for interactive elements: `#4a2c6d` light / `#a98bd6` dark.
-  Inside a business's pages and booking flow the tint becomes that business's `--b1`,
-  validated at save time for >= 4.5:1 contrast against white text.
+- One platform tint for interactive elements, shared by every business (no per-business colours):
+  `--tint` (deep blue `#1d36b6` light / periwinkle `#8186ff` dark) on the brand palette in `app/globals.css`.
 - Never colour alone for meaning. Support `prefers-contrast: more`.
 
 ## Layout and shape

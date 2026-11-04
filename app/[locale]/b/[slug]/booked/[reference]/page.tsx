@@ -1,4 +1,3 @@
-import type { CSSProperties } from 'react';
 import type { Metadata } from 'next';
 import { notFound } from 'next/navigation';
 import { CalendarPlus, CheckCircle2, Hourglass, MessageCircle, Phone } from 'lucide-react';
@@ -76,7 +75,6 @@ export default async function BookedPage({
   return (
     <div
       className="brand-scope mx-auto max-w-2xl px-4 py-10"
-      style={{ '--b1': booking.business.brandPrimary, '--b2': booking.business.brandAccent } as CSSProperties}
     >
       <div role="status" aria-live="polite" className="flex flex-col items-center text-center">
         {confirmed ? (

@@ -42,3 +42,13 @@ export function formatDate(iso: string, locale: string): string {
     timeZone: BUSINESS_TZ,
   }).format(new Date(iso));
 }
+
+/** Short weekday + day + month in the business timezone, e.g. "Fri 6 Nov". */
+export function formatDayShort(iso: string, locale: string): string {
+  return new Intl.DateTimeFormat(intlLocale(locale), {
+    weekday: 'short',
+    day: 'numeric',
+    month: 'short',
+    timeZone: BUSINESS_TZ,
+  }).format(new Date(iso));
+}

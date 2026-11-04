@@ -1,4 +1,3 @@
-import type { CSSProperties } from 'react';
 import type { Metadata } from 'next';
 import Image from 'next/image';
 import { notFound } from 'next/navigation';
@@ -219,23 +218,15 @@ export default async function BusinessPage({
   return (
     <div
       className="brand-scope mx-auto max-w-6xl px-4 pb-28 pt-6 lg:pb-10"
-      style={
-        {
-          '--b1': business.brandPrimary,
-          '--b2': business.brandAccent,
-        } as CSSProperties
-      }
     >
       <script type="application/ld+json" dangerouslySetInnerHTML={{ __html: jsonLd }} />
 
       {/* Branded header */}
       <header
         className="brand-on-dark relative overflow-hidden rounded-[var(--radius-card)] p-6 text-white sm:p-8"
-        // The gradient only ever darkens --b1 (never mixes in --b2), so white text keeps at
-        // least the contrast it has on --b1 itself across the whole header. (Mixing in a
-        // light accent dropped glow/bliss seed colours below 4.5:1 at the far corner.)
+        // One platform gradient for every business (dark enough for white text in both themes).
         style={{
-          background: `linear-gradient(135deg, var(--b1), color-mix(in srgb, var(--b1) 78%, black))`,
+          background: 'linear-gradient(135deg, var(--colors--neutral--800), var(--colors--secondary--300))',
         }}
       >
         <div className="absolute right-4 top-4">
@@ -287,7 +278,7 @@ export default async function BusinessPage({
         <Link
           href={bookHref}
           locale={locale}
-          className="mt-6 inline-flex min-h-11 items-center rounded-[var(--radius-button)] bg-white px-6 text-[length:var(--text-headline)] font-semibold text-[color:var(--b1)] shadow-sm transition-transform hover:scale-[1.02] motion-reduce:transition-none motion-reduce:hover:scale-100"
+          className="mt-6 inline-flex min-h-11 items-center rounded-[var(--radius-button)] bg-white px-6 text-[length:var(--text-headline)] font-semibold text-[color:var(--colors--neutral--800)] shadow-sm transition-transform hover:scale-[1.02] motion-reduce:transition-none motion-reduce:hover:scale-100"
         >
           {c('bookNow')}
         </Link>

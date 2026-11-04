@@ -1,4 +1,3 @@
-import type { CSSProperties } from 'react';
 import type { Metadata } from 'next';
 import { notFound } from 'next/navigation';
 import { getTranslations, setRequestLocale } from 'next-intl/server';
@@ -55,8 +54,6 @@ export default async function BookPage({
       slug: true,
       name: true,
       status: true,
-      brandPrimary: true,
-      brandAccent: true,
       settings: true,
       services: {
         where: { active: true },
@@ -157,7 +154,6 @@ export default async function BookPage({
   return (
     <div
       className="brand-scope mx-auto max-w-2xl px-4 pb-16 pt-6"
-      style={{ '--b1': business.brandPrimary, '--b2': business.brandAccent } as CSSProperties}
     >
       <BookingStepper
         locale={locale}

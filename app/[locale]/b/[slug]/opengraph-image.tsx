@@ -1,6 +1,4 @@
 import { ImageResponse } from 'next/og';
-import { ACCENT_WEIGHT, DEFAULT_BRAND_ACCENT, DEFAULT_BRAND_PRIMARY, checkBrand } from '@/lib/brand';
-import { mixColors } from '@/lib/contrast';
 import { db } from '@/lib/db';
 
 export const alt = 'she.cy business';
@@ -22,15 +20,12 @@ export default async function OgImage({
   const { slug } = await params;
   const b = await db.business.findUnique({
     where: { slug },
-    select: { name: true, city: true, status: true, brandPrimary: true, brandAccent: true },
+    select: { name: true, city: true, status: true },
   });
   const published = b?.status === 'PUBLISHED';
-  // Colours are interpolated into CSS: only validated colours (plain hex, white text readable,
-  // see lib/brand.ts) are used, else the platform defaults. The gradient ends on the same 35%
-  // accent blend the validator checks, so white text stays >= 4.5:1 across the whole image.
-  const brand = published ? checkBrand(b.brandPrimary, b.brandAccent) : null;
-  const c1 = brand?.ok ? brand.brandPrimary.hex! : DEFAULT_BRAND_PRIMARY;
-  const c2 = mixColors(c1, brand?.ok ? brand.brandAccent.hex! : DEFAULT_BRAND_ACCENT, ACCENT_WEIGHT);
+  // Every business shares the platform colours (no per-business branding).
+  const c1 = '#100a3e';
+  const c2 = '#1d36b6';
   return new ImageResponse(
     (
       <div
@@ -42,7 +37,7 @@ export default async function OgImage({
           justifyContent: 'space-between',
           padding: 72,
           color: '#fff',
-          background: `linear-gradient(135deg, ${c1}, ${c1} 55%, ${c2})`,
+          background: `linear-gradient(135deg, ${c1}, ${c1} 40%, ${c2})`,
         }}
       >
         <div style={{ fontSize: 36, fontWeight: 600, opacity: 0.9 }}>she.cy</div>

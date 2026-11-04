@@ -26,7 +26,12 @@
     "account": "Account",
     "forBusiness": "List your business",
     "signIn": "Sign in",
-    "language": "Language"
+    "language": "Language",
+    "search": "Search",
+    "dashboard": "Dashboard",
+    "signedInAs": "Account menu",
+    "tabs": "Main",
+    "menu": "Menu"
   },
   "home": {
     "heroTitle": "Find and book beauty appointments in Cyprus",
@@ -45,7 +50,18 @@
     "trustLocalBody": "Three languages, local studios, prices in euro.",
     "listCta": "Run a beauty business? List it on she.cy",
     "listCtaButton": "Get started",
-    "loadingResults": "Loading studios…"
+    "loadingResults": "Loading studios…",
+    "eyebrow": "Beauty bookings in Cyprus",
+    "categoryTileLabel": "Browse {category}",
+    "howTitle": "Book in three taps",
+    "how1Title": "Find your studio",
+    "how1Body": "Search by treatment, city or rating and compare real prices.",
+    "how2Title": "Pick a time",
+    "how2Body": "Choose your specialist and a slot that is genuinely free.",
+    "how3Title": "Show up and glow",
+    "how3Body": "Get a confirmation and reminders on email, WhatsApp or SMS.",
+    "ctaTitle": "Grow your studio with she.cy",
+    "ctaBody": "Get a booking page in three languages, a live calendar and automatic reminders."
   },
   "search": {
     "resultsCount": "{count, plural, =0 {No results} one {# result} other {# results}}",
@@ -558,7 +574,12 @@
       "hours": "Hours",
       "profile": "Profile",
       "reviews": "Reviews",
-      "settings": "Settings"
+      "settings": "Settings",
+      "groupDaily": "Daily",
+      "groupCatalogue": "Catalogue",
+      "groupBusiness": "Business",
+      "more": "More",
+      "close": "Close menu"
     },
     "status": {
       "DRAFT": "Draft",
@@ -575,8 +596,27 @@
       "suspendedTitle": "Your listing is suspended",
       "suspendedBody": "Your listing isn't visible to customers. Contact support to find out why.",
       "editDetails": "Edit listing details",
-      "today": "Bookings today",
-      "thisWeek": "Bookings in the next 7 days"
+      "today": "Today",
+      "thisWeek": "Next 7 days",
+      "needsConfirm": "Awaiting confirmation",
+      "rating": "Rating",
+      "noRating": "No reviews yet",
+      "reviewsCount": "{count, plural, one {# review} other {# reviews}}",
+      "revenueWeek": "Expected in 7 days",
+      "upcomingTitle": "Upcoming bookings",
+      "upcomingEmpty": "No upcoming bookings yet. Share your page to get your first one.",
+      "viewAll": "View all",
+      "withStaff": "with {name}",
+      "guestFallback": "Guest",
+      "quickTitle": "Quick actions",
+      "actionCalendar": "Add a booking",
+      "actionServices": "Edit services",
+      "actionHours": "Set opening hours",
+      "actionProfile": "Update profile",
+      "actionPage": "View public page",
+      "statusPENDING": "Pending",
+      "statusCONFIRMED": "Confirmed",
+      "bookingsCount": "{count, plural, one {# booking} other {# bookings}}"
     }
   },
   "calendar": {
@@ -1227,37 +1267,6 @@
       "el": "Ελληνικά",
       "ru": "Русский"
     },
-    "brand": {
-      "title": "Brand colours",
-      "hint": "Your main colour sits behind white text on your page, so it must be dark enough to read. We check this for you.",
-      "primary": "Main colour",
-      "primaryHint": "Used for your header, buttons and selected states.",
-      "accent": "Accent colour",
-      "accentHint": "Blended into the gradient on your search card and share image.",
-      "pickerLabel": "Pick {field}",
-      "preview": "Preview of your page header",
-      "previewButton": "Book now",
-      "readout": {
-        "pass": "{ratio}:1, passes",
-        "failPrimary": "{ratio}:1, too low, needs {min}:1 against white text",
-        "failAccent": "{ratio}:1 once blended into the gradient, too low, needs {min}:1",
-        "waiting": "Enter a valid main colour first."
-      },
-      "useSuggested": "Use suggested colour",
-      "reset": "Reset to default",
-      "save": "Save colours",
-      "saving": "Saving…",
-      "saved": "Colours saved.",
-      "error": {
-        "hexInvalid": "Enter a colour like #4a2c6d.",
-        "fix": "Fix the colours marked above, then save again.",
-        "FORBIDDEN": "You don't have access to this business.",
-        "UNAUTHENTICATED": "Sign in again to continue.",
-        "VALIDATION": "Some colours aren't valid. Check the readouts.",
-        "NOT_FOUND": "We couldn't find this business. Reload the page.",
-        "UNKNOWN": "Something went wrong. Please try again."
-      }
-    },
     "photos": {
       "title": "Photos",
       "hint": "Show your work. The first photo is your cover on search results and your page. You need at least one photo to go live.",
@@ -1807,5 +1816,18 @@
         ]
       }
     }
+  },
+  "footer": {
+    "tagline": "Book beauty, your way, across Cyprus.",
+    "discover": "Discover",
+    "allStudios": "All studios",
+    "saved": "Saved studios",
+    "forBusiness": "For businesses",
+    "listBusiness": "List your business",
+    "dashboard": "Owner dashboard",
+    "legal": "Legal",
+    "language": "Language",
+    "rights": "© {year} she.cy. All rights reserved.",
+    "madeIn": "Made in Cyprus"
   }
 }

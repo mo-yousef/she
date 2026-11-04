@@ -56,7 +56,7 @@ export function bookingToTemplateData(
       name: business.name,
       slug: business.slug,
       address: [business.address, business.city].filter(Boolean).join(', ') || null,
-      brandColour: business.brandPrimary ?? DEFAULT_BRAND,
+      brandColour: DEFAULT_BRAND,
     },
     serviceName: service.name,
     staffName: staff.name,

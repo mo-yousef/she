@@ -3,8 +3,8 @@
 /*
   Design tokens — Apple HIG language (see .kiro/steering/apple-design.md).
   Semantic colour tokens with true light/dark themes, Apple text scale in rem,
-  concentric radii and an 4/8/12/16/24/32/48 spacing scale. Per-business brand
-  colours are injected as --b1/--b2 on the business page root.
+  concentric radii and an 4/8/12/16/24/32/48 spacing scale. All businesses share
+  the platform palette (--b1/--b2 are aliases of the platform tint).
 */
 
 @theme {
@@ -69,44 +69,59 @@
     var(--font-inter), 'Segoe UI', Roboto, sans-serif;
 }
 
+/* Palette (brand): raw values, referenced by the semantic tokens below. */
+:root {
+  --colors--primary--100: #8186ff;
+  --colors--secondary--100: #e7e4ff;
+  --colors--secondary--200: #fff8f0;
+  --colors--secondary--300: #1d36b6;
+  --colors--neutral--800: #100a3e;
+  --colors--neutral--700: #403b65;
+  --colors--neutral--600: #87849e;
+  --colors--neutral--500: #9f9db2;
+  --colors--neutral--400: #b7b6c5;
+  --border-radius--br-pill: 300px;
+  --main-spacers--extra-large: 56px;
+}
+
 :root {
   color-scheme: light dark;
 
-  /* Light theme (Apple grouped backgrounds) */
-  --bg: #f2f2f7;
+  /* Light theme */
+  --bg: var(--colors--secondary--100);
   --surface: #ffffff;
   --surface-elevated: #ffffff;
-  --label: #000000;
-  --label-secondary: rgba(60, 60, 67, 0.75);
-  --separator: rgba(60, 60, 67, 0.18);
-  --control-border: rgba(60, 60, 67, 0.6);
+  --label: var(--colors--neutral--800);
+  --label-secondary: var(--colors--neutral--700);
+  --separator: rgba(64, 59, 101, 0.16);
+  --control-border: var(--colors--neutral--600);
   /* >= 3:1 for input/select boundaries */
-  --tint: #4a2c6d;
+  --tint: var(--colors--secondary--300);
   --tint-contrast: #ffffff;
   --success: #16705a;
   --danger: #b3261e;
 
-  /* Per-business brand colours default to the platform tint. */
+  /* Aliases kept for existing components: always the platform tint. */
   --b1: var(--tint);
-  --b2: #a98bd6;
+  --b2: var(--colors--primary--100);
   --b1-contrast: #ffffff;
 }
 
 @media (prefers-color-scheme: dark) {
   :root {
-    --bg: #000000;
-    --surface: #1c1c1e;
-    --surface-elevated: #2c2c2e;
-    --label: #ffffff;
-    --label-secondary: rgba(235, 235, 245, 0.6);
-    --separator: rgba(84, 84, 88, 0.6);
-    --control-border: rgba(235, 235, 245, 0.45);
-    --tint: #a98bd6;
-    --tint-contrast: #1c1c1e;
+    --bg: var(--colors--neutral--800);
+    --surface: #1a1352;
+    --surface-elevated: #241d63;
+    --label: var(--colors--secondary--200);
+    --label-secondary: var(--colors--neutral--400);
+    --separator: rgba(183, 182, 197, 0.25);
+    --control-border: var(--colors--neutral--500);
+    --tint: var(--colors--primary--100);
+    --tint-contrast: var(--colors--neutral--800);
     --success: #6fd3b0;
     --danger: #ff8a80;
     --b1: var(--tint);
-    --b2: #8e6fc0;
+    --b2: var(--colors--primary--100);
     --b1-contrast: var(--tint-contrast);
   }
 }
@@ -114,14 +129,14 @@
 /* Manual theme override via data-theme on <html>. */
 :root[data-theme='light'] {
   color-scheme: light;
-  --bg: #f2f2f7;
+  --bg: var(--colors--secondary--100);
   --surface: #ffffff;
   --surface-elevated: #ffffff;
-  --label: #000000;
-  --label-secondary: rgba(60, 60, 67, 0.75);
-  --separator: rgba(60, 60, 67, 0.18);
-  --control-border: rgba(60, 60, 67, 0.6);
-  --tint: #4a2c6d;
+  --label: var(--colors--neutral--800);
+  --label-secondary: var(--colors--neutral--700);
+  --separator: rgba(64, 59, 101, 0.16);
+  --control-border: var(--colors--neutral--600);
+  --tint: var(--colors--secondary--300);
   --tint-contrast: #ffffff;
   --success: #16705a;
   --danger: #b3261e;
@@ -129,15 +144,15 @@
 
 :root[data-theme='dark'] {
   color-scheme: dark;
-  --bg: #000000;
-  --surface: #1c1c1e;
-  --surface-elevated: #2c2c2e;
-  --label: #ffffff;
-  --label-secondary: rgba(235, 235, 245, 0.6);
-  --separator: rgba(84, 84, 88, 0.6);
-  --control-border: rgba(235, 235, 245, 0.45);
-  --tint: #a98bd6;
-  --tint-contrast: #1c1c1e;
+  --bg: var(--colors--neutral--800);
+  --surface: #1a1352;
+  --surface-elevated: #241d63;
+  --label: var(--colors--secondary--200);
+  --label-secondary: var(--colors--neutral--400);
+  --separator: rgba(183, 182, 197, 0.25);
+  --control-border: var(--colors--neutral--500);
+  --tint: var(--colors--primary--100);
+  --tint-contrast: var(--colors--neutral--800);
   --success: #6fd3b0;
   --danger: #ff8a80;
   --b1-contrast: var(--tint-contrast);
@@ -168,29 +183,13 @@ body {
 }
 
 /*
-  Business pages: --b1-text is the brand colour as used for TEXT, thin graphics and
-  focus rings on the page surface. Light theme: the brand colour itself. Dark theme:
-  lightened 50% toward white so seeded brand colours reach >= 6:1 on #1c1c1e (the
-  worst case, pure black, still reaches 4.3:1). Filled buttons keep --b1 + white.
-  Owner-chosen colours are validated at save time (lib/brand.ts): >= 4.5:1 against white, so
-  white --b1-contrast is always correct and --b1 reads as text on white surfaces.
+  Every business shares the platform palette (no per-business colours). --b1 / --b1-text /
+  --b1-contrast are kept as aliases of the platform tint so business, booking and review pages
+  need no special casing: light = deep blue on white, dark = periwinkle on deep navy.
 */
 .brand-scope {
-  /* Light: 12% toward black. A colour validated at exactly 4.5:1 on white is only ~4.0:1 on the
-     #f2f2f7 grouped background; this lifts it to ~5.0:1 (measured in the 6.11 audit). */
-  --b1-text: color-mix(in srgb, var(--b1) 88%, black);
-  /* Business colours are validated against white text, in light and dark. */
-  --b1-contrast: #ffffff;
-}
-
-@media (prefers-color-scheme: dark) {
-  :root:not([data-theme='light']) .brand-scope {
-    --b1-text: color-mix(in srgb, var(--b1) 50%, white);
-  }
-}
-
-:root[data-theme='dark'] .brand-scope {
-  --b1-text: color-mix(in srgb, var(--b1) 50%, white);
+  --b1-text: var(--tint);
+  --b1-contrast: var(--tint-contrast);
 }
 
 /* Programmatic page-heading focus (FocusHeading / StepHeading, tabindex=-1) is for screen
@@ -204,11 +203,6 @@ h3 {
 
 h1[tabindex='-1']:focus-visible {
   outline: none;
-}
-
-/* Business pages: focus rings take the business brand colour. */
-.brand-scope :focus-visible {
-  outline-color: var(--b1-text);
 }
 
 /* Keep focused elements clear of the sticky top bar and the mobile bottom bar. */
@@ -295,5 +289,168 @@ html {
 @media (prefers-color-scheme: dark) {
   :root:not([data-theme='light']) .map-tiles .leaflet-tile-pane {
     filter: invert(1) hue-rotate(180deg) brightness(0.95) contrast(0.9);
+  }
+}
+
+/* Form controls: consistent native-but-themed look across browsers and themes. */
+input[type='checkbox'],
+input[type='radio'],
+input[type='range'] {
+  accent-color: var(--b1, var(--tint));
+}
+
+select {
+  appearance: none;
+  -webkit-appearance: none;
+  padding-inline-end: 2.25rem;
+  background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='12' height='8' viewBox='0 0 12 8' fill='none' stroke='%2387849e' stroke-width='2' stroke-linecap='round' stroke-linejoin='round'%3E%3Cpath d='M1 1.5l5 5 5-5'/%3E%3C/svg%3E");
+  background-repeat: no-repeat;
+  background-position: right 0.875rem center;
+  background-size: 0.75rem;
+}
+
+[dir='rtl'] select {
+  background-position: left 0.875rem center;
+}
+
+input::placeholder,
+textarea::placeholder {
+  color: var(--label-secondary);
+  opacity: 0.75;
+}
+
+input:disabled,
+select:disabled,
+textarea:disabled,
+button:disabled {
+  cursor: not-allowed;
+  opacity: 0.55;
+}
+
+/* Motion: tap feedback shared by buttons, links and tabs (reduced motion is handled globally). */
+.press {
+  transition: transform 200ms cubic-bezier(0.2, 0.8, 0.2, 1);
+  -webkit-tap-highlight-color: transparent;
+}
+
+.press:active {
+  transform: scale(0.96);
+}
+
+/* App-like feel on touch devices: no rubber-band chaining, no tap flash, no double-tap zoom lag. */
+html {
+  overscroll-behavior-y: none;
+}
+
+a,
+button,
+[role='button'],
+select,
+summary {
+  -webkit-tap-highlight-color: transparent;
+  touch-action: manipulation;
+}
+
+/* Slow, subtle zoom for hero imagery. */
+@keyframes hero-drift {
+  from {
+    transform: scale(1.06);
+  }
+
+  to {
+    transform: scale(1);
+  }
+}
+
+.hero-drift {
+  animation: hero-drift 1.4s cubic-bezier(0.2, 0.8, 0.2, 1) both;
+}
+
+/* Horizontal snap rail (categories on mobile). */
+.snap-rail {
+  display: flex;
+  gap: 0.75rem;
+  overflow-x: auto;
+  scroll-snap-type: x mandatory;
+  scrollbar-width: none;
+  margin-inline: -1rem;
+  padding-inline: 1rem;
+  scroll-padding-inline: 1rem;
+}
+
+.snap-rail::-webkit-scrollbar {
+  display: none;
+}
+
+.snap-rail>* {
+  scroll-snap-align: start;
+  flex: none;
+}
+
+@media (min-width: 768px) {
+  .snap-rail {
+    display: grid;
+    grid-template-columns: repeat(6, minmax(0, 1fr));
+    overflow: visible;
+    margin-inline: 0;
+    padding-inline: 0;
+  }
+}
+
+/* Owner dashboard is an app shell: no marketing footer. */
+body:has([data-app-shell]) footer {
+  display: none;
+}
+
+/* Bottom sheets slide up; backdrops fade. */
+@keyframes sheet-up {
+  from {
+    transform: translateY(24px);
+    opacity: 0;
+  }
+
+  to {
+    transform: translateY(0);
+    opacity: 1;
+  }
+}
+
+dialog.sheet-up[open] {
+  animation: sheet-up 280ms cubic-bezier(0.2, 0.8, 0.2, 1);
+}
+
+@media (min-width: 640px) {
+  dialog.sheet-up {
+    margin-inline: auto;
+    margin-block: auto;
+    max-width: 32rem;
+    border-radius: var(--radius-sheet);
+  }
+}
+/* Filter chips: one swipeable row on mobile, wrapping on larger screens. */
+.chip-rail {
+  display: flex;
+  gap: 0.5rem;
+  overflow-x: auto;
+  margin-inline: -1rem;
+  padding-inline: 1rem;
+  padding-block: 2px;
+  scrollbar-width: none;
+}
+
+.chip-rail::-webkit-scrollbar {
+  display: none;
+}
+
+.chip-rail>* {
+  flex: none;
+}
+
+@media (min-width: 768px) {
+  .chip-rail {
+    flex-wrap: wrap;
+    overflow: visible;
+    margin-inline: 0;
+    padding-inline: 0;
   }
 }

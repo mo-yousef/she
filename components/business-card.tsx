@@ -28,7 +28,7 @@ export async function BusinessCard({
   const cities = await getTranslations('cities');
 
   return (
-    <article className="group relative overflow-hidden rounded-[var(--radius-card)] bg-[color:var(--surface)] shadow-sm transition-transform hover:-translate-y-0.5">
+    <article className="group press relative overflow-hidden rounded-[var(--radius-card)] bg-[color:var(--surface)] shadow-sm hover:-translate-y-0.5 hover:shadow-md">
       <div className="absolute right-3 top-3 z-10">
         <FavouriteButton businessId={card.id} initialFavourited={favourited} />
       </div>
@@ -41,7 +41,7 @@ export async function BusinessCard({
         <div
           className="relative aspect-[16/10] w-full"
           style={{
-            background: `linear-gradient(135deg, ${card.brandPrimary}, ${card.brandAccent})`,
+            background: 'linear-gradient(135deg, var(--colors--neutral--800), var(--colors--secondary--300))',
           }}
         >
           {card.coverUrl ? (

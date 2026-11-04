@@ -43,7 +43,7 @@ export interface EmailContent {
 }
 
 const SAFE_HEX = /^#[0-9a-f]{6}$/i;
-export const DEFAULT_BRAND = '#4a2c6d';
+export const DEFAULT_BRAND = '#1d36b6';
 export function safeBrandColour(hex: string): string {
   return SAFE_HEX.test(hex) ? hex : DEFAULT_BRAND;
 }

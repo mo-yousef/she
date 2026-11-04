@@ -16,7 +16,7 @@ import { changeBookingStatusCore } from '../lib/booking-status-change';
 import { addClosureCore, removeClosureCore, saveBusinessHoursCore } from '../lib/business-hours';
 import { createManualBookingCore } from '../lib/manual-booking';
 import { addPhotoCore, deletePhotoCore, movePhotoCore, updatePhotoAltCore } from '../lib/photos';
-import { saveBrandCore, saveProfileCore } from '../lib/profile';
+import { saveProfileCore } from '../lib/profile';
 import { reportReviewCore } from '../lib/review-manage';
 import { removeReviewReplyCore, replyToReviewCore } from '../lib/review-reply';
 import { createServiceCore, deleteServiceCore, setServiceActiveCore, updateServiceCore } from '../lib/services';
@@ -123,19 +123,16 @@ const photoBody = (businessId: string, name: string) => ({
   publicId: `she/${businessId}/${name}`, format: 'jpg', bytes: 123_456,
 });
 
-test('profile + brand: one row each; failures write nothing and change nothing', async () => {
+test('profile: one row; failures write nothing and change nothing', async () => {
   await expectNoAudit(async () => {
     expect(await saveProfileCore(ownerId, fx.businessId, profileInput({ name: '' }))).toMatchObject({ ok: false, code: 'VALIDATION' });
     expect(await saveProfileCore(otherOwnerId, fx.businessId, profileInput())).toMatchObject({ ok: false, code: 'FORBIDDEN' });
-    expect(await saveBrandCore(ownerId, fx.businessId, { brandPrimary: '#d4af37', brandAccent: '#4a2c6d' })).toMatchObject({ ok: false, code: 'VALIDATION' });
-    expect(await saveBrandCore(null, fx.businessId, { brandPrimary: '#1a2b3c', brandAccent: '#3c2b1a' })).toMatchObject({ ok: false, code: 'UNAUTHENTICATED' });
   });
   const before = await db.business.findUniqueOrThrow({ where: { id: fx.businessId } });
   expect(before.name).not.toBe(S_SALON);
 
   expect(await saveProfileCore(ownerId, fx.businessId, profileInput())).toMatchObject({ ok: true });
-  expect(await saveBrandCore(ownerId, fx.businessId, { brandPrimary: '#1a2b3c', brandAccent: '#3c2b1a' })).toMatchObject({ ok: true });
-  expect(await actionsOf()).toEqual(['business.profile', 'business.brand']);
+  expect(await actionsOf()).toEqual(['business.profile']);
   await expectCleanAudit();
 });
 

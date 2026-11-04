@@ -289,29 +289,6 @@ test.describe('B. owner edits show up publicly', () => {
     await expect(page.locator('aside').getByText(NEW_NAME)).toBeVisible();
   });
 
-  test('B2 brand colour: valid colour changes --b1; low contrast is refused', async ({ page }) => {
-    await gotoReady(page, '/en/dashboard/profile', (p) => p.getByRole('heading', { level: 1, name: en.profile.title }));
-    const primary = page.getByLabel(en.profile.brand.primary, { exact: true });
-    const before = (await db.business.findUniqueOrThrow({ where: { id: fx.businessId } })).brandPrimary;
-
-    // Low contrast (yellow on white): live readout, Save refused with the translated error.
-    await primary.fill('#ffff00');
-    await expect(page.getByText(/too low, needs/).first()).toBeVisible();
-    await page.getByRole('button', { name: en.profile.brand.save }).click();
-    await expect(page.getByRole('alert').filter({ hasText: en.profile.brand.error.fix })).toBeVisible();
-    expect((await db.business.findUniqueOrThrow({ where: { id: fx.businessId } })).brandPrimary).toBe(before);
-
-    // Valid colour.
-    await primary.fill('#1d4e89');
-    await expect(page.getByText(/passes/).first()).toBeVisible();
-    await page.getByRole('button', { name: en.profile.brand.save }).click();
-    await expect(page.getByRole('status').filter({ hasText: en.profile.brand.saved })).toBeVisible();
-
-    await page.goto(publicUrl());
-    const b1 = await page.locator('.brand-scope').first().evaluate((el) => getComputedStyle(el).getPropertyValue('--b1').trim());
-    expect(b1.toLowerCase()).toBe('#1d4e89');
-  });
-
   test('B3 services: edit, add, hide are reflected on the public page and the stepper', async ({ page }) => {
     await gotoReady(page, '/en/dashboard/services', (p) => p.getByRole('heading', { level: 1, name: en.services.title }));
     await page.getByRole('button', { name: en.services.row.editNamed.replace('{name}', 'E2E Manicure') }).click();
@@ -497,7 +474,7 @@ test.describe('B. owner edits show up publicly', () => {
     const rows = await db.auditLog.findMany({ where: { businessId: fx.businessId }, orderBy: { createdAt: 'asc' } });
     const actions = new Set(rows.map((r) => r.action));
     for (const a of [
-      'business.profile', 'business.brand', 'service.update', 'service.create', 'business.hours', 'closure.add',
+      'business.profile', 'service.update', 'service.create', 'business.hours', 'closure.add',
       'staff.create', 'staff.dayoff.add', 'business.settings', 'booking.status', 'business.unpublish',
     ]) {
       expect(actions, `audit action ${a}`).toContain(a);

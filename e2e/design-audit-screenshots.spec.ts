@@ -352,14 +352,6 @@ for (const scheme of ['light', 'dark'] as const) {
       await page.getByRole('dialog').waitFor();
       await capture(page, `${k}-confirm-sheet`, { full: false, aria: scheme === 'light' });
       await page.keyboard.press('Escape');
-      // Colour picker with a failing value.
-      await ready(page, '/en/dashboard/profile');
-      const primary = page.getByLabel(en.profile.brand.primary, { exact: false }).first();
-      await primary.fill('#ffe066');
-      await primary.blur();
-      await page.waitForTimeout(300);
-      await primary.scrollIntoViewIfNeeded();
-      await capture(page, `${k}-colour-fail`, { full: false });
       // Calendar: booking details + add booking sheet.
       await ready(page, '/en/dashboard/calendar');
       await page.getByRole('button', { name: en.calendar.actions.addBooking }).first().click();

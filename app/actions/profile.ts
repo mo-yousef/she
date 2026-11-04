@@ -6,7 +6,7 @@
  */
 import { auth } from '@/lib/auth';
 import { findOwnerBusinessId } from '@/lib/owner-auth';
-import { saveBrandCore, saveProfileCore, type ProfileResult } from '@/lib/profile';
+import { saveProfileCore, type ProfileResult } from '@/lib/profile';
 import { revalidateAfterOwnerEdit } from '@/lib/owner-effects';
 
 async function scope(): Promise<{ userId: string | null; businessId: string | null }> {
@@ -30,8 +30,3 @@ export async function saveProfile(raw: unknown) {
   return after(await saveProfileCore(userId, businessId, raw));
 }
 
-export async function saveBrand(raw: unknown) {
-  const { userId, businessId } = await scope();
-  if (!businessId) return denied(userId);
-  return after(await saveBrandCore(userId, businessId, raw));
-}
