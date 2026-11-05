@@ -36,7 +36,7 @@ export function FavouriteButton({
         if (!res.ok) {
           setFavourited(!optimistic); // revert
           if (res.error === 'UNAUTHENTICATED') {
-            router.push('/account', { locale });
+            router.push('/signin', { locale });
           } else {
             setFailed(true);
           }

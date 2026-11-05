@@ -17,10 +17,10 @@ import { messages as MSG, en } from './messages';
 
 type L = keyof typeof MSG;
 
-test.describe('sign-in page (real, no mail sent)', () => {
-  test('signed-out dashboard visit redirects to sign-in; invalid and valid email', async ({ page }) => {
+test.describe('sign-in page (email + password)', () => {
+  test('signed-out dashboard visit redirects to sign-in; invalid email and wrong credentials', async ({ page }) => {
     await page.goto('/en/dashboard');
-    await expect(page).toHaveURL(/\/en\/account\?callbackUrl=%2Fen%2Fdashboard/);
+    await expect(page).toHaveURL(/\/en\/signin\?callbackUrl=%2Fen%2Fdashboard/);
     await expect(page.getByRole('heading', { level: 1, name: en.account.signInTitle })).toBeVisible();
 
     const email = page.getByLabel(en.account.emailLabel);
@@ -28,17 +28,16 @@ test.describe('sign-in page (real, no mail sent)', () => {
     // The browser's own type=email check would block "not-an-email" before the server sees
     // it, so use something the browser accepts but the server rejects.
     await email.fill('a@b');
-    await page.getByRole('button', { name: en.account.emailSubmit }).click();
+    await page.getByLabel(en.account.passwordLabel).fill('whatever123');
+    await page.getByRole('button', { name: en.account.signInSubmit }).click();
     await expect(page.getByRole('alert').filter({ hasText: en.account.error.EmailInvalid })).toBeVisible();
 
+    // A well-formed but unknown account: Supabase rejects with invalid credentials.
     const address = `signin-${Math.random().toString(36).slice(2, 10)}@e2e.test`;
     await page.getByLabel(en.account.emailLabel).fill(address);
-    await page.getByRole('button', { name: en.account.emailSubmit }).click();
-    await expect(page).toHaveURL(/sent=1/);
-    await expect(page.getByRole('heading', { name: en.account.sentTitle })).toBeVisible();
-    // The dev magic link is printed to the server console only; no real mail is sent.
-    await db.verificationToken.deleteMany({ where: { identifier: address } });
-    await db.user.deleteMany({ where: { email: address } });
+    await page.getByLabel(en.account.passwordLabel).fill('wrong-Password-1');
+    await page.getByRole('button', { name: en.account.signInSubmit }).click();
+    await expect(page.getByRole('alert').filter({ hasText: en.account.error.InvalidCredentials })).toBeVisible();
   });
 });
 

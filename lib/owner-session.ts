@@ -28,7 +28,7 @@ export interface OwnerContext {
 export async function requireOwnerBusiness(locale: string, path: string): Promise<OwnerContext> {
   const session = await auth();
   if (!session?.user?.id) {
-    redirect(`/${locale}/account?callbackUrl=${encodeURIComponent(path)}`);
+    redirect(`/${locale}/signin?callbackUrl=${encodeURIComponent(path)}`);
   }
   const user = await db.user.findUnique({ where: { id: session.user.id }, select: { id: true, role: true } });
   if (!user || (user.role !== 'OWNER' && user.role !== 'ADMIN')) {

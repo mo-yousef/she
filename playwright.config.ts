@@ -55,8 +55,10 @@ export default defineConfig({
       DATABASE_URL: dbUrl,
       DIRECT_URL: dbUrl,
       MANAGE_TOKEN_SECRET: process.env.MANAGE_TOKEN_SECRET,
-      AUTH_SECRET: 'e2e-auth-secret-e2e-auth-secret-e2e-auth=',
-      AUTH_URL: `http://localhost:${PORT}`,
+      // Supabase Auth: the server client validates sessions against this project.
+      NEXT_PUBLIC_SUPABASE_URL: process.env.NEXT_PUBLIC_SUPABASE_URL ?? '',
+      NEXT_PUBLIC_SUPABASE_PUBLISHABLE_KEY: process.env.NEXT_PUBLIC_SUPABASE_PUBLISHABLE_KEY ?? '',
+      SUPABASE_SERVICE_ROLE_KEY: process.env.SUPABASE_SERVICE_ROLE_KEY ?? '',
       NEXT_PUBLIC_SITE_URL: `http://localhost:${PORT}`,
       TURNSTILE_SECRET_KEY: '',
       TURNSTILE_SITE_KEY: '',

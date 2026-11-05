@@ -36,7 +36,7 @@ export default async function ForBusinessPage({
           {t('cta')}
         </Link>
         <Link
-          href={{ pathname: '/account', query: { callbackUrl: `/${locale}/dashboard` } }}
+          href={{ pathname: '/signin', query: { callbackUrl: `/${locale}/dashboard` } }}
           locale={locale}
           className="inline-flex min-h-11 items-center text-[color:var(--tint)]"
         >

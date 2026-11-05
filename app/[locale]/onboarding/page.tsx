@@ -47,7 +47,7 @@ export default async function OnboardingPage({
   const requested = STEPS.find((s) => s === sp.step) ?? 'basics';
   const session = await auth();
   if (!session?.user?.id) {
-    redirect(`/${locale}/account?callbackUrl=${encodeURIComponent(`/${locale}/onboarding?step=${requested}`)}`);
+    redirect(`/${locale}/signin?callbackUrl=${encodeURIComponent(`/${locale}/onboarding?step=${requested}`)}`);
   }
   const user = await db.user.findUnique({ where: { id: session.user.id }, select: { role: true } });
   const t = await getTranslations('onboarding');

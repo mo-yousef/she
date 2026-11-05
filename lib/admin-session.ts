@@ -4,7 +4,7 @@ import { auth } from './auth';
 import { db } from './db';
 export async function requireAdmin(locale: string, path: string): Promise<{ userId: string }> {
   const session = await auth();
-  if (!session?.user?.id) redirect(`/${locale}/account?callbackUrl=${encodeURIComponent(path)}`);
+  if (!session?.user?.id) redirect(`/${locale}/signin?callbackUrl=${encodeURIComponent(path)}`);
   const user = await db.user.findUnique({ where: { id: session.user.id }, select: { id: true, role: true } });
   if (!user || user.role !== 'ADMIN') notFound();
   return { userId: user.id };

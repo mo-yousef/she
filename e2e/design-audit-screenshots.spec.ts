@@ -306,10 +306,11 @@ for (const scheme of ['light', 'dark'] as const) {
     const p1 = await out.newPage();
     for (const vp of [VIEWPORTS[0], VIEWPORTS[2]]) {
       await p1.setViewportSize({ width: vp.width, height: vp.height });
-      await ready(p1, '/en/account');
+      await ready(p1, '/en/signin');
       await capture(p1, `${scheme}-${vp.name}-account-signedout`, { aria: scheme === 'light' });
       await p1.getByLabel(en.account.emailLabel).fill('a@b');
-      await p1.getByRole('button', { name: en.account.emailSubmit }).click();
+      await p1.getByLabel(en.account.passwordLabel).fill('whatever123');
+      await p1.getByRole('button', { name: en.account.signInSubmit }).click();
       await p1.getByRole('alert').first().waitFor();
       await capture(p1, `${scheme}-${vp.name}-account-error`);
       await ready(p1, '/en/for-business');

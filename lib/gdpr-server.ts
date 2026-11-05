@@ -61,7 +61,7 @@ export async function loadExportRows(userId: string): Promise<ExportRows | null>
 }
 
 export type DeleteAccountResult =
-  | { ok: true; bookings: number; reviews: number; businessIds: string[] }
+  | { ok: true; bookings: number; reviews: number; businessIds: string[]; email: string }
   | { ok: false; code: 'NOT_FOUND' | 'EMAIL_MISMATCH' | 'OWNS_BUSINESS' };
 
 /**
@@ -114,6 +114,7 @@ export async function deleteAccountCore(userId: string, confirmEmail: string, no
       bookings: ids.length,
       reviews: reviews.count,
       businessIds: [...new Set(futureActive.map((r) => r.businessId))],
+      email: user.email!,
     };
   });
 }
