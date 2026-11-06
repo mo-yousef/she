@@ -8,6 +8,7 @@ import { BUSINESS_TZ, addDaysToKey, localDateKey, zonedWallTimeToUtc } from '@/l
 import { PublishChecklistView } from '@/components/publish-checklist-view';
 import { SubmitForReviewForm } from '@/components/onboarding-forms';
 import { submitForReviewAction } from '@/app/actions/onboarding';
+import { Card } from '@/components/ui/card';
 
 export const dynamic = 'force-dynamic';
 
@@ -28,8 +29,8 @@ export default async function DashboardOverview({ params }: { params: Promise<{ 
     const { items, canPublish } = publishChecklist(input!);
     return (
       <div className="space-y-4">
-        <h1 className="text-[length:var(--text-title1)] font-bold tracking-tight">{t('draftTitle')}</h1>
-        <p className="text-[color:var(--label-secondary)]">{t('draftBody')}</p>
+        <h1 className="text-2xl font-bold tracking-tight">{t('draftTitle')}</h1>
+        <p className="text-muted-foreground">{t('draftBody')}</p>
         <PublishChecklistView items={items} locale={locale} />
         <SubmitForReviewForm action={submitForReviewAction} locale={locale} disabled={!canPublish} />
       </div>
@@ -39,14 +40,14 @@ export default async function DashboardOverview({ params }: { params: Promise<{ 
   if (business.status === 'PENDING' || business.status === 'SUSPENDED') {
     return (
       <div className="space-y-3">
-        <h1 className="text-[length:var(--text-title1)] font-bold tracking-tight">
+        <h1 className="text-2xl font-bold tracking-tight">
           {business.status === 'PENDING' ? t('pendingTitle') : t('suspendedTitle')}
         </h1>
-        <p className="text-[color:var(--label-secondary)]">
+        <p className="text-muted-foreground">
           {business.status === 'PENDING' ? t('pendingBody') : t('suspendedBody')}
         </p>
         {business.status === 'PENDING' ? (
-          <Link href="/onboarding?step=basics" locale={locale} className="inline-flex min-h-11 items-center text-[color:var(--tint)]">
+          <Link href="/onboarding?step=basics" locale={locale} className="inline-flex min-h-11 items-center text-primary">
             {t('editDetails')}
           </Link>
         ) : null}
@@ -67,16 +68,16 @@ export default async function DashboardOverview({ params }: { params: Promise<{ 
 
   return (
     <div className="space-y-4">
-      <h1 className="text-[length:var(--text-title1)] font-bold tracking-tight">{t('title')}</h1>
+      <h1 className="text-2xl font-bold tracking-tight">{t('title')}</h1>
       <dl className="grid gap-4 sm:grid-cols-2">
-        <div className="rounded-[var(--radius-card)] bg-[color:var(--surface)] p-5 shadow-sm">
-          <dt className="text-[color:var(--label-secondary)]">{t('today')}</dt>
-          <dd className="text-[length:var(--text-large-title)] font-bold">{todayCount}</dd>
-        </div>
-        <div className="rounded-[var(--radius-card)] bg-[color:var(--surface)] p-5 shadow-sm">
-          <dt className="text-[color:var(--label-secondary)]">{t('thisWeek')}</dt>
-          <dd className="text-[length:var(--text-large-title)] font-bold">{weekCount}</dd>
-        </div>
+        <Card className="gap-2 p-5">
+          <dt className="text-sm text-muted-foreground">{t('today')}</dt>
+          <dd className="text-4xl font-bold">{todayCount}</dd>
+        </Card>
+        <Card className="gap-2 p-5">
+          <dt className="text-sm text-muted-foreground">{t('thisWeek')}</dt>
+          <dd className="text-4xl font-bold">{weekCount}</dd>
+        </Card>
       </dl>
     </div>
   );

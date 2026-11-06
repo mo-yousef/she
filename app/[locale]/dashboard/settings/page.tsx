@@ -12,6 +12,7 @@ import { BusinessStatusBadge } from '@/components/business-status-badge';
 import { PublishChecklistView } from '@/components/publish-checklist-view';
 import { SubmitForReviewForm } from '@/components/onboarding-forms';
 import { FocusHeading } from '@/components/focus-heading';
+import { Card, CardContent } from '@/components/ui/card';
 
 export const dynamic = 'force-dynamic';
 
@@ -34,32 +35,36 @@ export default async function SettingsPage({ params }: { params: Promise<{ local
 
   return (
     <div className="space-y-8">
-      <FocusHeading className="text-[length:var(--text-title1)] font-bold tracking-tight">{t('title')}</FocusHeading>
+      <FocusHeading className="text-2xl font-bold tracking-tight">{t('title')}</FocusHeading>
 
       <section aria-labelledby="st-rules" className="space-y-3">
-        <h2 id="st-rules" className="text-[length:var(--text-title3)] font-semibold">
+        <h2 id="st-rules" className="text-lg font-semibold">
           {t('rules.title')}
         </h2>
-        <p className="text-[color:var(--label-secondary)]">{t('rules.intro')}</p>
+        <p className="text-muted-foreground">{t('rules.intro')}</p>
         <BookingRulesForm initial={settings} />
       </section>
 
       <section aria-labelledby="st-status" className="space-y-3">
-        <h2 id="st-status" className="text-[length:var(--text-title3)] font-semibold">
+        <h2 id="st-status" className="text-lg font-semibold">
           {t('status.title')}
         </h2>
-        <p className="flex items-center gap-2">
-          <span className="text-[color:var(--label-secondary)]">{t('status.current')}</span>
-          <BusinessStatusBadge status={business.status} />
-        </p>
-        <p className="text-[color:var(--label-secondary)]">{t(`status.body.${business.status}`)}</p>
-        {checklist ? (
-          <>
-            <PublishChecklistView items={checklist.items} locale={locale} />
-            <SubmitForReviewForm action={submitForReviewAction} locale={locale} disabled={!checklist.canPublish} />
-          </>
-        ) : null}
-        {live ? <UnpublishButton upcoming={upcoming} pending={business.status === 'PENDING'} /> : null}
+        <Card>
+          <CardContent className="space-y-3">
+            <p className="flex items-center gap-2">
+              <span className="text-muted-foreground">{t('status.current')}</span>
+              <BusinessStatusBadge status={business.status} />
+            </p>
+            <p className="text-muted-foreground">{t(`status.body.${business.status}`)}</p>
+            {checklist ? (
+              <>
+                <PublishChecklistView items={checklist.items} locale={locale} />
+                <SubmitForReviewForm action={submitForReviewAction} locale={locale} disabled={!checklist.canPublish} />
+              </>
+            ) : null}
+            {live ? <UnpublishButton upcoming={upcoming} pending={business.status === 'PENDING'} /> : null}
+          </CardContent>
+        </Card>
       </section>
     </div>
   );

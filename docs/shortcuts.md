@@ -301,6 +301,21 @@ When a shortcut is resolved, move it to the "Resolved" section with a date.
 - Business search is `contains` (ILIKE) on name/slug and user search on email: no trigram index yet.
 - Report reasons are read from `review.flag` audit rows with one JSON-path OR query per page (max 20 ids).
 - No admin UI to change OWNER/STAFF/CUSTOMER roles; no impersonation. Admin actions have no per-action rate limit.
+## FEAT-002 — Dashboard shadcn restyle (shell / overview / reviews / bookings / settings)
+- **Sidebar falls back to Card + the existing restyled `<nav>`, not shadcn `<Sidebar>`.** shadcn's
+  Sidebar ships a client `SidebarProvider` + context + its own mobile sheet, which would fight the
+  current RSC server-layout, the next-intl `Link`/`usePathname` active-state, and the existing
+  desktop-sidebar / mobile-grid split in `components/dashboard-nav.tsx`. The shell now wraps the
+  business heading + status badge + view-public link + `DashboardNav` in a `Card`, and the nav keeps
+  its two responsive lists restyled with shadcn utilities (`bg-primary`/`text-primary-foreground`
+  active, `hover:bg-accent`). Revisit if a collapsible sidebar is wanted; it needs a client provider
+  boundary around the layout.
+- **`--color-success` / `--color-tint` / `--color-tint-contrast` added to the `@theme inline` map in
+  `app/globals.css`** so `text-success` / `bg-primary`-style utilities resolve for the restyled
+  dashboard while the underlying HIG tokens stay defined for untouched public/admin/account surfaces.
+- Native `<select>` on the bookings filter form is kept (works without JS, shareable URL) and styled
+  with a local `selectClass` that mirrors the shadcn `Input` look, rather than the Radix `Select`.
+
 ## Task 7.3 — Legal pages
 - **The legal text (terms, privacy, cancellation in en/el/ru) is a template and must be reviewed by a lawyer before launch.** Placeholders to fill: `[Company name]`, `[Registered address]` (and el/ru equivalents), `support@she.cy`, `privacy@she.cy`. Bump `CONSENT_VERSION` in `lib/gdpr.ts` and the `updated` dates in `messages/*.json` when the text changes.
 - Resolved: the 4.2 "terms/cancellation consent has no link" and the 7.2 "/legal/privacy 404s" shortcuts.

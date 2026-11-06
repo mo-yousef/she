@@ -8,6 +8,8 @@ import { BUSINESS_TZ } from '@/lib/time';
 import { OwnerReplyForm } from '@/components/reviews/owner-reply-form';
 import { ReportReviewButton } from '@/components/reviews/report-review-button';
 import { FocusHeading } from '@/components/focus-heading';
+import { Card } from '@/components/ui/card';
+import { buttonVariants } from '@/components/ui/button';
 
 export const dynamic = 'force-dynamic';
 
@@ -32,39 +34,40 @@ export default async function ReviewsPage({
   const data = await loadReviewsForDashboard(business.id, p);
   const dateFmt = new Intl.DateTimeFormat(locale, { dateStyle: 'medium', timeZone: BUSINESS_TZ });
   const num1 = new Intl.NumberFormat(locale, { minimumFractionDigits: 1, maximumFractionDigits: 1 });
-  const link = 'inline-flex min-h-11 items-center rounded-[var(--radius-button)] px-4 font-medium';
 
   return (
     <div className="space-y-6">
-      <FocusHeading className="text-[length:var(--text-title1)] font-bold tracking-tight">{t('title')}</FocusHeading>
+      <FocusHeading className="text-2xl font-bold tracking-tight">{t('title')}</FocusHeading>
 
-      <section aria-labelledby="rv-summary" className="rounded-[var(--radius-card)] bg-[color:var(--surface)] p-4">
-        <h2 id="rv-summary" className="sr-only">
-          {t('summary.title')}
-        </h2>
-        {data.count === 0 ? (
-          <p className="text-[color:var(--label-secondary)]">{t('summary.none')}</p>
-        ) : (
-          <div className="flex flex-col gap-4 sm:flex-row sm:items-center sm:gap-8">
-            <p className="flex items-center gap-2 text-[length:var(--text-large-title)] font-bold">
-              <Star className="h-7 w-7 fill-current text-[color:var(--tint)]" aria-hidden />
-              <span aria-label={t('summary.rated', { rating: num1.format(data.average) })}>{num1.format(data.average)}</span>
-              <span className="text-[length:var(--text-subhead)] font-normal text-[color:var(--label-secondary)]">{t('summary.count', { count: data.count })}</span>
-            </p>
-            <ul className="flex-1 space-y-1" aria-label={t('summary.distribution')}>
-              {data.distribution.map((row) => (
-                <li key={row.stars} className="flex items-center gap-2 text-[length:var(--text-footnote)]">
-                  <span className="w-12 tabular-nums">{t('summary.stars', { stars: row.stars })}</span>
-                  <span className="h-2 flex-1 overflow-hidden rounded-full bg-[color:var(--separator)]" aria-hidden>
-                    <span className="block h-full bg-[color:var(--tint)]" style={{ width: `${row.percent}%` }} />
-                  </span>
-                  <span className="w-8 text-end tabular-nums">{row.count}</span>
-                </li>
-              ))}
-            </ul>
-          </div>
-        )}
-      </section>
+      <Card className="p-4">
+        <section aria-labelledby="rv-summary">
+          <h2 id="rv-summary" className="sr-only">
+            {t('summary.title')}
+          </h2>
+          {data.count === 0 ? (
+            <p className="text-muted-foreground">{t('summary.none')}</p>
+          ) : (
+            <div className="flex flex-col gap-4 sm:flex-row sm:items-center sm:gap-8">
+              <p className="flex items-center gap-2 text-4xl font-bold">
+                <Star className="h-7 w-7 fill-current text-primary" aria-hidden />
+                <span aria-label={t('summary.rated', { rating: num1.format(data.average) })}>{num1.format(data.average)}</span>
+                <span className="text-sm font-normal text-muted-foreground">{t('summary.count', { count: data.count })}</span>
+              </p>
+              <ul className="flex-1 space-y-1" aria-label={t('summary.distribution')}>
+                {data.distribution.map((row) => (
+                  <li key={row.stars} className="flex items-center gap-2 text-xs">
+                    <span className="w-12 tabular-nums">{t('summary.stars', { stars: row.stars })}</span>
+                    <span className="h-2 flex-1 overflow-hidden rounded-full bg-muted" aria-hidden>
+                      <span className="block h-full bg-primary" style={{ width: `${row.percent}%` }} />
+                    </span>
+                    <span className="w-8 text-end tabular-nums">{row.count}</span>
+                  </li>
+                ))}
+              </ul>
+            </div>
+          )}
+        </section>
+      </Card>
 
       <nav aria-label={t('filters.label')} className="flex flex-wrap gap-2">
         {REVIEW_FILTERS.map((f) => (
@@ -73,7 +76,7 @@ export default async function ReviewsPage({
             href={reviewsHref({ filter: f })}
             locale={locale}
             aria-current={p.filter === f ? 'page' : undefined}
-            className={`${link} ${p.filter === f ? 'bg-[color:var(--tint)] text-[color:var(--tint-contrast)]' : 'border border-[color:var(--control-border)]'}`}
+            className={buttonVariants({ variant: p.filter === f ? 'default' : 'outline', size: 'lg' })}
           >
             {t(`filters.${f}`)}
           </Link>
@@ -81,61 +84,63 @@ export default async function ReviewsPage({
       </nav>
 
       {data.reviews.length === 0 ? (
-        <div className="rounded-[var(--radius-card)] bg-[color:var(--surface)] p-5">
+        <Card className="gap-1 p-5">
           <p className="font-semibold">{t(data.totalAll === 0 ? 'empty.noneTitle' : 'empty.filteredTitle')}</p>
-          <p className="mt-1 text-[color:var(--label-secondary)]">{t(data.totalAll === 0 ? 'empty.noneBody' : 'empty.filteredBody')}</p>
+          <p className="text-muted-foreground">{t(data.totalAll === 0 ? 'empty.noneBody' : 'empty.filteredBody')}</p>
           {data.totalAll > 0 ? (
-            <Link href={reviewsHref({})} locale={locale} className={`${link} mt-2 border border-[color:var(--control-border)]`}>
+            <Link href={reviewsHref({})} locale={locale} className={`${buttonVariants({ variant: 'outline', size: 'lg' })} mt-2 w-fit`}>
               {t('empty.showAll')}
             </Link>
           ) : null}
-        </div>
+        </Card>
       ) : (
         <ul className="space-y-4">
           {data.reviews.map((r) => (
             <li key={r.id}>
-            <article aria-label={t('review.groupLabel', { author: r.authorName, rating: r.rating })} className="space-y-3 rounded-[var(--radius-card)] bg-[color:var(--surface)] p-4">
-              <div className="flex flex-wrap items-center gap-x-3 gap-y-1">
-                <span className="inline-flex items-center gap-1 font-semibold" aria-label={t('review.rated', { rating: r.rating })}>
-                  <Star className="h-4 w-4 fill-current text-[color:var(--tint)]" aria-hidden />
-                  {r.rating} / 5
-                </span>
-                <span className="font-medium">{r.authorName}</span>
-                <time dateTime={r.createdAt.toISOString()} className="text-[color:var(--label-secondary)]">
-                  {dateFmt.format(r.createdAt)}
-                </time>
-                {r.verified ? (
-                  <span className="inline-flex items-center gap-1 text-[length:var(--text-footnote)] font-medium">
-                    <ShieldCheck className="h-4 w-4" aria-hidden />
-                    {t('review.verified')}
-                  </span>
-                ) : null}
-                {r.status === 'FLAGGED' ? (
-                  <span className="inline-flex items-center gap-1 text-[length:var(--text-footnote)] font-medium">
-                    <Flag className="h-4 w-4" aria-hidden />
-                    {t('review.reported')}
-                  </span>
-                ) : null}
-                {r.status === 'HIDDEN' ? (
-                  <span className="inline-flex items-center gap-1 text-[length:var(--text-footnote)] font-medium">
-                    <EyeOff className="h-4 w-4" aria-hidden />
-                    {t('review.hidden')}
-                  </span>
-                ) : null}
-              </div>
-              {r.body ? <p className="whitespace-pre-line break-words">{r.body}</p> : <p className="text-[color:var(--label-secondary)]">{t('review.noText')}</p>}
-              {r.status === 'HIDDEN' ? (
-                <>
-                  <p className="text-[color:var(--label-secondary)]">{t('review.hiddenBody')}</p>
-                  {r.ownerReply ? <p className="whitespace-pre-line break-words border-s-2 border-[color:var(--separator)] ps-3">{r.ownerReply}</p> : null}
-                </>
-              ) : (
-                <>
-                  <OwnerReplyForm reviewId={r.id} initialReply={r.ownerReply} />
-                  {r.status === 'VISIBLE' ? <ReportReviewButton reviewId={r.id} /> : <p className="text-[length:var(--text-footnote)] text-[color:var(--label-secondary)]">{t('review.reportedBody')}</p>}
-                </>
-              )}
-            </article>
+              <Card className="gap-3 p-4">
+                <article aria-label={t('review.groupLabel', { author: r.authorName, rating: r.rating })} className="space-y-3">
+                  <div className="flex flex-wrap items-center gap-x-3 gap-y-1">
+                    <span className="inline-flex items-center gap-1 font-semibold" aria-label={t('review.rated', { rating: r.rating })}>
+                      <Star className="h-4 w-4 fill-current text-primary" aria-hidden />
+                      {r.rating} / 5
+                    </span>
+                    <span className="font-medium">{r.authorName}</span>
+                    <time dateTime={r.createdAt.toISOString()} className="text-muted-foreground">
+                      {dateFmt.format(r.createdAt)}
+                    </time>
+                    {r.verified ? (
+                      <span className="inline-flex items-center gap-1 text-xs font-medium">
+                        <ShieldCheck className="h-4 w-4" aria-hidden />
+                        {t('review.verified')}
+                      </span>
+                    ) : null}
+                    {r.status === 'FLAGGED' ? (
+                      <span className="inline-flex items-center gap-1 text-xs font-medium">
+                        <Flag className="h-4 w-4" aria-hidden />
+                        {t('review.reported')}
+                      </span>
+                    ) : null}
+                    {r.status === 'HIDDEN' ? (
+                      <span className="inline-flex items-center gap-1 text-xs font-medium">
+                        <EyeOff className="h-4 w-4" aria-hidden />
+                        {t('review.hidden')}
+                      </span>
+                    ) : null}
+                  </div>
+                  {r.body ? <p className="whitespace-pre-line break-words">{r.body}</p> : <p className="text-muted-foreground">{t('review.noText')}</p>}
+                  {r.status === 'HIDDEN' ? (
+                    <>
+                      <p className="text-muted-foreground">{t('review.hiddenBody')}</p>
+                      {r.ownerReply ? <p className="whitespace-pre-line break-words border-s-2 border-border ps-3">{r.ownerReply}</p> : null}
+                    </>
+                  ) : (
+                    <>
+                      <OwnerReplyForm reviewId={r.id} initialReply={r.ownerReply} />
+                      {r.status === 'VISIBLE' ? <ReportReviewButton reviewId={r.id} /> : <p className="text-xs text-muted-foreground">{t('review.reportedBody')}</p>}
+                    </>
+                  )}
+                </article>
+              </Card>
             </li>
           ))}
         </ul>
@@ -144,7 +149,7 @@ export default async function ReviewsPage({
       {data.pageCount > 1 ? (
         <nav aria-label={t('pagination.label')} className="flex items-center justify-between gap-3">
           {data.page > 1 ? (
-            <Link href={reviewsHref({ filter: p.filter, page: data.page - 1 })} locale={locale} rel="prev" className={`${link} border border-[color:var(--control-border)]`}>
+            <Link href={reviewsHref({ filter: p.filter, page: data.page - 1 })} locale={locale} rel="prev" className={buttonVariants({ variant: 'outline', size: 'lg' })}>
               {t('pagination.previous')}
             </Link>
           ) : (
@@ -152,7 +157,7 @@ export default async function ReviewsPage({
           )}
           <span aria-current="page">{t('pagination.page', { page: data.page, count: data.pageCount })}</span>
           {data.page < data.pageCount ? (
-            <Link href={reviewsHref({ filter: p.filter, page: data.page + 1 })} locale={locale} rel="next" className={`${link} border border-[color:var(--control-border)]`}>
+            <Link href={reviewsHref({ filter: p.filter, page: data.page + 1 })} locale={locale} rel="next" className={buttonVariants({ variant: 'outline', size: 'lg' })}>
               {t('pagination.next')}
             </Link>
           ) : (

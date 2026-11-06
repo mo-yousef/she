@@ -438,6 +438,11 @@ html {
   --color-accent: var(--accent);
   --color-accent-foreground: var(--accent-foreground);
   --color-destructive: var(--destructive);
+  /* HIG semantic status colours surfaced as Tailwind utilities (text-success / bg-success,
+     text-tint) for the shadcn-styled dashboard; values still resolve via data-theme. */
+  --color-success: var(--success);
+  --color-tint: var(--tint);
+  --color-tint-contrast: var(--tint-contrast);
   --color-border: var(--border);
   --color-input: var(--input);
   --color-ring: var(--ring);

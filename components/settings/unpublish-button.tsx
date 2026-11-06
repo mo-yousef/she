@@ -5,7 +5,7 @@ import { useTranslations } from 'next-intl';
 import { useRouter } from 'next/navigation';
 import { unpublishListing } from '@/app/actions/settings';
 import { ConfirmSheet } from '@/components/manage/confirm-sheet';
-import { dangerBtn } from '@/components/calendar/fields';
+import { Button } from '@/components/ui/button';
 
 export function UnpublishButton({ upcoming, pending }: { upcoming: number; pending: boolean }) {
   const t = useTranslations('settings.status.unpublish');
@@ -32,10 +32,10 @@ export function UnpublishButton({ upcoming, pending }: { upcoming: number; pendi
 
   return (
     <div className="space-y-2">
-      <button type="button" className={dangerBtn} onClick={() => { setError(''); setOpen(true); }}>
+      <Button type="button" variant="destructive" size="lg" className="min-h-11" onClick={() => { setError(''); setOpen(true); }}>
         {t('button')}
-      </button>
-      <p role="alert" aria-live="assertive" className="font-medium text-[color:var(--danger)]">
+      </Button>
+      <p role="alert" aria-live="assertive" className="font-medium text-destructive">
         {open ? '' : error}
       </p>
       <ConfirmSheet open={open} title={t('title')} confirmLabel={busy ? t('working') : t('confirm')} keepLabel={t('keep')} busy={busy} onConfirm={confirm} onClose={() => !busy && setOpen(false)}>
@@ -46,7 +46,7 @@ export function UnpublishButton({ upcoming, pending }: { upcoming: number; pendi
           <li>{t('consequence.existing', { count: upcoming })}</li>
         </ul>
         <p className="mt-2">{t('republish')}</p>
-        <p role="alert" aria-live="assertive" className="mt-2 font-medium text-[color:var(--danger)]">
+        <p role="alert" aria-live="assertive" className="mt-2 font-medium text-destructive">
           {open ? error : ''}
         </p>
       </ConfirmSheet>
