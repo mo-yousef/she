@@ -5,19 +5,49 @@
  * Controlled fields (a failed submit never clears input). The server core expands the
  * series and rejects a block that would cover an existing booking.
  */
-import { useRef, useState } from 'react';
+import { useRef, useState, type ReactNode } from 'react';
 import { useTranslations } from 'next-intl';
 import { createBlock } from '@/app/actions/calendar';
 import { addDaysToKey } from '@/lib/time';
-import {
-  Field,
-  fieldAria,
-  failureKey,
-  inputClass,
-  primaryBtn,
-  secondaryBtn,
-  type ActionFailure,
-} from './fields';
+import { Button } from '@/components/ui/button';
+import { Input } from '@/components/ui/input';
+import { Label } from '@/components/ui/label';
+import { fieldAria, failureKey, type ActionFailure } from './fields';
+
+const selectClass =
+  'min-h-11 w-full rounded-md border border-input bg-transparent px-3 py-2 text-sm shadow-xs outline-none focus-visible:border-ring focus-visible:ring-[3px] focus-visible:ring-ring/50 aria-invalid:border-destructive dark:bg-input/30';
+
+/** Label + control + hint + inline error. The control must use `fieldAria(id)` for aria wiring. */
+function Field({
+  id,
+  label,
+  hint,
+  error,
+  children,
+}: {
+  id: string;
+  label: string;
+  hint?: string;
+  error?: string;
+  children: ReactNode;
+}) {
+  return (
+    <div className="space-y-1.5">
+      <Label htmlFor={id}>{label}</Label>
+      {children}
+      {hint ? (
+        <p id={`${id}-hint`} className="text-xs text-muted-foreground">
+          {hint}
+        </p>
+      ) : null}
+      {error ? (
+        <p id={`${id}-err`} className="text-xs text-destructive">
+          {error}
+        </p>
+      ) : null}
+    </div>
+  );
+}
 
 const toMin = (hhmm: string) => {
   const m = /^(\d{2}):(\d{2})$/.exec(hhmm);
@@ -135,10 +165,7 @@ export function BlockForm({
   return (
     <form ref={formRef} onSubmit={submit} noValidate className="space-y-4">
       {formError ? (
-        <p
-          role="alert"
-          className="rounded-[var(--radius-input)] border border-[color:var(--danger)] p-3 text-[color:var(--danger)]"
-        >
+        <p role="alert" className="rounded-md border border-destructive p-3 text-destructive">
           {formError}
         </p>
       ) : null}
@@ -146,7 +173,7 @@ export function BlockForm({
       <Field id="bf-staffId" label={t('blockForm.staff')} error={msg(shown('staffId'))}>
         <select
           {...fieldAria('bf-staffId', undefined, msg(shown('staffId')))}
-          className={inputClass}
+          className={selectClass}
           value={v.staffId}
           onChange={(e) => set('staffId', e.target.value)}
         >
@@ -160,10 +187,10 @@ export function BlockForm({
       </Field>
 
       <Field id="bf-date" label={t('blockForm.date')} error={msg(shown('date'))}>
-        <input
+        <Input
           {...fieldAria('bf-date', undefined, msg(shown('date')))}
           type="date"
-          className={inputClass}
+          className="min-h-11"
           value={v.date}
           onChange={(e) => set('date', e.target.value)}
           onBlur={() => blur('date')}
@@ -172,22 +199,22 @@ export function BlockForm({
 
       <div className="grid grid-cols-2 gap-3">
         <Field id="bf-start" label={t('blockForm.start')} error={msg(shown('start'))}>
-          <input
+          <Input
             {...fieldAria('bf-start', undefined, msg(shown('start')))}
             type="time"
             step={slotIntervalMin * 60}
-            className={inputClass}
+            className="min-h-11"
             value={v.start}
             onChange={(e) => set('start', e.target.value)}
             onBlur={() => blur('start')}
           />
         </Field>
         <Field id="bf-end" label={t('blockForm.end')} error={msg(shown('end'))}>
-          <input
+          <Input
             {...fieldAria('bf-end', undefined, msg(shown('end')))}
             type="time"
             step={slotIntervalMin * 60}
-            className={inputClass}
+            className="min-h-11"
             value={v.end}
             onChange={(e) => set('end', e.target.value)}
             onBlur={() => blur('end')}
@@ -196,12 +223,12 @@ export function BlockForm({
       </div>
 
       <Field id="bf-reason" label={t('blockForm.reason')} error={msg(shown('reason'))}>
-        <input
+        <Input
           {...fieldAria('bf-reason', undefined, msg(shown('reason')))}
           type="text"
           autoComplete="off"
           maxLength={120}
-          className={inputClass}
+          className="min-h-11"
           value={v.reason}
           onChange={(e) => set('reason', e.target.value)}
         />
@@ -210,7 +237,7 @@ export function BlockForm({
       <Field id="bf-recurrence" label={t('blockForm.repeat')}>
         <select
           id="bf-recurrence"
-          className={inputClass}
+          className={selectClass}
           value={v.recurrence}
           onChange={(e) =>
             set('recurrence', e.target.value as 'none' | 'daily' | 'weekly')
@@ -229,10 +256,10 @@ export function BlockForm({
           hint={t('blockForm.untilHint')}
           error={msg(shown('until'))}
         >
-          <input
+          <Input
             {...fieldAria('bf-until', 'hint', msg(shown('until')))}
             type="date"
-            className={inputClass}
+            className="min-h-11"
             value={v.until}
             min={v.date}
             onChange={(e) => set('until', e.target.value)}
@@ -242,12 +269,12 @@ export function BlockForm({
       ) : null}
 
       <div className="flex flex-col-reverse gap-2 sm:flex-row sm:justify-end">
-        <button type="button" onClick={onCancel} disabled={busy} className={secondaryBtn}>
+        <Button type="button" variant="outline" size="lg" onClick={onCancel} disabled={busy}>
           {t('blockForm.cancel')}
-        </button>
-        <button type="submit" disabled={busy} className={primaryBtn}>
+        </Button>
+        <Button type="submit" size="lg" disabled={busy}>
           {busy ? t('blockForm.saving') : t('blockForm.submit')}
-        </button>
+        </Button>
       </div>
     </form>
   );

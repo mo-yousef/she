@@ -18,33 +18,33 @@ import {
 import { useTranslations } from 'next-intl';
 import { allowedTransitions, type BookingStatusName } from '@/lib/booking-status';
 import { formatPrice } from '@/lib/money';
-import { dangerBtn, primaryBtn, secondaryBtn } from './fields';
+import { Button } from '@/components/ui/button';
 
 /** Per status: an icon + border style so it is never colour alone. */
 export const STATUS_STYLE: Record<string, { icon: LucideIcon; cls: string }> = {
   PENDING: {
     icon: Clock,
-    cls: 'border-2 border-dashed border-[color:var(--tint)] bg-[color:var(--surface)] text-[color:var(--label)]',
+    cls: 'border-2 border-dashed border-primary bg-card text-card-foreground',
   },
   CONFIRMED: {
     icon: CheckCircle2,
-    cls: 'border-2 border-solid border-[color:var(--tint)] bg-[color:var(--tint)] text-[color:var(--tint-contrast)]',
+    cls: 'border-2 border-solid border-primary bg-primary text-primary-foreground',
   },
   COMPLETED: {
     icon: CheckCheck,
-    cls: 'border-2 border-solid border-[color:var(--success)] bg-[color:var(--surface)] text-[color:var(--label)]',
+    cls: 'border-2 border-solid border-success bg-card text-card-foreground',
   },
   NO_SHOW: {
     icon: UserX,
-    cls: 'border-2 border-double border-[color:var(--danger)] bg-[color:var(--surface)] text-[color:var(--label)]',
+    cls: 'border-2 border-double border-destructive bg-card text-card-foreground',
   },
   CANCELLED_BY_CUSTOMER: {
     icon: XCircle,
-    cls: 'border-2 border-dotted border-[color:var(--control-border)] bg-[color:var(--surface)] text-[color:var(--label-secondary)] line-through',
+    cls: 'border-2 border-dotted border-border bg-card text-muted-foreground line-through',
   },
   CANCELLED_BY_BUSINESS: {
     icon: XCircle,
-    cls: 'border-2 border-dotted border-[color:var(--control-border)] bg-[color:var(--surface)] text-[color:var(--label-secondary)] line-through',
+    cls: 'border-2 border-dotted border-border bg-card text-muted-foreground line-through',
   },
 };
 
@@ -88,7 +88,7 @@ export function BookingDetails({
   const row = (label: string, value: React.ReactNode) =>
     value ? (
       <div className="grid grid-cols-[7rem_1fr] gap-2 py-1.5">
-        <dt className="text-[color:var(--label-secondary)]">{label}</dt>
+        <dt className="text-muted-foreground">{label}</dt>
         <dd className="min-w-0 break-words">{value}</dd>
       </div>
     ) : null;
@@ -96,14 +96,11 @@ export function BookingDetails({
   return (
     <div className="space-y-4">
       {error ? (
-        <p
-          role="alert"
-          className="rounded-[var(--radius-input)] border border-[color:var(--danger)] p-3 text-[color:var(--danger)]"
-        >
+        <p role="alert" className="rounded-md border border-destructive p-3 text-destructive">
           {error}
         </p>
       ) : null}
-      <dl className="divide-y divide-[color:var(--separator)]">
+      <dl className="divide-y divide-border">
         {row(t('details.reference'), b.reference)}
         {row(t('details.status'), t(`status.${b.status}` as 'status.CONFIRMED'))}
         {row(t('details.customer'), b.guestName)}
@@ -112,7 +109,7 @@ export function BookingDetails({
           b.guestPhone ? (
             <a
               href={`tel:${b.guestPhone}`}
-              className="inline-flex min-h-11 items-center gap-1.5 text-[color:var(--tint)] underline"
+              className="inline-flex min-h-11 items-center gap-1.5 text-primary underline"
             >
               <Phone className="h-4 w-4" aria-hidden />
               {b.guestPhone}
@@ -136,44 +133,24 @@ export function BookingDetails({
 
       <div className="flex flex-col gap-2">
         {next.includes('CONFIRMED') ? (
-          <button
-            type="button"
-            disabled={busy}
-            onClick={() => onStatus('CONFIRMED')}
-            className={primaryBtn}
-          >
+          <Button type="button" size="lg" disabled={busy} onClick={() => onStatus('CONFIRMED')}>
             {busy ? t('details.working') : t('details.confirmBooking')}
-          </button>
+          </Button>
         ) : null}
         {next.includes('COMPLETED') && started ? (
-          <button
-            type="button"
-            disabled={busy}
-            onClick={() => onStatus('COMPLETED')}
-            className={primaryBtn}
-          >
+          <Button type="button" size="lg" disabled={busy} onClick={() => onStatus('COMPLETED')}>
             {busy ? t('details.working') : t('details.markCompleted')}
-          </button>
+          </Button>
         ) : null}
         {next.includes('NO_SHOW') && started ? (
-          <button
-            type="button"
-            disabled={busy}
-            onClick={() => onStatus('NO_SHOW')}
-            className={secondaryBtn}
-          >
+          <Button type="button" variant="outline" size="lg" disabled={busy} onClick={() => onStatus('NO_SHOW')}>
             {busy ? t('details.working') : t('details.markNoShow')}
-          </button>
+          </Button>
         ) : null}
         {next.includes('CANCELLED_BY_BUSINESS') ? (
-          <button
-            type="button"
-            disabled={busy}
-            onClick={onAskCancel}
-            className={dangerBtn}
-          >
+          <Button type="button" variant="outline" size="lg" className="border-destructive text-destructive hover:bg-destructive/10 hover:text-destructive" disabled={busy} onClick={onAskCancel}>
             {t('details.cancelBooking')}
-          </button>
+          </Button>
         ) : null}
       </div>
     </div>

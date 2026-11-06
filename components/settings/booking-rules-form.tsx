@@ -6,8 +6,32 @@
 import { useId, useState } from 'react';
 import { useTranslations } from 'next-intl';
 import { saveSettings } from '@/app/actions/settings';
-import { Field, fieldAria, inputClass, primaryBtn } from '@/components/calendar/fields';
+import { fieldAria } from '@/components/calendar/fields';
+import { Button } from '@/components/ui/button';
+import { Card } from '@/components/ui/card';
+import { Input } from '@/components/ui/input';
+import { Label } from '@/components/ui/label';
 import { DATE_STRIP_MAX_DAYS, SETTINGS_BOUNDS, SLOT_INTERVALS, parseSettingsForm, type SettingsFieldErrors, type SettingsForm } from '@/lib/settings-schema';
+
+// Label + control + hint + inline error (shadcn), with the aria wiring fieldAria expects.
+function Field({ id, label, hint, error, children }: { id: string; label: string; hint?: string; error?: string; children: React.ReactNode }) {
+  return (
+    <div className="space-y-1">
+      <Label htmlFor={id}>{label}</Label>
+      {children}
+      {hint ? (
+        <p id={`${id}-hint`} className="text-xs text-muted-foreground">
+          {hint}
+        </p>
+      ) : null}
+      {error ? (
+        <p id={`${id}-err`} className="text-xs text-destructive">
+          {error}
+        </p>
+      ) : null}
+    </div>
+  );
+}
 
 type NumKey = 'bufferMin' | 'minLeadMin' | 'maxAdvanceDays' | 'cancellationWindowHours' | 'maxPerCustomerPerDay';
 const NUM_KEYS: NumKey[] = ['bufferMin', 'minLeadMin', 'maxAdvanceDays', 'cancellationWindowHours', 'maxPerCustomerPerDay'];
@@ -84,7 +108,7 @@ export function BookingRulesForm({ initial }: { initial: SettingsForm }) {
     return (
       <Field id={id} label={t(`${k}.label`)} hint={hintText} error={err}>
         <div className="flex items-center gap-2">
-          <input
+          <Input
             {...fieldAria(id, hintText, err)}
             type="number"
             inputMode="numeric"
@@ -92,67 +116,69 @@ export function BookingRulesForm({ initial }: { initial: SettingsForm }) {
             min={b.min}
             max={b.max}
             step={b.step}
-            className={`${inputClass} max-w-40`}
+            className="max-w-40"
             value={v[k]}
             onChange={(e) => set(k, e.target.value)}
             onBlur={() => blur(k)}
           />
-          {opts.suffix ? <span className="text-[color:var(--label-secondary)]">{opts.suffix}</span> : null}
+          {opts.suffix ? <span className="text-muted-foreground">{opts.suffix}</span> : null}
         </div>
       </Field>
     );
   };
 
-  const radioCard = 'flex min-h-11 cursor-pointer items-start gap-3 rounded-[var(--radius-input)] border border-[color:var(--control-border)] p-3 has-[:checked]:border-2 has-[:checked]:border-[color:var(--tint)] has-[:focus-visible]:outline-2 has-[:focus-visible]:outline-offset-2';
+  const radioCard = 'flex min-h-11 cursor-pointer items-start gap-3 rounded-md border border-input p-3 has-[:checked]:border-2 has-[:checked]:border-primary has-[:focus-visible]:outline-2 has-[:focus-visible]:outline-offset-2';
 
   return (
-    <form onSubmit={submit} noValidate className="space-y-6 rounded-[var(--radius-card)] bg-[color:var(--surface)] p-4">
-      <fieldset className="space-y-2">
-        <legend className="text-[length:var(--text-subhead)] font-medium">{t('autoConfirm.label')}</legend>
-        {([true, false] as const).map((val) => (
-          <label key={String(val)} className={radioCard}>
-            <input type="radio" name={`${uid}-auto`} className="mt-1 h-5 w-5" checked={v.autoConfirm === val} onChange={() => set('autoConfirm', val)} />
-            <span>
-              <span className="block font-medium">{t(val ? 'autoConfirm.instant' : 'autoConfirm.manual')}</span>
-              <span className="block text-[length:var(--text-footnote)] text-[color:var(--label-secondary)]">{t(val ? 'autoConfirm.instantHint' : 'autoConfirm.manualHint')}</span>
-            </span>
-          </label>
-        ))}
-      </fieldset>
-
-      <fieldset className="space-y-2">
-        <legend className="text-[length:var(--text-subhead)] font-medium">{t('slotIntervalMin.label')}</legend>
-        <div className="flex flex-wrap gap-2" role="radiogroup" aria-describedby={`${uid}-slot-hint`}>
-          {SLOT_INTERVALS.map((n) => (
-            <label key={n} className={`${radioCard} items-center`}>
-              <input type="radio" name={`${uid}-slot`} className="h-5 w-5" checked={v.slotIntervalMin === n} onChange={() => set('slotIntervalMin', n)} />
-              <span className="font-medium">{t('slotIntervalMin.option', { minutes: n })}</span>
+    <Card className="p-4">
+      <form onSubmit={submit} noValidate className="space-y-6">
+        <fieldset className="space-y-2">
+          <legend className="text-sm font-medium">{t('autoConfirm.label')}</legend>
+          {([true, false] as const).map((val) => (
+            <label key={String(val)} className={radioCard}>
+              <input type="radio" name={`${uid}-auto`} className="mt-1 h-5 w-5" checked={v.autoConfirm === val} onChange={() => set('autoConfirm', val)} />
+              <span>
+                <span className="block font-medium">{t(val ? 'autoConfirm.instant' : 'autoConfirm.manual')}</span>
+                <span className="block text-xs text-muted-foreground">{t(val ? 'autoConfirm.instantHint' : 'autoConfirm.manualHint')}</span>
+              </span>
             </label>
           ))}
+        </fieldset>
+
+        <fieldset className="space-y-2">
+          <legend className="text-sm font-medium">{t('slotIntervalMin.label')}</legend>
+          <div className="flex flex-wrap gap-2" role="radiogroup" aria-describedby={`${uid}-slot-hint`}>
+            {SLOT_INTERVALS.map((n) => (
+              <label key={n} className={`${radioCard} items-center`}>
+                <input type="radio" name={`${uid}-slot`} className="h-5 w-5" checked={v.slotIntervalMin === n} onChange={() => set('slotIntervalMin', n)} />
+                <span className="font-medium">{t('slotIntervalMin.option', { minutes: n })}</span>
+              </label>
+            ))}
+          </div>
+          <p id={`${uid}-slot-hint`} className="text-xs text-muted-foreground">
+            {t('slotIntervalMin.hint')}
+          </p>
+        </fieldset>
+
+        <div className="grid gap-6 sm:grid-cols-2">
+          {num('bufferMin', undefined, { suffix: t('units.minutes') })}
+          {num('minLeadMin', leadPreview, { suffix: t('units.minutes') })}
+          {num('maxAdvanceDays', t('maxAdvanceDays.stripNote', { days: DATE_STRIP_MAX_DAYS }), { suffix: t('units.days') })}
+          {num('cancellationWindowHours', undefined, { suffix: t('units.hours') })}
+          {num('maxPerCustomerPerDay')}
         </div>
-        <p id={`${uid}-slot-hint`} className="text-[length:var(--text-footnote)] text-[color:var(--label-secondary)]">
-          {t('slotIntervalMin.hint')}
-        </p>
-      </fieldset>
 
-      <div className="grid gap-6 sm:grid-cols-2">
-        {num('bufferMin', undefined, { suffix: t('units.minutes') })}
-        {num('minLeadMin', leadPreview, { suffix: t('units.minutes') })}
-        {num('maxAdvanceDays', t('maxAdvanceDays.stripNote', { days: DATE_STRIP_MAX_DAYS }), { suffix: t('units.days') })}
-        {num('cancellationWindowHours', undefined, { suffix: t('units.hours') })}
-        {num('maxPerCustomerPerDay')}
-      </div>
+        <p className="text-xs text-muted-foreground">{t('existingNote')}</p>
 
-      <p className="text-[length:var(--text-footnote)] text-[color:var(--label-secondary)]">{t('existingNote')}</p>
-
-      <div className="flex flex-wrap items-center gap-3">
-        <button type="submit" disabled={busy} className={primaryBtn}>
-          {busy ? t('saving') : t('save')}
-        </button>
-        <p role={error ? 'alert' : 'status'} aria-live="polite" className={`font-medium ${error ? 'text-[color:var(--danger)]' : 'text-[color:var(--success)]'}`}>
-          {error || status}
-        </p>
-      </div>
-    </form>
+        <div className="flex flex-wrap items-center gap-3">
+          <Button type="submit" size="lg" disabled={busy}>
+            {busy ? t('saving') : t('save')}
+          </Button>
+          <p role={error ? 'alert' : 'status'} aria-live="polite" className={`font-medium ${error ? 'text-destructive' : 'text-success'}`}>
+            {error || status}
+          </p>
+        </div>
+      </form>
+    </Card>
   );
 }

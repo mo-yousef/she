@@ -9,7 +9,8 @@ import { useTranslations } from 'next-intl';
 import { useRouter } from 'next/navigation';
 import { reportReview } from '@/app/actions/review-manage';
 import { ConfirmSheet } from '@/components/manage/confirm-sheet';
-import { inputClass, secondaryBtn } from '@/components/calendar/fields';
+import { Button } from '@/components/ui/button';
+import { Label } from '@/components/ui/label';
 import { REPORT_REASONS, type ReportReason } from '@/lib/review-report';
 
 export function ReportReviewButton({ reviewId }: { reviewId: string }) {
@@ -39,23 +40,23 @@ export function ReportReviewButton({ reviewId }: { reviewId: string }) {
 
   return (
     <div>
-      <button type="button" className={secondaryBtn} onClick={() => { setError(''); setOpen(true); }}>
+      <Button type="button" variant="outline" size="lg" onClick={() => { setError(''); setOpen(true); }}>
         <Flag className="h-4 w-4" aria-hidden />
         {t('button')}
-      </button>
+      </Button>
       <ConfirmSheet open={open} title={t('title')} confirmLabel={busy ? t('reporting') : t('confirm')} keepLabel={t('keep')} busy={busy} onConfirm={confirm} onClose={() => !busy && setOpen(false)}>
         <p>{t('body')}</p>
-        <label htmlFor={`${uid}-reason`} className="mt-3 block font-medium text-[color:var(--label)]">
+        <Label htmlFor={`${uid}-reason`} className="mt-3">
           {t('reasonLabel')}
-        </label>
-        <select id={`${uid}-reason`} className={`${inputClass} mt-1`} value={reason} onChange={(e) => setReason(e.target.value as ReportReason)}>
+        </Label>
+        <select id={`${uid}-reason`} className="mt-1 min-h-11 w-full rounded-md border border-input bg-transparent px-3 py-2 text-sm shadow-xs outline-none focus-visible:border-ring focus-visible:ring-[3px] focus-visible:ring-ring/50 dark:bg-input/30" value={reason} onChange={(e) => setReason(e.target.value as ReportReason)}>
           {REPORT_REASONS.map((r) => (
             <option key={r} value={r}>
               {t(`reasons.${r}`)}
             </option>
           ))}
         </select>
-        <p role="alert" aria-live="assertive" className="mt-2 font-medium text-[color:var(--danger)]">
+        <p role="alert" aria-live="assertive" className="mt-2 font-medium text-destructive">
           {error}
         </p>
       </ConfirmSheet>

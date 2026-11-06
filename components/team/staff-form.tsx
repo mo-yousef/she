@@ -6,14 +6,55 @@
  * The days-off section is its own <form> (siblings, never nested) and saves independently.
  * `photoUrl` is display-only here: the uploader arrives with task 6.7.
  */
-import { useRef, useState } from 'react';
+import { useRef, useState, type ReactNode } from 'react';
 import { useLocale, useTranslations } from 'next-intl';
 import { Trash2 } from 'lucide-react';
 import { addDayOff, createStaff, removeDayOff, updateStaff } from '@/app/actions/team';
 import { WEEKDAY_ORDER, formatTimeOfDay, parseTimeOfDay, type DayHours } from '@/lib/hours';
 import type { TeamMemberDto, TeamWarning } from '@/lib/team';
 import { DEFAULT_ROLE, checkStaffHours, copyToAllDays, staffFieldErrors, staffInputSchema } from '@/lib/team-schema';
-import { Field, fieldAria, inputClass, primaryBtn, secondaryBtn } from '@/components/calendar/fields';
+import { fieldAria } from '@/components/calendar/fields';
+import { Button } from '@/components/ui/button';
+import { Card } from '@/components/ui/card';
+import { Input } from '@/components/ui/input';
+import { Label } from '@/components/ui/label';
+import { Separator } from '@/components/ui/separator';
+
+/** shadcn Input look applied directly to native <input type="time">. */
+const timeInput =
+  'rounded-md border border-input bg-transparent px-3 py-1 text-sm shadow-xs outline-none focus-visible:border-ring focus-visible:ring-[3px] focus-visible:ring-ring/50 aria-invalid:border-destructive disabled:cursor-not-allowed disabled:opacity-50 dark:bg-input/30';
+
+/** Label + control + hint + inline error. The control must use `fieldAria(id)` for aria wiring. */
+function Field({
+  id,
+  label,
+  hint,
+  error,
+  children,
+}: {
+  id: string;
+  label: string;
+  hint?: string;
+  error?: string;
+  children: ReactNode;
+}) {
+  return (
+    <div className="space-y-1.5">
+      <Label htmlFor={id}>{label}</Label>
+      {children}
+      {hint ? (
+        <p id={`${id}-hint`} className="text-xs text-muted-foreground">
+          {hint}
+        </p>
+      ) : null}
+      {error ? (
+        <p id={`${id}-err`} className="text-xs text-destructive">
+          {error}
+        </p>
+      ) : null}
+    </div>
+  );
+}
 
 export interface SavedInfo {
   mode: 'created' | 'updated';
@@ -146,34 +187,34 @@ export function StaffForm({
     <div className="space-y-6">
       <form ref={formRef} onSubmit={submit} noValidate className="space-y-4">
         {formError ? (
-          <p role="alert" className="rounded-[var(--radius-input)] border border-[color:var(--danger)] p-3 text-[color:var(--danger)]">
+          <p role="alert" className="rounded-md border border-destructive p-3 text-sm text-destructive">
             {formError}
           </p>
         ) : null}
         <Field id="tf-name" label={t('form.name')} error={shown('name')}>
-          <input {...fieldAria('tf-name', undefined, shown('name'))} type="text" autoComplete="off" maxLength={60} required className={inputClass} value={v.name} onChange={(e) => set('name', e.target.value)} onBlur={() => blur('name')} />
+          <Input {...fieldAria('tf-name', undefined, shown('name'))} type="text" autoComplete="off" maxLength={60} required className="min-h-11" value={v.name} onChange={(e) => set('name', e.target.value)} onBlur={() => blur('name')} />
         </Field>
         <Field id="tf-role" label={t('form.role')} hint={t('form.roleHint')} error={shown('role')}>
-          <input {...fieldAria('tf-role', t('form.roleHint'), shown('role'))} type="text" autoComplete="off" maxLength={60} className={inputClass} value={v.role} onChange={(e) => set('role', e.target.value)} onBlur={() => blur('role')} />
+          <Input {...fieldAria('tf-role', t('form.roleHint'), shown('role'))} type="text" autoComplete="off" maxLength={60} className="min-h-11" value={v.role} onChange={(e) => set('role', e.target.value)} onBlur={() => blur('role')} />
         </Field>
         {member?.photoUrl ? (
           // Display only: the uploader is task 6.7.
           // eslint-disable-next-line @next/next/no-img-element
           <img src={member.photoUrl} alt="" width={64} height={64} className="h-16 w-16 rounded-full object-cover" />
         ) : null}
-        <div className="space-y-1">
-          <label className="flex min-h-11 items-center gap-3 text-[length:var(--text-body)] font-medium">
+        <div className="space-y-1.5">
+          <label className="flex min-h-11 items-center gap-3 text-sm font-medium">
             <input type="checkbox" className="h-5 w-5" checked={v.active} onChange={(e) => set('active', e.target.checked)} aria-describedby="tf-active-hint" />
             {t('form.active')}
           </label>
-          <p id="tf-active-hint" className="text-[length:var(--text-footnote)] text-[color:var(--label-secondary)]">
+          <p id="tf-active-hint" className="text-xs text-muted-foreground">
             {t('form.activeHint')}
           </p>
         </div>
-        <fieldset className="space-y-1" aria-describedby={shown('serviceIds') ? 'tf-serviceIds-err' : undefined}>
-          <legend className="text-[length:var(--text-subhead)] font-medium">{t('form.services')}</legend>
+        <fieldset className="space-y-1.5" aria-describedby={shown('serviceIds') ? 'tf-serviceIds-err' : undefined}>
+          <legend className="text-sm font-medium">{t('form.services')}</legend>
           {services.length === 0 ? (
-            <p className="text-[length:var(--text-subhead)] text-[color:var(--label-secondary)]">{t('form.noServices')}</p>
+            <p className="text-sm text-muted-foreground">{t('form.noServices')}</p>
           ) : (
             <ul id="tf-serviceIds" tabIndex={-1} className="space-y-0.5">
               {services.map((s) => (
@@ -186,65 +227,68 @@ export function StaffForm({
                       onChange={(e) => set('serviceIds', e.target.checked ? [...v.serviceIds, s.id] : v.serviceIds.filter((id) => id !== s.id))}
                     />
                     {s.name}
-                    {s.active ? null : <span className="text-[length:var(--text-footnote)] text-[color:var(--label-secondary)]">({t('form.hiddenService')})</span>}
+                    {s.active ? null : <span className="text-xs text-muted-foreground">({t('form.hiddenService')})</span>}
                   </label>
                 </li>
               ))}
             </ul>
           )}
           {shown('serviceIds') ? (
-            <p id="tf-serviceIds-err" className="text-[length:var(--text-footnote)] text-[color:var(--danger)]">
+            <p id="tf-serviceIds-err" className="text-xs text-destructive">
               {shown('serviceIds')}
             </p>
           ) : null}
         </fieldset>
         <fieldset className="space-y-2" aria-describedby={shown('hours') ? 'tf-hours-err' : undefined}>
-          <legend className="text-[length:var(--text-subhead)] font-medium">{t('form.hours')}</legend>
+          <legend className="text-sm font-medium">{t('form.hours')}</legend>
           <label className="flex min-h-11 items-center gap-3 font-medium">
             <input id="tf-hours-switch" type="checkbox" role="switch" className="h-5 w-5" checked={!v.custom} onChange={(e) => set('custom', !e.target.checked)} />
             {t('form.useBusinessHours')}
           </label>
-          <p className="text-[length:var(--text-footnote)] text-[color:var(--label-secondary)]">{t('form.hoursHint')}</p>
+          <p className="text-xs text-muted-foreground">{t('form.hoursHint')}</p>
           {v.custom ? (
             <>
-              <ul className="divide-y divide-[color:var(--separator)] rounded-[var(--radius-card)] border border-[color:var(--separator)]">
-                {v.rows.map((r) => {
+              <Card className="gap-0 p-0">
+                {v.rows.map((r, idx) => {
                   const err = shown(`hours.${r.weekday}`);
                   const day = biz(`weekday${WEEKDAY_KEY[r.weekday]}`);
                   return (
-                    <li key={r.weekday} className="flex flex-wrap items-center gap-x-3 gap-y-2 p-3">
-                      <span className="w-24 font-medium">{day}</span>
-                      <label className="inline-flex min-h-11 items-center gap-2">
-                        <input type="checkbox" className="h-5 w-5" checked={r.closed} onChange={(e) => patchRow(r.weekday, { closed: e.target.checked })} />
-                        {t('form.closed')}
-                      </label>
-                      <label className="inline-flex items-center gap-2">
-                        <span className="text-[color:var(--label-secondary)]">{t('form.opens')}</span>
-                        <input type="time" step={900} disabled={r.closed} aria-invalid={err ? true : undefined} aria-describedby={err ? `tf-day-${r.weekday}-err` : undefined} className={`${inputClass} !w-auto`} value={r.open} onChange={(e) => patchRow(r.weekday, { open: e.target.value })} onBlur={() => blur(`hours.${r.weekday}`)} />
-                      </label>
-                      <label className="inline-flex items-center gap-2">
-                        <span className="text-[color:var(--label-secondary)]">{t('form.closes')}</span>
-                        <input type="time" step={900} disabled={r.closed} aria-invalid={err ? true : undefined} aria-describedby={err ? `tf-day-${r.weekday}-err` : undefined} className={`${inputClass} !w-auto`} value={r.close} onChange={(e) => patchRow(r.weekday, { close: e.target.value })} onBlur={() => blur(`hours.${r.weekday}`)} />
-                      </label>
-                      {err ? (
-                        <p id={`tf-day-${r.weekday}-err`} className="basis-full text-[length:var(--text-footnote)] text-[color:var(--danger)]">
-                          {err}
-                        </p>
-                      ) : null}
-                    </li>
+                    <div key={r.weekday}>
+                      {idx > 0 ? <Separator /> : null}
+                      <div className="flex flex-wrap items-center gap-x-3 gap-y-2 p-3">
+                        <span className="w-24 font-medium">{day}</span>
+                        <label className="inline-flex min-h-11 items-center gap-2">
+                          <input type="checkbox" className="h-5 w-5" checked={r.closed} onChange={(e) => patchRow(r.weekday, { closed: e.target.checked })} />
+                          {t('form.closed')}
+                        </label>
+                        <label className="inline-flex items-center gap-2">
+                          <span className="text-muted-foreground">{t('form.opens')}</span>
+                          <input type="time" step={900} disabled={r.closed} aria-invalid={err ? true : undefined} aria-describedby={err ? `tf-day-${r.weekday}-err` : undefined} className={timeInput} value={r.open} onChange={(e) => patchRow(r.weekday, { open: e.target.value })} onBlur={() => blur(`hours.${r.weekday}`)} />
+                        </label>
+                        <label className="inline-flex items-center gap-2">
+                          <span className="text-muted-foreground">{t('form.closes')}</span>
+                          <input type="time" step={900} disabled={r.closed} aria-invalid={err ? true : undefined} aria-describedby={err ? `tf-day-${r.weekday}-err` : undefined} className={timeInput} value={r.close} onChange={(e) => patchRow(r.weekday, { close: e.target.value })} onBlur={() => blur(`hours.${r.weekday}`)} />
+                        </label>
+                        {err ? (
+                          <p id={`tf-day-${r.weekday}-err`} className="basis-full text-xs text-destructive">
+                            {err}
+                          </p>
+                        ) : null}
+                      </div>
+                    </div>
                   );
                 })}
-              </ul>
-              <button type="button" className={secondaryBtn} onClick={copyFirst}>
+              </Card>
+              <Button type="button" variant="outline" size="lg" onClick={copyFirst}>
                 {t('form.copyToAll', { day: biz(`weekday${WEEKDAY_KEY[v.rows[0]!.weekday]}`) })}
-              </button>
+              </Button>
               {shown('hours') && dayErrors.length === 0 ? (
-                <p id="tf-hours-err" className="text-[length:var(--text-footnote)] text-[color:var(--danger)]">
+                <p id="tf-hours-err" className="text-xs text-destructive">
                   {shown('hours')}
                 </p>
               ) : null}
               {shown('hours') && dayErrors.length > 0 ? (
-                <p id="tf-hours-err" className="text-[length:var(--text-footnote)] text-[color:var(--danger)]">
+                <p id="tf-hours-err" className="text-xs text-destructive">
                   {t('validation.hoursProblems')}
                 </p>
               ) : null}
@@ -252,15 +296,15 @@ export function StaffForm({
           ) : null}
         </fieldset>
         <div className="flex flex-col-reverse gap-2 sm:flex-row sm:justify-end">
-          <button type="button" onClick={onCancel} disabled={busy} className={secondaryBtn}>
+          <Button type="button" variant="outline" size="lg" onClick={onCancel} disabled={busy}>
             {t('form.cancel')}
-          </button>
-          <button type="submit" disabled={busy} className={primaryBtn}>
+          </Button>
+          <Button type="submit" size="lg" disabled={busy}>
             {busy ? t('form.saving') : member ? t('form.save') : t('form.add')}
-          </button>
+          </Button>
         </div>
       </form>
-      {member ? <DaysOffSection member={member} todayKey={todayKey} /> : <p className="text-[length:var(--text-footnote)] text-[color:var(--label-secondary)]">{t('daysOff.afterSave')}</p>}
+      {member ? <DaysOffSection member={member} todayKey={todayKey} /> : <p className="text-xs text-muted-foreground">{t('daysOff.afterSave')}</p>}
     </div>
   );
 }
@@ -328,55 +372,58 @@ function DaysOffSection({ member, todayKey }: { member: TeamMemberDto; todayKey:
   }
 
   return (
-    <section aria-labelledby="tf-dayoff-title" className="space-y-3 border-t border-[color:var(--separator)] pt-4">
-      <h3 id="tf-dayoff-title" className="text-[length:var(--text-headline)] font-semibold">
+    <section aria-labelledby="tf-dayoff-title" className="space-y-3 border-t border-border pt-4">
+      <h3 id="tf-dayoff-title" className="text-base font-semibold">
         {t('title')}
       </h3>
       <p role="status" aria-live="polite" className="font-medium">
         {status}
       </p>
       {problem ? (
-        <p role="alert" className="rounded-[var(--radius-input)] border border-[color:var(--danger)] p-3 text-[color:var(--danger)]">
+        <p role="alert" className="rounded-md border border-destructive p-3 text-sm text-destructive">
           {problem}
         </p>
       ) : null}
       {member.daysOff.length === 0 ? (
-        <p className="text-[color:var(--label-secondary)]">{t('none')}</p>
+        <p className="text-muted-foreground">{t('none')}</p>
       ) : (
-        <ul className="divide-y divide-[color:var(--separator)] rounded-[var(--radius-card)] border border-[color:var(--separator)]">
-          {member.daysOff.map((d) => {
+        <Card className="gap-0 p-0">
+          {member.daysOff.map((d, i) => {
             const range = d.fromDate === d.toDate ? formatKey(d.fromDate, locale) : t('range', { from: formatKey(d.fromDate, locale), to: formatKey(d.toDate, locale) });
             return (
-              <li key={d.id} className="flex items-center justify-between gap-3 p-3">
-                <div className="min-w-0">
-                  <p className="font-medium">{range}</p>
-                  {d.reason ? <p className="break-words text-[length:var(--text-footnote)] text-[color:var(--label-secondary)]">{d.reason}</p> : null}
+              <div key={d.id}>
+                {i > 0 ? <Separator /> : null}
+                <div className="flex items-center justify-between gap-3 p-3">
+                  <div className="min-w-0">
+                    <p className="font-medium">{range}</p>
+                    {d.reason ? <p className="break-words text-xs text-muted-foreground">{d.reason}</p> : null}
+                  </div>
+                  <Button type="button" variant="outline" className="min-h-11" disabled={busy} onClick={() => remove(d.id)} aria-label={t('removeRange', { range })}>
+                    <Trash2 className="h-4 w-4" aria-hidden />
+                    {t('remove')}
+                  </Button>
                 </div>
-                <button type="button" disabled={busy} onClick={() => remove(d.id)} aria-label={t('removeRange', { range })} className="inline-flex min-h-11 items-center gap-1.5 rounded-[var(--radius-button)] border border-[color:var(--control-border)] px-3 font-medium disabled:opacity-40">
-                  <Trash2 className="h-4 w-4" aria-hidden />
-                  {t('remove')}
-                </button>
-              </li>
+              </div>
             );
           })}
-        </ul>
+        </Card>
       )}
       <form onSubmit={add} noValidate className="space-y-3">
         <div className="grid grid-cols-2 gap-3">
           <Field id="do-from" label={t('from')} error={msg(errors.fromDate)}>
-            <input {...fieldAria('do-from', undefined, msg(errors.fromDate))} type="date" min={todayKey} className={inputClass} value={from} onChange={(e) => setFrom(e.target.value)} />
+            <Input {...fieldAria('do-from', undefined, msg(errors.fromDate))} type="date" min={todayKey} className="min-h-11" value={from} onChange={(e) => setFrom(e.target.value)} />
           </Field>
           <Field id="do-to" label={t('to')} error={msg(errors.toDate)}>
-            <input {...fieldAria('do-to', undefined, msg(errors.toDate))} type="date" min={from || todayKey} className={inputClass} value={to} onChange={(e) => setTo(e.target.value)} />
+            <Input {...fieldAria('do-to', undefined, msg(errors.toDate))} type="date" min={from || todayKey} className="min-h-11" value={to} onChange={(e) => setTo(e.target.value)} />
           </Field>
         </div>
         <Field id="do-reason" label={t('reason')} hint={t('reasonHint')} error={msg(errors.reason)}>
-          <input {...fieldAria('do-reason', t('reasonHint'), msg(errors.reason))} type="text" autoComplete="off" maxLength={120} className={inputClass} value={reason} onChange={(e) => setReason(e.target.value)} />
+          <Input {...fieldAria('do-reason', t('reasonHint'), msg(errors.reason))} type="text" autoComplete="off" maxLength={120} className="min-h-11" value={reason} onChange={(e) => setReason(e.target.value)} />
         </Field>
-        {errors.form ? <p className="text-[length:var(--text-footnote)] text-[color:var(--danger)]">{msg(errors.form)}</p> : null}
-        <button type="submit" disabled={busy} className={secondaryBtn}>
+        {errors.form ? <p className="text-xs text-destructive">{msg(errors.form)}</p> : null}
+        <Button type="submit" variant="outline" size="lg" disabled={busy}>
           {t('add')}
-        </button>
+        </Button>
       </form>
     </section>
   );

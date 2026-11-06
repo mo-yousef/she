@@ -20,7 +20,7 @@ export default async function TeamPage({ params }: { params: Promise<{ locale: s
   const data = await loadTeamForDashboard(business.id);
   return (
     <div className="space-y-4">
-      <FocusHeading className="text-[length:var(--text-title1)] font-bold tracking-tight">{t('title')}</FocusHeading>
+      <FocusHeading className="text-2xl font-bold tracking-tight">{t('title')}</FocusHeading>
       <TeamManager
         members={data.members}
         services={data.services}

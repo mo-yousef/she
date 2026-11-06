@@ -20,23 +20,44 @@ import { ConfirmSheet } from '@/components/manage/confirm-sheet';
 import { BookingDetails, STATUS_STYLE } from '@/components/calendar/booking-details';
 import { failureKey, type ActionFailure } from '@/components/calendar/fields';
 import { FormSheet } from '@/components/calendar/form-sheet';
+import { Badge, badgeVariants } from '@/components/ui/badge';
+import { buttonVariants } from '@/components/ui/button';
+import { Card } from '@/components/ui/card';
+import {
+  Table,
+  TableBody,
+  TableCaption,
+  TableCell,
+  TableHead,
+  TableHeader,
+  TableRow,
+} from '@/components/ui/table';
+import type { VariantProps } from 'class-variance-authority';
 
-const refBtn =
-  'inline-flex min-h-11 items-center rounded-[var(--radius-button)] px-1 font-semibold text-[color:var(--tint)] underline underline-offset-2';
-const phoneLink =
-  'inline-flex min-h-11 items-center gap-1.5 text-[color:var(--tint)] underline underline-offset-2';
+const refBtn = `${buttonVariants({ variant: 'link', size: 'default' })} min-h-11 px-1 font-semibold underline underline-offset-2`;
+const phoneLink = `${buttonVariants({ variant: 'link', size: 'default' })} min-h-11 gap-1.5 px-0 underline underline-offset-2`;
+
+// Icon per status (never colour alone) maps onto a Badge tone.
+type BadgeVariant = VariantProps<typeof badgeVariants>['variant'];
+const STATUS_VARIANT: Record<string, BadgeVariant> = {
+  PENDING: 'outline',
+  CONFIRMED: 'default',
+  COMPLETED: 'secondary',
+  NO_SHOW: 'destructive',
+  CANCELLED_BY_CUSTOMER: 'secondary',
+  CANCELLED_BY_BUSINESS: 'secondary',
+};
 
 function StatusBadge({ status }: { status: string }) {
   const t = useTranslations('calendar');
   const st = STATUS_STYLE[status] ?? STATUS_STYLE.CONFIRMED!;
   const Icon = st.icon;
+  const cancelled = status.startsWith('CANCELLED');
   return (
-    <span
-      className={`inline-flex items-center gap-1.5 rounded-full px-2.5 py-1 text-[length:var(--text-footnote)] font-medium ${st.cls}`}
-    >
+    <Badge variant={STATUS_VARIANT[status] ?? 'default'} className={cancelled ? 'line-through' : undefined}>
       <Icon className="h-4 w-4 flex-none" aria-hidden />
       {t(`status.${status}` as 'status.CONFIRMED')}
-    </span>
+    </Badge>
   );
 }
 
@@ -45,7 +66,7 @@ function SourceBadge({ source }: { source: string }) {
   const manual = source === 'MANUAL';
   const Icon = manual ? PenLine : Globe;
   return (
-    <span className="inline-flex items-center gap-1.5 text-[length:var(--text-footnote)] text-[color:var(--label-secondary)]">
+    <span className="inline-flex items-center gap-1.5 text-xs text-muted-foreground">
       <Icon className="h-4 w-4 flex-none" aria-hidden />
       {manual ? t('details.sourceManual') : t('details.sourceOnline')}
     </span>
@@ -117,25 +138,25 @@ export function BookingsTable({ rows, locale }: { rows: BookingRow[]; locale: st
       <p
         role="status"
         aria-live="polite"
-        className={announce ? 'font-medium text-[color:var(--success)]' : 'sr-only'}
+        className={announce ? 'font-medium text-success' : 'sr-only'}
       >
         {announce}
       </p>
       {error && !selected ? (
         <p
           role="alert"
-          className="rounded-[var(--radius-input)] border border-[color:var(--danger)] p-3 text-[color:var(--danger)]"
+          className="rounded-md border border-destructive p-3 text-destructive"
         >
           {error}
         </p>
       ) : null}
 
       {/* Desktop: table */}
-      <div className="hidden overflow-x-auto rounded-[var(--radius-card)] bg-[color:var(--surface)] shadow-sm lg:block">
-        <table className="w-full text-left">
-          <caption className="sr-only">{t('table.caption')}</caption>
-          <thead className="text-[length:var(--text-footnote)] text-[color:var(--label-secondary)]">
-            <tr className="border-b border-[color:var(--separator)]">
+      <Card className="hidden p-0 lg:block">
+        <Table>
+          <TableCaption className="sr-only">{t('table.caption')}</TableCaption>
+          <TableHeader>
+            <TableRow>
               {(
                 [
                   'reference',
@@ -149,61 +170,58 @@ export function BookingsTable({ rows, locale }: { rows: BookingRow[]; locale: st
                   'source',
                 ] as const
               ).map((k) => (
-                <th key={k} scope="col" className="px-3 py-3 font-medium">
+                <TableHead key={k} scope="col">
                   {t(`table.${k}`)}
-                </th>
+                </TableHead>
               ))}
-            </tr>
-          </thead>
-          <tbody>
+            </TableRow>
+          </TableHeader>
+          <TableBody>
             {rows.map((r) => (
-              <tr key={r.id} className="border-b border-[color:var(--separator)] last:border-0">
-                <th scope="row" className="px-3 py-1 font-normal">
+              <TableRow key={r.id}>
+                <TableHead scope="row" className="font-normal">
                   {open(r)}
-                </th>
-                <td className="px-3 py-2">{name(r)}</td>
-                <td className="px-3 py-1">{phone(r)}</td>
-                <td className="px-3 py-2">{r.service}</td>
-                <td className="px-3 py-2">{r.staffName}</td>
-                <td className="whitespace-nowrap px-3 py-2">{r.dateLabel}</td>
-                <td className="whitespace-nowrap px-3 py-2">
-                  {formatPrice(r.priceCents, locale)}
-                </td>
-                <td className="px-3 py-2">
+                </TableHead>
+                <TableCell>{name(r)}</TableCell>
+                <TableCell>{phone(r)}</TableCell>
+                <TableCell>{r.service}</TableCell>
+                <TableCell>{r.staffName}</TableCell>
+                <TableCell>{r.dateLabel}</TableCell>
+                <TableCell>{formatPrice(r.priceCents, locale)}</TableCell>
+                <TableCell>
                   <StatusBadge status={r.status} />
-                </td>
-                <td className="px-3 py-2">
+                </TableCell>
+                <TableCell>
                   <SourceBadge source={r.source} />
-                </td>
-              </tr>
+                </TableCell>
+              </TableRow>
             ))}
-          </tbody>
-        </table>
-      </div>
+          </TableBody>
+        </Table>
+      </Card>
 
       {/* Mobile and tablet: cards */}
       <ul className="space-y-3 lg:hidden" aria-label={t('table.caption')}>
         {rows.map((r) => (
-          <li
-            key={r.id}
-            className="space-y-1 rounded-[var(--radius-card)] bg-[color:var(--surface)] p-4 shadow-sm"
-          >
-            <div className="flex flex-wrap items-center justify-between gap-2">
-              {open(r)}
-              <StatusBadge status={r.status} />
-            </div>
-            <p className="font-semibold">{name(r)}</p>
-            <p>
-              {r.service} · {r.staffName}
-            </p>
-            <p className="text-[color:var(--label-secondary)]">
-              {r.dateLabel} · {r.timeLabel}
-            </p>
-            <p className="flex flex-wrap items-center justify-between gap-2">
-              <span className="font-medium">{formatPrice(r.priceCents, locale)}</span>
-              <SourceBadge source={r.source} />
-            </p>
-            {r.guestPhone ? <div>{phone(r)}</div> : null}
+          <li key={r.id}>
+            <Card className="gap-1 p-4">
+              <div className="flex flex-wrap items-center justify-between gap-2">
+                {open(r)}
+                <StatusBadge status={r.status} />
+              </div>
+              <p className="font-semibold">{name(r)}</p>
+              <p>
+                {r.service} · {r.staffName}
+              </p>
+              <p className="text-muted-foreground">
+                {r.dateLabel} · {r.timeLabel}
+              </p>
+              <p className="flex flex-wrap items-center justify-between gap-2">
+                <span className="font-medium">{formatPrice(r.priceCents, locale)}</span>
+                <SourceBadge source={r.source} />
+              </p>
+              {r.guestPhone ? <div>{phone(r)}</div> : null}
+            </Card>
           </li>
         ))}
       </ul>

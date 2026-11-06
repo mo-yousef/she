@@ -5,10 +5,15 @@
  * the server); a typed range is never cleared on error. Adding is refused by the server when
  * upcoming bookings fall in the range (the dates are listed, no customer details).
  */
-import { useState } from 'react';
+import { useState, type ReactNode } from 'react';
 import { useTranslations } from 'next-intl';
 import { addClosure, removeClosure } from '@/app/actions/hours';
-import { Field, fieldAria, inputClass, primaryBtn, secondaryBtn } from '@/components/calendar/fields';
+import { fieldAria } from '@/components/calendar/fields';
+import { Button } from '@/components/ui/button';
+import { Card } from '@/components/ui/card';
+import { Input } from '@/components/ui/input';
+import { Label } from '@/components/ui/label';
+import { Separator } from '@/components/ui/separator';
 import { checkClosureRange, closureInputSchema } from '@/lib/hours-schema';
 import { staffFieldErrors } from '@/lib/team-schema';
 
@@ -17,6 +22,38 @@ export interface ClosureDto {
   fromDate: string;
   toDate: string;
   reason: string | null;
+}
+
+/** Label + control + hint + inline error. The control must use `fieldAria(id)` for aria wiring. */
+function Field({
+  id,
+  label,
+  hint,
+  error,
+  children,
+}: {
+  id: string;
+  label: string;
+  hint?: string;
+  error?: string;
+  children: ReactNode;
+}) {
+  return (
+    <div className="space-y-1.5">
+      <Label htmlFor={id}>{label}</Label>
+      {children}
+      {hint ? (
+        <p id={`${id}-hint`} className="text-xs text-muted-foreground">
+          {hint}
+        </p>
+      ) : null}
+      {error ? (
+        <p id={`${id}-err`} className="text-xs text-destructive">
+          {error}
+        </p>
+      ) : null}
+    </div>
+  );
 }
 
 export function ClosuresManager({ closures, todayKey, locale }: { closures: ClosureDto[]; todayKey: string; locale: string }) {
@@ -96,52 +133,57 @@ export function ClosuresManager({ closures, todayKey, locale }: { closures: Clos
   return (
     <div className="space-y-4">
       {closures.length === 0 ? (
-        <p className="text-[color:var(--label-secondary)]">{t('closures.none')}</p>
+        <p className="text-muted-foreground">{t('closures.none')}</p>
       ) : (
-        <ul className="divide-y divide-[color:var(--separator)] rounded-[var(--radius-card)] bg-[color:var(--surface)]">
-          {closures.map((c) => (
-            <li key={c.id} className="flex flex-wrap items-center justify-between gap-3 p-3">
-              <div>
-                <p className="font-medium">{rangeText(c)}</p>
-                {c.reason ? <p className="text-[length:var(--text-footnote)] text-[color:var(--label-secondary)]">{c.reason}</p> : null}
+        <Card className="gap-0 p-0">
+          {closures.map((c, i) => (
+            <div key={c.id}>
+              {i > 0 ? <Separator /> : null}
+              <div className="flex flex-wrap items-center justify-between gap-3 p-3">
+                <div>
+                  <p className="font-medium">{rangeText(c)}</p>
+                  {c.reason ? <p className="text-xs text-muted-foreground">{c.reason}</p> : null}
+                </div>
+                <Button type="button" variant="outline" size="lg" disabled={busy} onClick={() => remove(c)} aria-label={t('closures.removeRange', { range: rangeText(c) })}>
+                  {t('closures.remove')}
+                </Button>
               </div>
-              <button type="button" disabled={busy} className={secondaryBtn} onClick={() => remove(c)} aria-label={t('closures.removeRange', { range: rangeText(c) })}>
-                {t('closures.remove')}
-              </button>
-            </li>
+            </div>
           ))}
-        </ul>
+        </Card>
       )}
-      <form onSubmit={submit} noValidate className="space-y-3 rounded-[var(--radius-card)] bg-[color:var(--surface)] p-4">
-        <h3 className="text-[length:var(--text-headline)] font-semibold">{t('closures.addTitle')}</h3>
+      <form onSubmit={submit} noValidate className="space-y-3 rounded-xl border bg-card p-4 text-card-foreground shadow-sm">
+        <h3 className="text-base font-semibold">{t('closures.addTitle')}</h3>
         <div className="grid gap-3 sm:grid-cols-2">
           <Field id="cl-fromDate" label={t('closures.from')} error={err('fromDate')}>
-            <input type="date" required autoComplete="off" min={todayKey} className={inputClass} value={v.fromDate} onChange={(e) => set('fromDate', e.target.value)} onBlur={() => blur('fromDate')} {...fieldAria('cl-fromDate', undefined, err('fromDate'))} />
+            <Input type="date" required autoComplete="off" min={todayKey} className="min-h-11" value={v.fromDate} onChange={(e) => set('fromDate', e.target.value)} onBlur={() => blur('fromDate')} {...fieldAria('cl-fromDate', undefined, err('fromDate'))} />
           </Field>
           <Field id="cl-toDate" label={t('closures.to')} error={err('toDate')}>
-            <input type="date" required autoComplete="off" min={v.fromDate || todayKey} className={inputClass} value={v.toDate} onChange={(e) => set('toDate', e.target.value)} onBlur={() => blur('toDate')} {...fieldAria('cl-toDate', undefined, err('toDate'))} />
+            <Input type="date" required autoComplete="off" min={v.fromDate || todayKey} className="min-h-11" value={v.toDate} onChange={(e) => set('toDate', e.target.value)} onBlur={() => blur('toDate')} {...fieldAria('cl-toDate', undefined, err('toDate'))} />
           </Field>
         </div>
         <Field id="cl-reason" label={t('closures.reason')} hint={t('closures.reasonHint')} error={err('reason')}>
-          <input type="text" maxLength={120} autoComplete="off" className={inputClass} value={v.reason} onChange={(e) => set('reason', e.target.value)} onBlur={() => blur('reason')} {...fieldAria('cl-reason', t('closures.reasonHint'), err('reason'))} />
+          <Input type="text" maxLength={120} autoComplete="off" className="min-h-11" value={v.reason} onChange={(e) => set('reason', e.target.value)} onBlur={() => blur('reason')} {...fieldAria('cl-reason', t('closures.reasonHint'), err('reason'))} />
         </Field>
         {shown('form') ? (
-          <p role="alert" className="text-[length:var(--text-footnote)] text-[color:var(--danger)]">
+          <p role="alert" className="text-xs text-destructive">
             {shown('form')}
           </p>
         ) : null}
-        <button type="submit" disabled={busy} className={primaryBtn}>
+        <Button type="submit" size="lg" disabled={busy}>
           {busy ? t('closures.adding') : t('closures.add')}
-        </button>
+        </Button>
       </form>
-      <div role="status" aria-live="polite" className="text-[length:var(--text-subhead)]">
+      <div role="status" aria-live="polite" className="text-sm">
         {status}
       </div>
-      {error ? (
-        <p role="alert" className="text-[length:var(--text-subhead)] text-[color:var(--danger)]">
-          {error}
-        </p>
-      ) : null}
-    </div>
+      {
+        error ? (
+          <p role="alert" className="text-sm text-destructive">
+            {error}
+          </p>
+        ) : null
+      }
+    </div >
   );
 }

@@ -1,4 +1,5 @@
 import 'server-only';
+import { cache } from 'react';
 import { createClient } from '@/lib/supabase/server';
 import { db } from '@/lib/db';
 import { routing } from '@/i18n/routing';
@@ -33,7 +34,7 @@ function normaliseLocale(value: unknown): string {
  * session, or null when signed out. Safe to call from Server Components, Server
  * Actions and Route Handlers.
  */
-export async function getCurrentUser(): Promise<AppUser | null> {
+export const getCurrentUser = cache(async (): Promise<AppUser | null> => {
   const supabase = await createClient();
   const {
     data: { user },
@@ -83,19 +84,23 @@ export async function getCurrentUser(): Promise<AppUser | null> {
     locale: normaliseLocale(row.locale),
     name: row.name,
   };
-}
+});
 
 /**
  * Lightweight signed-in check that does NOT touch the database. Use for UI that
  * only needs to know whether someone is signed in (e.g. the header), to avoid a
  * Prisma upsert on every public page render. Returns the email or null.
+ *
+ * Uses `getClaims()`, which verifies the JWT locally (no Auth-server round-trip)
+ * when the project signs tokens with an asymmetric key; with a symmetric secret
+ * it stays correct but still round-trips. A verified claim is sufficient for a
+ * read-only "is someone signed in + their email" check.
  */
 export async function getSessionEmail(): Promise<string | null> {
   const supabase = await createClient();
-  const {
-    data: { user },
-  } = await supabase.auth.getUser();
-  return user?.email ? user.email.toLowerCase() : null;
+  const { data } = await supabase.auth.getClaims();
+  const email = data?.claims?.email;
+  return typeof email === 'string' ? email.toLowerCase() : null;
 }
 
 /** Signs the current user out of Supabase (clears the session cookies). */

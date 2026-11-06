@@ -21,12 +21,12 @@ export default async function HoursPage({ params }: { params: Promise<{ locale: 
   const data = await loadHoursForDashboard(business.id);
   return (
     <div className="space-y-8">
-      <FocusHeading className="text-[length:var(--text-title1)] font-bold tracking-tight">{t('title')}</FocusHeading>
+      <FocusHeading className="text-2xl font-bold tracking-tight">{t('title')}</FocusHeading>
       <section aria-labelledby="hours-weekly" className="space-y-3">
-        <h2 id="hours-weekly" className="text-[length:var(--text-title3)] font-semibold">
+        <h2 id="hours-weekly" className="text-lg font-semibold">
           {t('weekly.title')}
         </h2>
-        <p className="text-[color:var(--label-secondary)]">{t('weekly.hint')}</p>
+        <p className="text-muted-foreground">{t('weekly.hint')}</p>
         <HoursEditor
           days={data.days}
           stepSeconds={data.slotIntervalMin * 60}
@@ -34,10 +34,10 @@ export default async function HoursPage({ params }: { params: Promise<{ locale: 
         />
       </section>
       <section aria-labelledby="hours-closures" className="space-y-3">
-        <h2 id="hours-closures" className="text-[length:var(--text-title3)] font-semibold">
+        <h2 id="hours-closures" className="text-lg font-semibold">
           {t('closures.title')}
         </h2>
-        <p className="text-[color:var(--label-secondary)]">{t('closures.hint')}</p>
+        <p className="text-muted-foreground">{t('closures.hint')}</p>
         <ClosuresManager closures={data.closures} todayKey={data.todayKey} locale={locale} />
       </section>
     </div>

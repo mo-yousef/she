@@ -14,7 +14,14 @@ import {
 } from '@/lib/bookings-params';
 import { BookingsTable } from '@/components/bookings/bookings-table';
 import { FocusHeading } from '@/components/focus-heading';
-import { inputClass, primaryBtn } from '@/components/calendar/fields';
+import { Button, buttonVariants } from '@/components/ui/button';
+import { Card } from '@/components/ui/card';
+import { Input } from '@/components/ui/input';
+import { Label } from '@/components/ui/label';
+
+// Native <select> kept (filter form must work without JS, shareable URL); styled to match Input.
+const selectClass =
+  'h-9 w-full min-w-0 rounded-md border border-input bg-transparent px-3 py-1 text-base shadow-xs outline-none focus-visible:border-ring focus-visible:ring-[3px] focus-visible:ring-ring/50 md:text-sm dark:bg-input/30';
 
 export const dynamic = 'force-dynamic';
 
@@ -28,17 +35,11 @@ export async function generateMetadata({
   return { title: t('title') };
 }
 
-const pageLink =
-  'inline-flex min-h-11 min-w-11 items-center justify-center gap-1 rounded-[var(--radius-button)] border border-[color:var(--control-border)] px-4 font-medium';
+const pageLink = `${buttonVariants({ variant: 'outline', size: 'lg' })} min-h-11 min-w-11`;
 const disabledLink = `${pageLink} pointer-events-none opacity-50`;
 const chip = (active: boolean) =>
-  `inline-flex min-h-11 flex-none items-center rounded-full px-4 font-medium ${
-    active
-      ? 'bg-[color:var(--tint)] text-[color:var(--tint-contrast)]'
-      : 'border border-[color:var(--control-border)] text-[color:var(--label)]'
-  }`;
-const textLink =
-  'inline-flex min-h-11 items-center text-[color:var(--tint)] underline underline-offset-2';
+  `${buttonVariants({ variant: active ? 'default' : 'outline', size: 'lg' })} min-h-11 flex-none rounded-full`;
+const textLink = `${buttonVariants({ variant: 'link', size: 'lg' })} min-h-11 px-0 underline underline-offset-2`;
 
 export default async function BookingsPage({
   params,
@@ -66,7 +67,7 @@ export default async function BookingsPage({
 
   return (
     <div className="space-y-4">
-      <FocusHeading className="text-[length:var(--text-title1)] font-bold tracking-tight">
+      <FocusHeading className="text-2xl font-bold tracking-tight">
         {t('title')}
       </FocusHeading>
 
@@ -91,126 +92,97 @@ export default async function BookingsPage({
 
         {/* Plain GET form: works without JS and produces a shareable URL. Changing a filter
             always returns to page 1 because `page` is not a field. */}
-        <form method="get" className="grid gap-3 sm:grid-cols-2 lg:grid-cols-6">
-          <input type="hidden" name="status" value={p.status} />
-          <div className="space-y-1 sm:col-span-2">
-            <label htmlFor="b-q" className="block text-[length:var(--text-subhead)] font-medium">
-              {t('filters.search')}
-            </label>
-            <input
-              id="b-q"
-              name="q"
-              type="search"
-              inputMode="search"
-              autoComplete="off"
-              maxLength={MAX_QUERY_LENGTH}
-              defaultValue={p.q}
-              placeholder={t('filters.searchPlaceholder')}
-              className={inputClass}
-            />
-          </div>
-          <div className="space-y-1">
-            <label htmlFor="b-from" className="block text-[length:var(--text-subhead)] font-medium">
-              {t('filters.from')}
-            </label>
-            <input
-              id="b-from"
-              name="from"
-              type="date"
-              autoComplete="off"
-              defaultValue={p.from ?? ''}
-              className={inputClass}
-            />
-          </div>
-          <div className="space-y-1">
-            <label htmlFor="b-to" className="block text-[length:var(--text-subhead)] font-medium">
-              {t('filters.to')}
-            </label>
-            <input
-              id="b-to"
-              name="to"
-              type="date"
-              autoComplete="off"
-              defaultValue={p.to ?? ''}
-              className={inputClass}
-            />
-          </div>
-          <div className="space-y-1">
-            <label
-              htmlFor="b-staff"
-              className="block text-[length:var(--text-subhead)] font-medium"
-            >
-              {t('filters.staff')}
-            </label>
-            <select id="b-staff" name="staff" defaultValue={p.staffId ?? ''} className={inputClass}>
-              <option value="">{t('filters.allStaff')}</option>
-              {data.staff.map((s) => (
-                <option key={s.id} value={s.id}>
-                  {s.name}
-                </option>
-              ))}
-            </select>
-          </div>
-          <div className="space-y-1">
-            <label
-              htmlFor="b-sort"
-              className="block text-[length:var(--text-subhead)] font-medium"
-            >
-              {t('filters.sort')}
-            </label>
-            <select id="b-sort" name="sort" defaultValue={p.sort} className={inputClass}>
-              {BOOKING_SORTS.map((s) => (
-                <option key={s} value={s}>
-                  {t(`sort.${s}`)}
-                </option>
-              ))}
-            </select>
-          </div>
-          <div className="flex flex-wrap items-center gap-2 sm:col-span-2 lg:col-span-6">
-            <button type="submit" className={primaryBtn}>
-              {t('filters.apply')}
-            </button>
-            {filtered || p.sort !== 'date' ? (
-              <Link href="/dashboard/bookings" locale={locale} className={textLink}>
-                {t('filters.clear')}
-              </Link>
-            ) : null}
-          </div>
-        </form>
+        <Card className="p-4">
+          <form method="get" className="grid gap-3 sm:grid-cols-2 lg:grid-cols-6">
+            <input type="hidden" name="status" value={p.status} />
+            <div className="space-y-1 sm:col-span-2">
+              <Label htmlFor="b-q">{t('filters.search')}</Label>
+              <Input
+                id="b-q"
+                name="q"
+                type="search"
+                inputMode="search"
+                autoComplete="off"
+                maxLength={MAX_QUERY_LENGTH}
+                defaultValue={p.q}
+                placeholder={t('filters.searchPlaceholder')}
+              />
+            </div>
+            <div className="space-y-1">
+              <Label htmlFor="b-from">{t('filters.from')}</Label>
+              <Input id="b-from" name="from" type="date" autoComplete="off" defaultValue={p.from ?? ''} />
+            </div>
+            <div className="space-y-1">
+              <Label htmlFor="b-to">{t('filters.to')}</Label>
+              <Input id="b-to" name="to" type="date" autoComplete="off" defaultValue={p.to ?? ''} />
+            </div>
+            <div className="space-y-1">
+              <Label htmlFor="b-staff">{t('filters.staff')}</Label>
+              <select id="b-staff" name="staff" defaultValue={p.staffId ?? ''} className={selectClass}>
+                <option value="">{t('filters.allStaff')}</option>
+                {data.staff.map((s) => (
+                  <option key={s.id} value={s.id}>
+                    {s.name}
+                  </option>
+                ))}
+              </select>
+            </div>
+            <div className="space-y-1">
+              <Label htmlFor="b-sort">{t('filters.sort')}</Label>
+              <select id="b-sort" name="sort" defaultValue={p.sort} className={selectClass}>
+                {BOOKING_SORTS.map((s) => (
+                  <option key={s} value={s}>
+                    {t(`sort.${s}`)}
+                  </option>
+                ))}
+              </select>
+            </div>
+            <div className="flex flex-wrap items-center gap-2 sm:col-span-2 lg:col-span-6">
+              <Button type="submit" size="lg">
+                {t('filters.apply')}
+              </Button>
+              {filtered || p.sort !== 'date' ? (
+                <Link href="/dashboard/bookings" locale={locale} className={textLink}>
+                  {t('filters.clear')}
+                </Link>
+              ) : null}
+            </div>
+          </form>
+        </Card>
       </section>
 
-      <p role="status" aria-live="polite" className="text-[color:var(--label-secondary)]">
+      <p role="status" aria-live="polite" className="text-muted-foreground">
         {t('summary', { count: data.total })}
       </p>
 
       {data.total === 0 ? (
-        <div className="space-y-2 rounded-[var(--radius-card)] bg-[color:var(--surface)] p-5 shadow-sm">
+        <Card className="gap-2 p-5">
           {filtered ? (
             <>
-              <h2 className="text-[length:var(--text-title3)] font-semibold">
+              <h2 className="text-lg font-semibold">
                 {t('empty.filteredTitle')}
               </h2>
-              <p className="text-[color:var(--label-secondary)]">{t('empty.filteredBody')}</p>
+              <p className="text-muted-foreground">{t('empty.filteredBody')}</p>
               <Link href="/dashboard/bookings" locale={locale} className={textLink}>
                 {t('filters.clear')}
               </Link>
             </>
           ) : everBooked ? (
             <>
-              <h2 className="text-[length:var(--text-title3)] font-semibold">
+              <h2 className="text-lg font-semibold">
                 {t('empty.upcomingTitle')}
               </h2>
-              <p className="text-[color:var(--label-secondary)]">{t('empty.upcomingBody')}</p>
+              <p className="text-muted-foreground">{t('empty.upcomingBody')}</p>
               <Link href={href({ status: 'all' })} locale={locale} className={textLink}>
                 {t('empty.viewAll')}
               </Link>
             </>
           ) : (
             <>
-              <h2 className="text-[length:var(--text-title3)] font-semibold">
+              <h2 className="text-lg font-semibold">
                 {t('empty.noneTitle')}
               </h2>
-              <p className="text-[color:var(--label-secondary)]">{t('empty.noneBody')}</p>
+              <p className="text-muted-foreground">{t('empty.noneBody')}</p>
               {business.status === 'PUBLISHED' ? (
                 <Link href={`/b/${business.slug}`} locale={locale} className={textLink}>
                   {t('empty.viewPage')}
@@ -218,7 +190,7 @@ export default async function BookingsPage({
               ) : null}
             </>
           )}
-        </div>
+        </Card>
       ) : (
         <>
           <BookingsTable rows={data.rows} locale={locale} />
@@ -236,7 +208,7 @@ export default async function BookingsPage({
               <ChevronLeft className="h-5 w-5" aria-hidden />
               {t('pagination.previous')}
             </Link>
-            <p className="text-[color:var(--label-secondary)]">
+            <p className="text-muted-foreground">
               {t('pagination.pageOf', { page: data.page, count: data.pageCount })}
             </p>
             <Link

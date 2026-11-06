@@ -49,9 +49,9 @@ export function DashboardNav({ locale }: { locale: string }) {
                 href={item.href}
                 locale={locale}
                 aria-current={active ? 'page' : undefined}
-                className={`flex min-h-11 items-center gap-3 rounded-[var(--radius-button)] px-3 font-medium ${active
-                  ? 'bg-[color:var(--tint)] text-[color:var(--tint-contrast)]'
-                  : 'text-[color:var(--label)] hover:bg-[color:var(--separator)]'
+                className={`flex min-h-11 items-center gap-3 rounded-md px-3 text-sm font-medium transition-colors ${active
+                  ? 'bg-primary text-primary-foreground'
+                  : 'text-foreground hover:bg-accent hover:text-accent-foreground'
                   }`}
               >
                 <Icon className="h-5 w-5" aria-hidden />
@@ -74,7 +74,7 @@ export function DashboardNav({ locale }: { locale: string }) {
                 href={item.href}
                 locale={locale}
                 aria-current={active ? 'page' : undefined}
-                className={`flex min-h-14 flex-col items-center justify-center gap-0.5 break-words rounded-[var(--radius-button)] px-1 py-1 text-center text-[length:var(--text-footnote)] font-medium ${active ? 'bg-[color:var(--tint)] text-[color:var(--tint-contrast)]' : 'text-[color:var(--label)] hover:bg-[color:var(--separator)]'
+                className={`flex min-h-14 flex-col items-center justify-center gap-0.5 break-words rounded-md px-1 py-1 text-center text-xs font-medium transition-colors ${active ? 'bg-primary text-primary-foreground' : 'text-foreground hover:bg-accent hover:text-accent-foreground'
                   }`}
               >
                 <Icon className="h-5 w-5" aria-hidden />

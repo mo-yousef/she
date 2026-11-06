@@ -24,5 +24,9 @@ test-results/
 .vercel
 *.tsbuildinfo
 
+# agent workflow scratch
+.agents/
+.worktrees/
+
 # prisma
 prisma/*.db

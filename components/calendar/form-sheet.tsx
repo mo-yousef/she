@@ -38,26 +38,23 @@ export function FormSheet({
       ref={ref}
       aria-labelledby={titleId}
       onClose={onClose}
-      className="m-0 mt-auto max-h-[92dvh] w-full max-w-none overflow-y-auto rounded-t-[var(--radius-sheet)] border-0 bg-[color:var(--surface)] p-0 text-[color:var(--label)] shadow-xl backdrop:bg-black/40 sm:m-auto sm:max-w-lg sm:rounded-[var(--radius-sheet)]"
+      className="m-0 mt-auto max-h-[92dvh] w-full max-w-none overflow-y-auto rounded-t-xl border-0 bg-background p-0 text-foreground shadow-xl backdrop:bg-black/40 sm:m-auto sm:max-w-lg sm:rounded-xl"
     >
       {open ? (
         <div className="p-5 pb-[max(1.25rem,env(safe-area-inset-bottom))]">
           <div
             aria-hidden
-            className="mx-auto mb-3 h-1.5 w-10 rounded-full bg-[color:var(--separator)] sm:hidden"
+            className="mx-auto mb-3 h-1.5 w-10 rounded-full bg-border sm:hidden"
           />
           <div className="mb-4 flex items-start justify-between gap-3">
-            <h2
-              id={titleId}
-              className="text-[length:var(--text-title3)] font-semibold"
-            >
+            <h2 id={titleId} className="text-lg font-semibold">
               {title}
             </h2>
             <button
               type="button"
               onClick={onClose}
               aria-label={closeLabel}
-              className="-mr-2 -mt-2 inline-flex h-11 w-11 flex-none items-center justify-center rounded-full text-[color:var(--label-secondary)] hover:bg-[color:var(--separator)]"
+              className="-mr-2 -mt-2 inline-flex h-11 w-11 flex-none items-center justify-center rounded-full text-muted-foreground hover:bg-accent hover:text-accent-foreground focus-visible:ring-[3px] focus-visible:ring-ring/50 focus-visible:outline-none"
             >
               <X className="h-5 w-5" aria-hidden />
             </button>
