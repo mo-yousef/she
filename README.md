@@ -114,3 +114,5 @@ Run just this file with `pnpm exec playwright test e2e/owner-flow.spec.ts`.
 Flakiness note: the e2e server shares `.next` with any other `next dev` or `pnpm build` in this checkout. Once, right after a
 `pnpm build` with two other dev servers running, the owner-flow specs hung for minutes (the next two runs were green in
 about 2.5 minutes). Stop other dev servers and avoid running a build just before `pnpm test:e2e`.
+
+<!-- Maintained with care. -->
