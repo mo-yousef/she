@@ -6,21 +6,52 @@
  * Zod schema gives inline validation after blur. A nonce per form mount makes a double
  * submit safe (the core returns the first booking instead of creating a second).
  */
-import { useMemo, useRef, useState } from 'react';
+import { useMemo, useRef, useState, type ReactNode } from 'react';
 import { useTranslations } from 'next-intl';
 import { createManualBooking } from '@/app/actions/calendar';
 import { manualBookingInputSchema } from '@/lib/calendar-schema';
 import { formatPrice, parseEuroToCents } from '@/lib/money';
 import type { ServiceOption } from '@/lib/calendar-data';
-import {
-  Field,
-  fieldAria,
-  failureKey,
-  inputClass,
-  primaryBtn,
-  secondaryBtn,
-  type ActionFailure,
-} from './fields';
+import { Button } from '@/components/ui/button';
+import { Input } from '@/components/ui/input';
+import { Label } from '@/components/ui/label';
+import { Textarea } from '@/components/ui/textarea';
+import { fieldAria, failureKey, type ActionFailure } from './fields';
+
+const selectClass =
+  'min-h-11 w-full rounded-md border border-input bg-transparent px-3 py-2 text-sm shadow-xs outline-none focus-visible:border-ring focus-visible:ring-[3px] focus-visible:ring-ring/50 aria-invalid:border-destructive dark:bg-input/30';
+
+/** Label + control + hint + inline error. The control must use `fieldAria(id)` for aria wiring. */
+function Field({
+  id,
+  label,
+  hint,
+  error,
+  children,
+}: {
+  id: string;
+  label: string;
+  hint?: string;
+  error?: string;
+  children: ReactNode;
+}) {
+  return (
+    <div className="space-y-1.5">
+      <Label htmlFor={id}>{label}</Label>
+      {children}
+      {hint ? (
+        <p id={`${id}-hint`} className="text-xs text-muted-foreground">
+          {hint}
+        </p>
+      ) : null}
+      {error ? (
+        <p id={`${id}-err`} className="text-xs text-destructive">
+          {error}
+        </p>
+      ) : null}
+    </div>
+  );
+}
 
 export interface BookingDefaults {
   staffId: string;
@@ -70,7 +101,7 @@ export function ManualBookingForm({
   const t = useTranslations('calendar');
   const nonce = useRef(
     globalThis.crypto?.randomUUID?.() ??
-      `${Date.now()}-${Math.random().toString(36).slice(2)}`,
+    `${Date.now()}-${Math.random().toString(36).slice(2)}`,
   );
   const formRef = useRef<HTMLFormElement>(null);
 
@@ -202,14 +233,11 @@ export function ManualBookingForm({
   return (
     <form ref={formRef} onSubmit={submit} noValidate className="space-y-4">
       {formError ? (
-        <p
-          role="alert"
-          className="rounded-[var(--radius-input)] border border-[color:var(--danger)] p-3 text-[color:var(--danger)]"
-        >
+        <p role="alert" className="rounded-md border border-destructive p-3 text-destructive">
           {formError}
         </p>
       ) : null}
-      <p className="text-[length:var(--text-footnote)] text-[color:var(--label-secondary)]">
+      <p className="text-xs text-muted-foreground">
         {t('bookingForm.outsideHoursHint')}
       </p>
 
@@ -220,7 +248,7 @@ export function ManualBookingForm({
       >
         <select
           {...fieldAria('mb-serviceId', undefined, msg(shown('serviceId')))}
-          className={inputClass}
+          className={selectClass}
           value={v.serviceId}
           onChange={(e) => onServiceChange(e.target.value)}
           onBlur={() => blur('serviceId')}
@@ -236,7 +264,7 @@ export function ManualBookingForm({
       <Field id="mb-staffId" label={t('bookingForm.staff')} error={msg(shown('staffId'))}>
         <select
           {...fieldAria('mb-staffId', undefined, msg(shown('staffId')))}
-          className={inputClass}
+          className={selectClass}
           value={v.staffId}
           onChange={(e) => set('staffId', e.target.value)}
           onBlur={() => blur('staffId')}
@@ -251,21 +279,21 @@ export function ManualBookingForm({
 
       <div className="grid grid-cols-2 gap-3">
         <Field id="mb-date" label={t('bookingForm.date')} error={msg(shown('date'))}>
-          <input
+          <Input
             {...fieldAria('mb-date', undefined, msg(shown('date')))}
             type="date"
-            className={inputClass}
+            className="min-h-11"
             value={v.date}
             onChange={(e) => set('date', e.target.value)}
             onBlur={() => blur('date')}
           />
         </Field>
         <Field id="mb-time" label={t('bookingForm.time')} error={msg(shown('time'))}>
-          <input
+          <Input
             {...fieldAria('mb-time', undefined, msg(shown('time')))}
             type="time"
             step={slotIntervalMin * 60}
-            className={inputClass}
+            className="min-h-11"
             value={v.time}
             onChange={(e) => set('time', e.target.value)}
             onBlur={() => blur('time')}
@@ -274,12 +302,12 @@ export function ManualBookingForm({
       </div>
 
       <Field id="mb-name" label={t('bookingForm.name')} error={msg(shown('name'))}>
-        <input
+        <Input
           {...fieldAria('mb-name', undefined, msg(shown('name')))}
           type="text"
           autoComplete="off"
           maxLength={80}
-          className={inputClass}
+          className="min-h-11"
           value={v.name}
           onChange={(e) => set('name', e.target.value)}
           onBlur={() => blur('name')}
@@ -288,24 +316,24 @@ export function ManualBookingForm({
 
       <div className="grid gap-3 sm:grid-cols-2">
         <Field id="mb-phone" label={t('bookingForm.phone')} error={msg(shown('phone'))}>
-          <input
+          <Input
             {...fieldAria('mb-phone', undefined, msg(shown('phone')))}
             type="tel"
             inputMode="tel"
             autoComplete="off"
-            className={inputClass}
+            className="min-h-11"
             value={v.phone}
             onChange={(e) => set('phone', e.target.value)}
             onBlur={() => blur('phone')}
           />
         </Field>
         <Field id="mb-email" label={t('bookingForm.email')} error={msg(shown('email'))}>
-          <input
+          <Input
             {...fieldAria('mb-email', undefined, msg(shown('email')))}
             type="email"
             inputMode="email"
             autoComplete="off"
-            className={inputClass}
+            className="min-h-11"
             value={v.email}
             onChange={(e) => set('email', e.target.value)}
             onBlur={() => blur('email')}
@@ -314,11 +342,10 @@ export function ManualBookingForm({
       </div>
 
       <Field id="mb-note" label={t('bookingForm.note')} error={msg(shown('note'))}>
-        <textarea
+        <Textarea
           {...fieldAria('mb-note', undefined, msg(shown('note')))}
           rows={2}
           maxLength={500}
-          className={inputClass}
           value={v.note}
           onChange={(e) => set('note', e.target.value)}
           onBlur={() => blur('note')}
@@ -329,7 +356,7 @@ export function ManualBookingForm({
         <Field id="mb-status" label={t('bookingForm.status')}>
           <select
             id="mb-status"
-            className={inputClass}
+            className={selectClass}
             value={v.status}
             onChange={(e) => set('status', e.target.value as 'CONFIRMED' | 'PENDING')}
           >
@@ -343,18 +370,18 @@ export function ManualBookingForm({
           hint={
             service
               ? t('bookingForm.priceHint', {
-                  price: formatPrice(service.priceCents, locale),
-                })
+                price: formatPrice(service.priceCents, locale),
+              })
               : undefined
           }
           error={msg(shown('price'))}
         >
-          <input
+          <Input
             {...fieldAria('mb-price', service ? 'hint' : undefined, msg(shown('price')))}
             type="text"
             inputMode="decimal"
             autoComplete="off"
-            className={inputClass}
+            className="min-h-11"
             value={v.price}
             onChange={(e) => set('price', e.target.value)}
             onBlur={() => blur('price')}
@@ -374,19 +401,19 @@ export function ManualBookingForm({
           <span>{t('bookingForm.sendConfirmation')}</span>
         </label>
         {!hasEmail ? (
-          <p className="text-[length:var(--text-footnote)] text-[color:var(--label-secondary)]">
+          <p className="text-xs text-muted-foreground">
             {t('bookingForm.needsEmail')}
           </p>
         ) : null}
       </div>
 
       <div className="flex flex-col-reverse gap-2 sm:flex-row sm:justify-end">
-        <button type="button" onClick={onCancel} disabled={busy} className={secondaryBtn}>
+        <Button type="button" variant="outline" size="lg" onClick={onCancel} disabled={busy}>
           {t('bookingForm.cancel')}
-        </button>
-        <button type="submit" disabled={busy} className={primaryBtn}>
+        </Button>
+        <Button type="submit" size="lg" disabled={busy}>
           {busy ? t('bookingForm.saving') : t('bookingForm.submit')}
-        </button>
+        </Button>
       </div>
     </form>
   );

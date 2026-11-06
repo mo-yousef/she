@@ -45,29 +45,29 @@ export default async function ProfilePage({ params }: { params: Promise<{ locale
 
   return (
     <div className="space-y-8">
-      <FocusHeading className="text-[length:var(--text-title1)] font-bold tracking-tight">{t('title')}</FocusHeading>
+      <FocusHeading className="text-2xl font-bold tracking-tight">{t('title')}</FocusHeading>
 
       <section aria-labelledby="profile-details" className="space-y-3">
-        <h2 id="profile-details" className="text-[length:var(--text-title3)] font-semibold">
+        <h2 id="profile-details" className="text-lg font-semibold">
           {t('details.title')}
         </h2>
-        <p className="text-[color:var(--label-secondary)]">{t('details.hint')}</p>
+        <p className="text-muted-foreground">{t('details.hint')}</p>
         <ProfileForm initial={initial} />
       </section>
 
       <section aria-labelledby="profile-brand" className="space-y-3">
-        <h2 id="profile-brand" className="text-[length:var(--text-title3)] font-semibold">
+        <h2 id="profile-brand" className="text-lg font-semibold">
           {t('brand.title')}
         </h2>
-        <p className="text-[color:var(--label-secondary)]">{t('brand.hint')}</p>
+        <p className="text-muted-foreground">{t('brand.hint')}</p>
         <BrandForm businessName={p.name} initial={{ brandPrimary: p.brandPrimary, brandAccent: p.brandAccent }} />
       </section>
 
       <section id="photos" aria-labelledby="profile-photos" className="scroll-mt-6 space-y-3">
-        <h2 id="profile-photos" className="text-[length:var(--text-title3)] font-semibold">
+        <h2 id="profile-photos" className="text-lg font-semibold">
           {t('photos.title')}
         </h2>
-        <p className="text-[color:var(--label-secondary)]">{t('photos.hint')}</p>
+        <p className="text-muted-foreground">{t('photos.hint')}</p>
         <PhotosManager photos={photos} uploadsConfigured={cloudinaryConfig() !== null} />
       </section>
     </div>

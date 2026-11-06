@@ -21,7 +21,7 @@ export default async function ServicesPage({ params }: { params: Promise<{ local
 
   return (
     <div className="space-y-4">
-      <FocusHeading className="text-[length:var(--text-title1)] font-bold tracking-tight">{t('title')}</FocusHeading>
+      <FocusHeading className="text-2xl font-bold tracking-tight">{t('title')}</FocusHeading>
       <ServicesManager
         services={services}
         staff={staff}

@@ -5,18 +5,54 @@
  * what was typed. Local validation reuses the SAME zod schema as the server core and shows
  * after blur / submit; server field errors are shown as returned. Native inputs only.
  */
-import { useRef, useState } from 'react';
+import { useRef, useState, type ReactNode } from 'react';
 import { useTranslations } from 'next-intl';
 import { createService, updateService } from '@/app/actions/services';
 import { CATEGORIES } from '@/lib/catalogue';
 import { centsToInputValue } from '@/lib/money';
 import type { ServiceDto } from '@/lib/services';
 import { SERVICE_LOCALES, serviceFieldErrors, serviceInputSchema } from '@/lib/services-schema';
-import { Field, fieldAria, inputClass, primaryBtn, secondaryBtn } from '@/components/calendar/fields';
+import { fieldAria } from '@/components/calendar/fields';
+import { Button } from '@/components/ui/button';
+import { Input } from '@/components/ui/input';
+import { Label } from '@/components/ui/label';
+import { Textarea } from '@/components/ui/textarea';
 
 export interface SavedInfo {
   mode: 'created' | 'updated';
   noVisible: boolean;
+}
+
+/** Label + control + hint + inline error. The control must use `fieldAria(id)` for aria wiring. */
+function Field({
+  id,
+  label,
+  hint,
+  error,
+  children,
+}: {
+  id: string;
+  label: string;
+  hint?: string;
+  error?: string;
+  children: ReactNode;
+}) {
+  return (
+    <div className="space-y-1.5">
+      <Label htmlFor={id}>{label}</Label>
+      {children}
+      {hint ? (
+        <p id={`${id}-hint`} className="text-xs text-muted-foreground">
+          {hint}
+        </p>
+      ) : null}
+      {error ? (
+        <p id={`${id}-err`} className="text-xs text-destructive">
+          {error}
+        </p>
+      ) : null}
+    </div>
+  );
 }
 
 export function ServiceForm({
@@ -104,17 +140,17 @@ export function ServiceForm({
   return (
     <form ref={formRef} onSubmit={submit} noValidate className="space-y-4">
       {formError ? (
-        <p role="alert" className="rounded-[var(--radius-input)] border border-[color:var(--danger)] p-3 text-[color:var(--danger)]">
+        <p role="alert" className="rounded-md border border-destructive p-3 text-sm text-destructive">
           {formError}
         </p>
       ) : null}
 
       <Field id="sf-name" label={t('form.name')} error={shown('name')}>
-        <input {...fieldAria('sf-name', undefined, shown('name'))} type="text" autoComplete="off" maxLength={80} required className={inputClass} value={v.name} onChange={(e) => set('name', e.target.value)} onBlur={() => blur('name')} />
+        <Input {...fieldAria('sf-name', undefined, shown('name'))} type="text" autoComplete="off" maxLength={80} required className="min-h-11" value={v.name} onChange={(e) => set('name', e.target.value)} onBlur={() => blur('name')} />
       </Field>
 
       <Field id="sf-category" label={t('form.category')} error={shown('category')}>
-        <select {...fieldAria('sf-category', undefined, shown('category'))} className={inputClass} value={v.category} onChange={(e) => set('category', e.target.value)}>
+        <select {...fieldAria('sf-category', undefined, shown('category'))} className="min-h-11 w-full rounded-md border border-input bg-transparent px-3 py-2 text-sm shadow-xs outline-none focus-visible:border-ring focus-visible:ring-[3px] focus-visible:ring-ring/50 aria-invalid:border-destructive dark:bg-input/30" value={v.category} onChange={(e) => set('category', e.target.value)}>
           {CATEGORIES.map((c) => (
             <option key={c} value={c}>
               {cat(c)}
@@ -124,41 +160,41 @@ export function ServiceForm({
       </Field>
 
       <Field id="sf-description" label={t('form.description')} error={shown('description')}>
-        <textarea {...fieldAria('sf-description', undefined, shown('description'))} rows={3} maxLength={500} autoComplete="off" className={inputClass} value={v.description} onChange={(e) => set('description', e.target.value)} onBlur={() => blur('description')} />
+        <Textarea {...fieldAria('sf-description', undefined, shown('description'))} rows={3} maxLength={500} autoComplete="off" value={v.description} onChange={(e) => set('description', e.target.value)} onBlur={() => blur('description')} />
       </Field>
 
       <div className="grid grid-cols-2 gap-3">
         <Field id="sf-durationMin" label={t('form.duration')} hint={t('form.durationHint')} error={shown('durationMin')}>
-          <input {...fieldAria('sf-durationMin', t('form.durationHint'), shown('durationMin'))} type="number" inputMode="numeric" min={5} max={480} step={5} autoComplete="off" className={inputClass} value={v.durationMin} onChange={(e) => set('durationMin', e.target.value)} onBlur={() => blur('durationMin')} />
+          <Input {...fieldAria('sf-durationMin', t('form.durationHint'), shown('durationMin'))} type="number" inputMode="numeric" min={5} max={480} step={5} autoComplete="off" className="min-h-11" value={v.durationMin} onChange={(e) => set('durationMin', e.target.value)} onBlur={() => blur('durationMin')} />
         </Field>
         <Field id="sf-bufferMin" label={t('form.buffer')} hint={t('form.bufferHint')} error={shown('bufferMin')}>
-          <input {...fieldAria('sf-bufferMin', t('form.bufferHint'), shown('bufferMin'))} type="number" inputMode="numeric" min={0} max={120} step={5} autoComplete="off" className={inputClass} value={v.bufferMin} onChange={(e) => set('bufferMin', e.target.value)} onBlur={() => blur('bufferMin')} />
+          <Input {...fieldAria('sf-bufferMin', t('form.bufferHint'), shown('bufferMin'))} type="number" inputMode="numeric" min={0} max={120} step={5} autoComplete="off" className="min-h-11" value={v.bufferMin} onChange={(e) => set('bufferMin', e.target.value)} onBlur={() => blur('bufferMin')} />
         </Field>
       </div>
 
       <Field id="sf-price" label={t('form.price')} hint={t('form.priceHint')} error={shown('price')}>
-        <input {...fieldAria('sf-price', t('form.priceHint'), shown('price'))} type="text" inputMode="decimal" autoComplete="off" maxLength={8} className={inputClass} value={v.price} onChange={(e) => set('price', e.target.value)} onBlur={() => blur('price')} />
+        <Input {...fieldAria('sf-price', t('form.priceHint'), shown('price'))} type="text" inputMode="decimal" autoComplete="off" maxLength={8} className="min-h-11" value={v.price} onChange={(e) => set('price', e.target.value)} onBlur={() => blur('price')} />
       </Field>
 
-      <div className="space-y-1">
-        <label className="flex min-h-11 items-center gap-3 text-[length:var(--text-body)] font-medium">
+      <div className="space-y-1.5">
+        <label className="flex min-h-11 items-center gap-3 text-sm font-medium">
           <input type="checkbox" className="h-5 w-5" checked={v.active} onChange={(e) => set('active', e.target.checked)} aria-describedby="sf-active-hint" />
           {t('form.visible')}
         </label>
-        <p id="sf-active-hint" className="text-[length:var(--text-footnote)] text-[color:var(--label-secondary)]">
+        <p id="sf-active-hint" className="text-xs text-muted-foreground">
           {t('form.visibleHint')}
         </p>
         {warnLastVisible && !v.active ? (
-          <p role="status" className="text-[length:var(--text-footnote)] font-medium text-[color:var(--label)]">
+          <p role="status" className="text-xs font-medium">
             {t('warnings.lastVisible')}
           </p>
         ) : null}
       </div>
 
-      <fieldset className="space-y-1" aria-describedby={shown('staffIds') ? 'sf-staff-err' : undefined}>
-        <legend className="text-[length:var(--text-subhead)] font-medium">{t('form.staff')}</legend>
+      <fieldset className="space-y-1.5" aria-describedby={shown('staffIds') ? 'sf-staff-err' : undefined}>
+        <legend className="text-sm font-medium">{t('form.staff')}</legend>
         {staff.length === 0 ? (
-          <p className="text-[length:var(--text-subhead)] text-[color:var(--label-secondary)]">{t('form.noStaff')}</p>
+          <p className="text-sm text-muted-foreground">{t('form.noStaff')}</p>
         ) : (
           <ul id="sf-staff" tabIndex={-1} className="space-y-0.5">
             {staff.map((s) => (
@@ -178,24 +214,24 @@ export function ServiceForm({
           </ul>
         )}
         {shown('staffIds') ? (
-          <p id="sf-staff-err" className="text-[length:var(--text-footnote)] text-[color:var(--danger)]">
+          <p id="sf-staff-err" className="text-xs text-destructive">
             {shown('staffIds')}
           </p>
         ) : null}
       </fieldset>
 
-      <details className="rounded-[var(--radius-input)] border border-[color:var(--control-border)] p-3">
+      <details className="rounded-md border border-border p-3">
         <summary className="min-h-11 cursor-pointer py-2 font-medium">{t('form.translations')}</summary>
-        <p className="mb-3 text-[length:var(--text-footnote)] text-[color:var(--label-secondary)]">{t('form.translationsHint')}</p>
+        <p className="mb-3 text-xs text-muted-foreground">{t('form.translationsHint')}</p>
         <div className="space-y-5">
           {SERVICE_LOCALES.map((l) => (
             <fieldset key={l} className="min-w-0 space-y-3">
-              <legend className="mb-3 text-[length:var(--text-subhead)] font-semibold">{t(`form.lang.${l}`)}</legend>
+              <legend className="mb-3 text-sm font-semibold">{t(`form.lang.${l}`)}</legend>
               <Field id={`sf-tr-${l}-name`} label={t('form.name')} error={shown(`translations.${l}.name`)}>
-                <input {...fieldAria(`sf-tr-${l}-name`, undefined, shown(`translations.${l}.name`))} type="text" autoComplete="off" lang={l} aria-label={`${t('form.name')} (${t(`form.lang.${l}`)})`} maxLength={80} className={inputClass} value={v.translations[l].name} onChange={(e) => setTr(l, 'name', e.target.value)} onBlur={() => blur(`translations.${l}.name`)} />
+                <Input {...fieldAria(`sf-tr-${l}-name`, undefined, shown(`translations.${l}.name`))} type="text" autoComplete="off" lang={l} aria-label={`${t('form.name')} (${t(`form.lang.${l}`)})`} maxLength={80} className="min-h-11" value={v.translations[l].name} onChange={(e) => setTr(l, 'name', e.target.value)} onBlur={() => blur(`translations.${l}.name`)} />
               </Field>
               <Field id={`sf-tr-${l}-description`} label={t('form.description')} error={shown(`translations.${l}.description`)}>
-                <textarea {...fieldAria(`sf-tr-${l}-description`, undefined, shown(`translations.${l}.description`))} rows={2} lang={l} aria-label={`${t('form.description')} (${t(`form.lang.${l}`)})`} maxLength={500} autoComplete="off" className={inputClass} value={v.translations[l].description} onChange={(e) => setTr(l, 'description', e.target.value)} onBlur={() => blur(`translations.${l}.description`)} />
+                <Textarea {...fieldAria(`sf-tr-${l}-description`, undefined, shown(`translations.${l}.description`))} rows={2} lang={l} aria-label={`${t('form.description')} (${t(`form.lang.${l}`)})`} maxLength={500} autoComplete="off" value={v.translations[l].description} onChange={(e) => setTr(l, 'description', e.target.value)} onBlur={() => blur(`translations.${l}.description`)} />
               </Field>
             </fieldset>
           ))}
@@ -203,12 +239,12 @@ export function ServiceForm({
       </details>
 
       <div className="flex flex-col-reverse gap-2 sm:flex-row sm:justify-end">
-        <button type="button" onClick={onCancel} disabled={busy} className={secondaryBtn}>
+        <Button type="button" variant="outline" size="lg" onClick={onCancel} disabled={busy}>
           {t('form.cancel')}
-        </button>
-        <button type="submit" disabled={busy} className={primaryBtn}>
+        </Button>
+        <Button type="submit" size="lg" disabled={busy}>
           {busy ? t('form.saving') : service ? t('form.save') : t('form.add')}
-        </button>
+        </Button>
       </div>
     </form>
   );

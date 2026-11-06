@@ -13,11 +13,11 @@ import type { ServiceDto, ServiceWarning } from '@/lib/services';
 import { formatPrice } from '@/lib/money';
 import { ConfirmSheet } from '@/components/manage/confirm-sheet';
 import { FormSheet } from '@/components/calendar/form-sheet';
-import { primaryBtn, secondaryBtn } from '@/components/calendar/fields';
+import { Badge } from '@/components/ui/badge';
+import { Button } from '@/components/ui/button';
+import { Card } from '@/components/ui/card';
+import { Separator } from '@/components/ui/separator';
 import { ServiceForm, type SavedInfo } from './service-form';
-
-const rowBtn =
-  'inline-flex min-h-11 min-w-11 items-center justify-center gap-1.5 rounded-[var(--radius-button)] border border-[color:var(--control-border)] px-3 text-[length:var(--text-subhead)] font-medium disabled:opacity-40 aria-disabled:cursor-not-allowed aria-disabled:opacity-40';
 
 export function ServicesManager({
   services,
@@ -106,107 +106,108 @@ export function ServicesManager({
   return (
     <div className="space-y-4">
       <div className="flex flex-wrap items-center justify-between gap-3">
-        <p className="text-[color:var(--label-secondary)]">{t('summary', { count: services.length })}</p>
-        <button type="button" className={primaryBtn} onClick={() => setForm({ service: null })}>
+        <p className="text-muted-foreground">{t('summary', { count: services.length })}</p>
+        <Button type="button" size="lg" onClick={() => setForm({ service: null })}>
           <Plus className="h-5 w-5" aria-hidden />
           {t('add')}
-        </button>
+        </Button>
       </div>
 
       <p role="status" aria-live="polite" className="min-h-0 font-medium">
         {status}
       </p>
       {error ? (
-        <p role="alert" className="rounded-[var(--radius-input)] border border-[color:var(--danger)] p-3 text-[color:var(--danger)]">
+        <p role="alert" className="rounded-md border border-destructive p-3 text-sm text-destructive">
           {error}
         </p>
       ) : null}
 
       {listingLive && services.length > 0 && visibleCount === 0 ? (
-        <p className="flex items-start gap-2 rounded-[var(--radius-card)] border border-[color:var(--control-border)] bg-[color:var(--surface)] p-4">
+        <Card className="flex-row items-start gap-2 p-4">
           <TriangleAlert className="mt-0.5 h-5 w-5 flex-none" aria-hidden />
           <span>{t('warnings.noVisible')}</span>
-        </p>
+        </Card>
       ) : null}
 
       {services.length === 0 ? (
-        <div className="space-y-3 rounded-[var(--radius-card)] bg-[color:var(--surface)] p-5 shadow-sm">
-          <h2 className="text-[length:var(--text-title3)] font-semibold">{t('empty.title')}</h2>
-          <p className="text-[color:var(--label-secondary)]">{t('empty.body')}</p>
-          <button type="button" className={primaryBtn} onClick={() => setForm({ service: null })}>
+        <Card className="gap-3 p-5">
+          <h2 className="text-lg font-semibold">{t('empty.title')}</h2>
+          <p className="text-muted-foreground">{t('empty.body')}</p>
+          <Button type="button" size="lg" className="w-fit" onClick={() => setForm({ service: null })}>
             <Plus className="h-5 w-5" aria-hidden />
             {t('empty.action')}
-          </button>
-        </div>
+          </Button>
+        </Card>
       ) : (
         [...groups.entries()].map(([category, list]) => (
           <section key={category} aria-labelledby={`svc-cat-${category}`}>
-            <h2 id={`svc-cat-${category}`} className="text-[length:var(--text-headline)] font-semibold text-[color:var(--label-secondary)]">
+            <h2 id={`svc-cat-${category}`} className="text-base font-semibold text-muted-foreground">
               {cat(category)}
             </h2>
-            <ul className="mt-2 divide-y divide-[color:var(--separator)] rounded-[var(--radius-card)] bg-[color:var(--surface)] shadow-sm">
+            <Card className="mt-2 gap-0 p-0">
               {list.map((s, i) => {
                 const lastVisible = listingLive && s.active && visibleCount === 1;
                 return (
-                  <li key={s.id} className="space-y-3 p-4">
-                    <div className="flex flex-wrap items-start justify-between gap-2">
-                      <div className="min-w-0">
-                        <p className="break-words font-semibold">{s.name}</p>
-                        <p className="text-[length:var(--text-subhead)] text-[color:var(--label-secondary)]">
-                          {t('row.duration', { count: s.durationMin })}
-                          {' · '}
-                          {t('row.buffer', { count: s.bufferMin })}
-                          {' · '}
-                          {s.priceCents === 0 ? t('row.free') : formatPrice(s.priceCents, locale)}
-                        </p>
-                        <p className="text-[length:var(--text-subhead)] text-[color:var(--label-secondary)]">
-                          {s.staffNames.length ? t('row.staff', { names: s.staffNames.join(', ') }) : t('row.noStaff')}
-                        </p>
+                  <div key={s.id}>
+                    {i > 0 ? <Separator /> : null}
+                    <div className="space-y-3 p-4">
+                      <div className="flex flex-wrap items-start justify-between gap-2">
+                        <div className="min-w-0">
+                          <p className="break-words font-semibold">{s.name}</p>
+                          <p className="text-sm text-muted-foreground">
+                            {t('row.duration', { count: s.durationMin })}
+                            {' · '}
+                            {t('row.buffer', { count: s.bufferMin })}
+                            {' · '}
+                            {s.priceCents === 0 ? t('row.free') : formatPrice(s.priceCents, locale)}
+                          </p>
+                          <p className="text-sm text-muted-foreground">
+                            {s.staffNames.length ? t('row.staff', { names: s.staffNames.join(', ') }) : t('row.noStaff')}
+                          </p>
+                        </div>
+                        <Badge variant="outline" className="gap-1.5 px-2.5 py-1">
+                          {s.active ? <Eye className="h-4 w-4" aria-hidden /> : <EyeOff className="h-4 w-4" aria-hidden />}
+                          {s.active ? t('row.visible') : t('row.hidden')}
+                        </Badge>
                       </div>
-                      <span className="inline-flex items-center gap-1.5 rounded-full border border-[color:var(--control-border)] px-2.5 py-1 text-[length:var(--text-footnote)] font-medium">
-                        {s.active ? <Eye className="h-4 w-4" aria-hidden /> : <EyeOff className="h-4 w-4" aria-hidden />}
-                        {s.active ? t('row.visible') : t('row.hidden')}
-                      </span>
-                    </div>
 
-                    {s.active && s.staffNames.length === 0 ? (
-                      <p className="flex items-start gap-2 text-[length:var(--text-subhead)]">
-                        <TriangleAlert className="mt-0.5 h-4 w-4 flex-none" aria-hidden />
-                        {t('warnings.noEligibleStaff')}
-                      </p>
-                    ) : null}
-                    {lastVisible ? (
-                      <p className="text-[length:var(--text-footnote)] text-[color:var(--label-secondary)]">{t('warnings.lastVisible')}</p>
-                    ) : null}
+                      {s.active && s.staffNames.length === 0 ? (
+                        <p className="flex items-start gap-2 text-sm">
+                          <TriangleAlert className="mt-0.5 h-4 w-4 flex-none" aria-hidden />
+                          {t('warnings.noEligibleStaff')}
+                        </p>
+                      ) : null}
+                      {lastVisible ? <p className="text-xs text-muted-foreground">{t('warnings.lastVisible')}</p> : null}
 
-                    <div className="flex flex-wrap gap-2">
-                      <button type="button" className={rowBtn} aria-label={t('row.editNamed', { name: s.name })} onClick={() => setForm({ service: s })}>
-                        <Pencil className="h-4 w-4" aria-hidden />
-                        {t('row.edit')}
-                      </button>
-                      <button type="button" className={rowBtn} disabled={busy} aria-label={t(s.active ? 'row.hideNamed' : 'row.showNamed', { name: s.name })} onClick={() => toggle(s, !s.active)}>
-                        {s.active ? <EyeOff className="h-4 w-4" aria-hidden /> : <Eye className="h-4 w-4" aria-hidden />}
-                        {s.active ? t('row.hide') : t('row.show')}
-                      </button>
-                      <div className="flex gap-2">
-                        <button type="button" className={rowBtn} aria-disabled={busy || i === 0 || undefined} aria-label={t('row.moveUpNamed', { name: s.name })} onClick={() => { if (!(busy || i === 0)) move(s, 'up'); }}>
-                          <ArrowUp className="h-4 w-4" aria-hidden />
-                          <span className="sr-only sm:not-sr-only">{t('row.moveUp')}</span>
-                        </button>
-                        <button type="button" className={rowBtn} aria-disabled={busy || i === list.length - 1 || undefined} aria-label={t('row.moveDownNamed', { name: s.name })} onClick={() => { if (!(busy || i === list.length - 1)) move(s, 'down'); }}>
-                          <ArrowDown className="h-4 w-4" aria-hidden />
-                          <span className="sr-only sm:not-sr-only">{t('row.moveDown')}</span>
-                        </button>
+                      <div className="flex flex-wrap gap-2">
+                        <Button type="button" variant="outline" className="min-h-11" aria-label={t('row.editNamed', { name: s.name })} onClick={() => setForm({ service: s })}>
+                          <Pencil className="h-4 w-4" aria-hidden />
+                          {t('row.edit')}
+                        </Button>
+                        <Button type="button" variant="outline" className="min-h-11" disabled={busy} aria-label={t(s.active ? 'row.hideNamed' : 'row.showNamed', { name: s.name })} onClick={() => toggle(s, !s.active)}>
+                          {s.active ? <EyeOff className="h-4 w-4" aria-hidden /> : <Eye className="h-4 w-4" aria-hidden />}
+                          {s.active ? t('row.hide') : t('row.show')}
+                        </Button>
+                        <div className="flex gap-2">
+                          <Button type="button" variant="outline" className="min-h-11" aria-disabled={busy || i === 0 || undefined} aria-label={t('row.moveUpNamed', { name: s.name })} onClick={() => { if (!(busy || i === 0)) move(s, 'up'); }}>
+                            <ArrowUp className="h-4 w-4" aria-hidden />
+                            <span className="sr-only sm:not-sr-only">{t('row.moveUp')}</span>
+                          </Button>
+                          <Button type="button" variant="outline" className="min-h-11" aria-disabled={busy || i === list.length - 1 || undefined} aria-label={t('row.moveDownNamed', { name: s.name })} onClick={() => { if (!(busy || i === list.length - 1)) move(s, 'down'); }}>
+                            <ArrowDown className="h-4 w-4" aria-hidden />
+                            <span className="sr-only sm:not-sr-only">{t('row.moveDown')}</span>
+                          </Button>
+                        </div>
+                        <Button type="button" variant="outline" className="min-h-11 border-destructive text-destructive hover:bg-destructive/10 hover:text-destructive" disabled={busy} aria-label={t('row.deleteNamed', { name: s.name })} onClick={() => setDeleting(s)}>
+                          <Trash2 className="h-4 w-4" aria-hidden />
+                          {t('row.delete')}
+                        </Button>
                       </div>
-                      <button type="button" className={`${rowBtn} !border-[color:var(--danger)] text-[color:var(--danger)]`} disabled={busy} aria-label={t('row.deleteNamed', { name: s.name })} onClick={() => setDeleting(s)}>
-                        <Trash2 className="h-4 w-4" aria-hidden />
-                        {t('row.delete')}
-                      </button>
                     </div>
-                  </li>
+                  </div>
                 );
               })}
-            </ul>
+            </Card>
           </section>
         ))
       )}
@@ -241,13 +242,13 @@ export function ServicesManager({
           <div className="space-y-4">
             <p>{t('blockedSheet.body', { count: blocked.count })}</p>
             <div className="flex flex-col-reverse gap-2 sm:flex-row sm:justify-end">
-              <button type="button" className={secondaryBtn} onClick={() => setBlocked(null)}>
+              <Button type="button" variant="outline" size="lg" onClick={() => setBlocked(null)}>
                 {t('blockedSheet.close')}
-              </button>
+              </Button>
               {blocked.service.active ? (
-                <button type="button" className={primaryBtn} disabled={busy} onClick={() => toggle(blocked.service, false)}>
+                <Button type="button" size="lg" disabled={busy} onClick={() => toggle(blocked.service, false)}>
                   {t('blockedSheet.hide')}
-                </button>
+                </Button>
               ) : null}
             </div>
           </div>

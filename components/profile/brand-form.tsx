@@ -5,15 +5,32 @@
  * colour alone). The preview reproduces the public header exactly (white text on
  * `linear-gradient(135deg, b1, b1 78% + black)`). Typed values are never cleared on error.
  */
-import { useId, useState } from 'react';
+import { useId, useState, type ReactNode } from 'react';
 import { AlertTriangle, CheckCircle2 } from 'lucide-react';
 import { useLocale, useTranslations } from 'next-intl';
 import { saveBrand } from '@/app/actions/profile';
-import { Field, inputClass, primaryBtn, secondaryBtn } from '@/components/calendar/fields';
+import { Button } from '@/components/ui/button';
+import { Input } from '@/components/ui/input';
+import { Label } from '@/components/ui/label';
 import { DEFAULT_BRAND_ACCENT, DEFAULT_BRAND_PRIMARY, MIN_BRAND_CONTRAST, checkBrand, type BrandFieldCheck } from '@/lib/brand';
 import { displayRatio, parseHex } from '@/lib/contrast';
 
 type Key = 'brandPrimary' | 'brandAccent';
+
+/** Label + control + hint. */
+function Field({ id, label, hint, children }: { id: string; label: string; hint?: string; children: ReactNode }) {
+  return (
+    <div className="space-y-1.5">
+      <Label htmlFor={id}>{label}</Label>
+      {children}
+      {hint ? (
+        <p id={`${id}-hint`} className="text-xs text-muted-foreground">
+          {hint}
+        </p>
+      ) : null}
+    </div>
+  );
+}
 
 export function BrandForm({ businessName, initial }: { businessName: string; initial: { brandPrimary: string; brandAccent: string } }) {
   const t = useTranslations('profile.brand');
@@ -78,11 +95,11 @@ export function BrandForm({ businessName, initial }: { businessName: string; ini
             <input
               type="color"
               aria-label={t('pickerLabel', { field: label })}
-              className="h-11 w-14 shrink-0 cursor-pointer rounded-[var(--radius-input)] border border-[color:var(--control-border)] bg-transparent p-1"
+              className="h-11 w-14 shrink-0 cursor-pointer rounded-md border border-input bg-transparent p-1"
               value={parseHex(v[k]) ?? '#000000'}
               onChange={(e) => set(k, e.target.value)}
             />
-            <input
+            <Input
               id={id}
               type="text"
               inputMode="text"
@@ -90,7 +107,7 @@ export function BrandForm({ businessName, initial }: { businessName: string; ini
               autoCapitalize="off"
               spellCheck={false}
               maxLength={7}
-              className={`${inputClass} font-mono`}
+              className="min-h-11 font-mono"
               value={v[k]}
               onChange={(e) => set(k, e.target.value)}
               onBlur={() => setTouched((p) => ({ ...p, [k]: true }))}
@@ -99,52 +116,52 @@ export function BrandForm({ businessName, initial }: { businessName: string; ini
             />
           </div>
         </Field>
-        <p id={`${id}-readout`} className={`flex items-start gap-2 text-[length:var(--text-subhead)] ${r.ok ? '' : 'font-medium text-[color:var(--danger)]'}`}>
-          {r.ok ? <CheckCircle2 className="mt-0.5 h-5 w-5 shrink-0 text-[color:var(--success)]" aria-hidden /> : <AlertTriangle className="mt-0.5 h-5 w-5 shrink-0" aria-hidden />}
+        <p id={`${id}-readout`} className={`flex items-start gap-2 text-sm ${r.ok ? '' : 'font-medium text-destructive'}`}>
+          {r.ok ? <CheckCircle2 className="mt-0.5 h-5 w-5 shrink-0 text-success" aria-hidden /> : <AlertTriangle className="mt-0.5 h-5 w-5 shrink-0" aria-hidden />}
           <span>{r.text}</span>
         </p>
         {c.suggestion ? (
-          <button type="button" className={secondaryBtn} onClick={() => set(k, c.suggestion!)}>
+          <Button type="button" variant="outline" size="lg" onClick={() => set(k, c.suggestion!)}>
             {t('useSuggested')}
-            <span className="inline-block h-5 w-5 rounded-full border border-[color:var(--control-border)]" style={{ backgroundColor: c.suggestion }} aria-hidden />
-            <span className="font-mono text-[length:var(--text-footnote)] font-normal">{c.suggestion}</span>
-          </button>
+            <span className="inline-block h-5 w-5 rounded-full border border-input" style={{ backgroundColor: c.suggestion }} aria-hidden />
+            <span className="font-mono text-xs font-normal">{c.suggestion}</span>
+          </Button>
         ) : null}
       </div>
     );
   };
 
   return (
-    <form onSubmit={submit} noValidate className="space-y-4 rounded-[var(--radius-card)] bg-[color:var(--surface)] p-4">
+    <form onSubmit={submit} noValidate className="space-y-4 rounded-xl border bg-card p-4 text-card-foreground shadow-sm">
       <div className="grid gap-6 sm:grid-cols-2">
         {picker('brandPrimary', t('primary'), t('primaryHint'))}
         {picker('brandAccent', t('accent'), t('accentHint'))}
       </div>
 
       <div>
-        <p className="mb-2 text-[length:var(--text-subhead)] font-medium">{t('preview')}</p>
+        <p className="mb-2 text-sm font-medium">{t('preview')}</p>
         {/* Mirrors the public business header (app/[locale]/b/[slug]/page.tsx). */}
         <div
-          className="rounded-[var(--radius-card)] p-6 text-white"
+          className="rounded-xl p-6 text-white"
           style={{ background: `linear-gradient(135deg, ${primary}, color-mix(in srgb, ${primary} 78%, black))` }}
         >
-          <p className="text-[length:var(--text-title2)] font-bold tracking-tight">{businessName}</p>
-          <span className="mt-3 inline-flex min-h-11 items-center rounded-[var(--radius-button)] bg-white px-5 font-semibold" style={{ color: primary }}>
+          <p className="text-2xl font-bold tracking-tight">{businessName}</p>
+          <span className="mt-3 inline-flex min-h-11 items-center rounded-md bg-white px-5 font-semibold" style={{ color: primary }}>
             {t('previewButton')}
           </span>
         </div>
       </div>
 
       <div className="flex flex-wrap items-center gap-3">
-        <button type="submit" disabled={busy} className={primaryBtn}>
+        <Button type="submit" size="lg" disabled={busy}>
           {busy ? t('saving') : t('save')}
-        </button>
-        <button type="button" className={secondaryBtn} onClick={() => setV({ brandPrimary: DEFAULT_BRAND_PRIMARY, brandAccent: DEFAULT_BRAND_ACCENT })}>
+        </Button>
+        <Button type="button" variant="outline" size="lg" onClick={() => setV({ brandPrimary: DEFAULT_BRAND_PRIMARY, brandAccent: DEFAULT_BRAND_ACCENT })}>
           {t('reset')}
-        </button>
-        <div role="status" aria-live="polite" className="text-[length:var(--text-subhead)]">{status}</div>
+        </Button>
+        <div role="status" aria-live="polite" className="text-sm">{status}</div>
       </div>
-      {error ? <p role="alert" className="text-[length:var(--text-subhead)] text-[color:var(--danger)]">{error}</p> : null}
+      {error ? <p role="alert" className="text-sm text-destructive">{error}</p> : null}
     </form>
   );
 }

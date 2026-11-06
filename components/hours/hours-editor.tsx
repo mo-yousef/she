@@ -10,7 +10,13 @@ import { useTranslations } from 'next-intl';
 import { saveBusinessHours } from '@/app/actions/hours';
 import { WEEKDAY_ORDER, copyToAllDays, formatTimeOfDay, parseTimeOfDay, type DayHours } from '@/lib/hours';
 import { checkBusinessHours } from '@/lib/hours-schema';
-import { inputClass, primaryBtn, secondaryBtn } from '@/components/calendar/fields';
+import { Button } from '@/components/ui/button';
+import { Card } from '@/components/ui/card';
+import { Separator } from '@/components/ui/separator';
+
+/** shadcn Input look applied directly to native <input type="time">. */
+const timeInput =
+  'rounded-md border border-input bg-transparent px-3 py-1 text-sm shadow-xs outline-none focus-visible:border-ring focus-visible:ring-[3px] focus-visible:ring-ring/50 aria-invalid:border-destructive disabled:cursor-not-allowed disabled:opacity-50 dark:bg-input/30';
 
 const WEEKDAY_KEY = ['Sun', 'Mon', 'Tue', 'Wed', 'Thu', 'Fri', 'Sat'] as const;
 interface Row {
@@ -96,72 +102,75 @@ export function HoursEditor({ days, stepSeconds, listingLive }: { days: DayHours
 
   return (
     <form ref={formRef} onSubmit={submit} noValidate className="space-y-4">
-      <ul className="divide-y divide-[color:var(--separator)] rounded-[var(--radius-card)] bg-[color:var(--surface)]">
-        {rows.map((r) => {
+      <Card className="gap-0 p-0">
+        {rows.map((r, i) => {
           const field = `day-${r.weekday}`;
           const err = shown(field);
           const dayName = biz(`weekday${WEEKDAY_KEY[r.weekday]}`);
           return (
-            <li key={r.weekday} className="flex flex-wrap items-center gap-x-4 gap-y-2 p-3">
-              <span className="w-28 font-medium">{dayName}</span>
-              <label className="inline-flex min-h-11 items-center gap-2">
-                <input type="checkbox" className="h-5 w-5" checked={r.closed} onChange={(e) => patch(r.weekday, { closed: e.target.checked })} />
-                {t('weekly.closed')}
-                <span className="sr-only"> {dayName}</span>
-              </label>
-              {(['open', 'close'] as const).map((k) => (
-                <label key={k} className="inline-flex items-center gap-2">
-                  <span className="text-[color:var(--label-secondary)]">{t(k === 'open' ? 'weekly.opens' : 'weekly.closes')}</span>
-                  <span className="sr-only">{dayName}</span>
-                  <input
-                    type="time"
-                    data-field={k === 'open' ? field : undefined}
-                    step={stepSeconds}
-                    required={!r.closed}
-                    disabled={r.closed}
-                    value={r[k]}
-                    aria-invalid={err ? true : undefined}
-                    aria-describedby={err ? `${field}-err` : undefined}
-                    className={`${inputClass} !w-auto`}
-                    onChange={(e) => patch(r.weekday, { [k]: e.target.value })}
-                    onBlur={() => setTouched((p) => ({ ...p, [field]: true }))}
-                  />
+            <div key={r.weekday}>
+              {i > 0 ? <Separator /> : null}
+              <div className="flex flex-wrap items-center gap-x-4 gap-y-2 p-3">
+                <span className="w-28 font-medium">{dayName}</span>
+                <label className="inline-flex min-h-11 items-center gap-2">
+                  <input type="checkbox" className="h-5 w-5" checked={r.closed} onChange={(e) => patch(r.weekday, { closed: e.target.checked })} />
+                  {t('weekly.closed')}
+                  <span className="sr-only"> {dayName}</span>
                 </label>
-              ))}
-              <button type="button" className={`${secondaryBtn} !px-3 text-[length:var(--text-subhead)]`} onClick={() => copyFrom(r.weekday)} aria-label={t('weekly.copyToAllNamed', { day: dayName })}>
-                {t('weekly.copyToAll')}
-              </button>
-              {err ? (
-                <p id={`${field}-err`} className="basis-full text-[length:var(--text-footnote)] text-[color:var(--danger)]">
-                  {err}
-                </p>
-              ) : null}
-            </li>
+                {(['open', 'close'] as const).map((k) => (
+                  <label key={k} className="inline-flex items-center gap-2">
+                    <span className="text-muted-foreground">{t(k === 'open' ? 'weekly.opens' : 'weekly.closes')}</span>
+                    <span className="sr-only">{dayName}</span>
+                    <input
+                      type="time"
+                      data-field={k === 'open' ? field : undefined}
+                      step={stepSeconds}
+                      required={!r.closed}
+                      disabled={r.closed}
+                      value={r[k]}
+                      aria-invalid={err ? true : undefined}
+                      aria-describedby={err ? `${field}-err` : undefined}
+                      className={timeInput}
+                      onChange={(e) => patch(r.weekday, { [k]: e.target.value })}
+                      onBlur={() => setTouched((p) => ({ ...p, [field]: true }))}
+                    />
+                  </label>
+                ))}
+                <Button type="button" variant="outline" size="sm" onClick={() => copyFrom(r.weekday)} aria-label={t('weekly.copyToAllNamed', { day: dayName })}>
+                  {t('weekly.copyToAll')}
+                </Button>
+                {err ? (
+                  <p id={`${field}-err`} className="basis-full text-xs text-destructive">
+                    {err}
+                  </p>
+                ) : null}
+              </div>
+            </div>
           );
         })}
-      </ul>
+      </Card>
       {shown('form') ? (
-        <p role="alert" className="text-[length:var(--text-footnote)] text-[color:var(--danger)]">
+        <p role="alert" className="text-xs text-destructive">
           {shown('form')}
         </p>
       ) : null}
       {noOpenDays && listingLive ? (
-        <p className="text-[length:var(--text-footnote)] text-[color:var(--label)]">
+        <p className="text-xs">
           <span className="font-semibold">{t('warnings.label')} </span>
           {t('warnings.noOpenDays')}
         </p>
       ) : null}
-      <p className="text-[length:var(--text-footnote)] text-[color:var(--label-secondary)]">{t('weekly.timezoneNote')}</p>
+      <p className="text-xs text-muted-foreground">{t('weekly.timezoneNote')}</p>
       <div className="flex flex-wrap items-center gap-3">
-        <button type="submit" disabled={busy} className={primaryBtn}>
+        <Button type="submit" size="lg" disabled={busy}>
           {busy ? t('weekly.saving') : t('weekly.save')}
-        </button>
+        </Button>
       </div>
-      <div role="status" aria-live="polite" className="text-[length:var(--text-subhead)]">
+      <div role="status" aria-live="polite" className="text-sm">
         {status}
       </div>
       {error ? (
-        <p role="alert" className="text-[length:var(--text-subhead)] text-[color:var(--danger)]">
+        <p role="alert" className="text-sm text-destructive">
           {error}
         </p>
       ) : null}

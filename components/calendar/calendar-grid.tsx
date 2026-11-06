@@ -16,15 +16,11 @@ import type { BookingStatusName } from '@/lib/booking-status';
 import { minuteAtFraction, ROW_MIN, type Axis } from '@/lib/calendar-layout';
 import type { ColumnDto, EventDto, ServiceOption } from '@/lib/calendar-data';
 import { ConfirmSheet } from '@/components/manage/confirm-sheet';
+import { Button } from '@/components/ui/button';
+import { Card } from '@/components/ui/card';
 import { BlockForm } from './block-form';
 import { BookingDetails, STATUS_STYLE } from './booking-details';
-import {
-  dangerBtn,
-  failureKey,
-  primaryBtn,
-  secondaryBtn,
-  type ActionFailure,
-} from './fields';
+import { failureKey, type ActionFailure } from './fields';
 import { FormSheet } from './form-sheet';
 import { ManualBookingForm } from './manual-booking-form';
 
@@ -37,9 +33,9 @@ const hhmm = (min: number) =>
   `${String(Math.floor(min / 60)).padStart(2, '0')}:${String(min % 60).padStart(2, '0')}`;
 const rows = (min: number) => min / ROW_MIN;
 const HATCH_BLOCK =
-  'repeating-linear-gradient(45deg, var(--separator) 0 3px, transparent 3px 9px)';
+  'repeating-linear-gradient(45deg, var(--border) 0 3px, transparent 3px 9px)';
 const HATCH_CLOSED =
-  'repeating-linear-gradient(135deg, var(--separator) 0 1px, transparent 1px 8px)';
+  'repeating-linear-gradient(135deg, var(--border) 0 1px, transparent 1px 8px)';
 
 export function CalendarGrid({
   locale,
@@ -145,11 +141,7 @@ export function CalendarGrid({
   }
 
   if (staff.length === 0) {
-    return (
-      <p className="rounded-[var(--radius-card)] bg-[color:var(--surface)] p-5 shadow-sm">
-        {t('grid.emptyNoStaff')}
-      </p>
-    );
+    return <Card className="p-5">{t('grid.emptyNoStaff')}</Card>;
   }
 
   const gridCols = `3.25rem repeat(${columns.length}, minmax(${columns.length > 1 ? '10rem' : '14rem'}, 1fr))`;
@@ -157,48 +149,35 @@ export function CalendarGrid({
   return (
     <div className="space-y-3" style={{ '--cal-row': '1.25rem' } as CSSProperties}>
       <div className="flex flex-wrap gap-2">
-        <button
-          type="button"
-          disabled={!canBook}
-          onClick={() => openBooking({})}
-          className={primaryBtn}
-        >
+        <Button type="button" size="lg" disabled={!canBook} onClick={() => openBooking({})}>
           <Plus className="h-5 w-5" aria-hidden />
           {t('actions.addBooking')}
-        </button>
-        <button type="button" onClick={openBlock} className={secondaryBtn}>
+        </Button>
+        <Button type="button" variant="outline" size="lg" onClick={openBlock}>
           <Ban className="h-5 w-5" aria-hidden />
           {t('actions.blockTime')}
-        </button>
+        </Button>
       </div>
       {!canBook ? (
-        <p className="text-[color:var(--label-secondary)]">{t('grid.emptyNoServices')}</p>
+        <p className="text-muted-foreground">{t('grid.emptyNoServices')}</p>
       ) : null}
       <p
         role="status"
         aria-live="polite"
-        className={announce ? 'font-medium text-[color:var(--success)]' : 'sr-only'}
+        className={announce ? 'font-medium text-success' : 'sr-only'}
       >
         {announce}
       </p>
       {detailError && !selected ? (
-        <p
-          role="alert"
-          className="rounded-[var(--radius-input)] border border-[color:var(--danger)] p-3 text-[color:var(--danger)]"
-        >
+        <p role="alert" className="rounded-md border border-destructive p-3 text-destructive">
           {detailError}
         </p>
       ) : null}
 
-      <div
-        role="region"
-        aria-label={label}
-        tabIndex={0}
-        className="overflow-x-auto rounded-[var(--radius-card)] bg-[color:var(--surface)] shadow-sm"
-      >
+      <Card role="region" aria-label={label} tabIndex={0} className="gap-0 overflow-x-auto p-0">
         <div className="grid min-w-max" style={{ gridTemplateColumns: gridCols }}>
           {/* Header row */}
-          <div className="border-b border-[color:var(--separator)] p-2 text-[length:var(--text-caption)] text-[color:var(--label-secondary)]">
+          <div className="border-b p-2 text-xs text-muted-foreground">
             <span className="sr-only">{t('grid.timeColumn')}</span>
           </div>
           {columns.map((c) => (
@@ -207,15 +186,14 @@ export function CalendarGrid({
               aria-current={
                 c.dateKey === todayKey && columns.length > 1 ? 'date' : undefined
               }
-              className={`border-b border-l border-[color:var(--separator)] p-2 text-center ${
-                c.dateKey === todayKey && columns.length > 1
-                  ? 'font-bold text-[color:var(--tint)]'
-                  : 'font-semibold'
-              }`}
+              className={`border-b border-l p-2 text-center ${c.dateKey === todayKey && columns.length > 1
+                ? 'font-bold text-primary'
+                : 'font-semibold'
+                }`}
             >
               <div className="truncate">{c.heading}</div>
               {c.sub ? (
-                <div className="truncate text-[length:var(--text-caption)] font-normal text-[color:var(--label-secondary)]">
+                <div className="truncate text-xs font-normal text-muted-foreground">
                   {c.sub}
                 </div>
               ) : null}
@@ -231,7 +209,7 @@ export function CalendarGrid({
             {hours.map((m) => (
               <span
                 key={m}
-                className="absolute right-1 -translate-y-1/2 text-[length:var(--text-caption)] text-[color:var(--label-secondary)]"
+                className="absolute right-1 -translate-y-1/2 text-xs text-muted-foreground"
                 style={{ top: `calc(var(--cal-row) * ${rows(m - axis.startMin)})` }}
               >
                 {hhmm(m)}
@@ -245,11 +223,11 @@ export function CalendarGrid({
               key={c.key}
               role="group"
               aria-label={c.sub ? `${c.heading}, ${c.sub}` : c.heading}
-              className="relative cursor-cell border-l border-[color:var(--separator)]"
+              className="relative cursor-cell border-l"
               style={{
                 height: `calc(var(--cal-row) * ${totalRows})`,
                 backgroundImage:
-                  'repeating-linear-gradient(to bottom, var(--separator) 0 1px, transparent 1px calc(var(--cal-row) * 4))',
+                  'repeating-linear-gradient(to bottom, var(--border) 0 1px, transparent 1px calc(var(--cal-row) * 4))',
               }}
               onClick={(e) => {
                 if (!canBook) return;
@@ -271,7 +249,7 @@ export function CalendarGrid({
                     top: `calc(var(--cal-row) * ${rows(s.startMin - axis.startMin)})`,
                     height: `calc(var(--cal-row) * ${rows(s.endMin - s.startMin)})`,
                     backgroundImage: HATCH_CLOSED,
-                    backgroundColor: 'var(--bg)',
+                    backgroundColor: 'var(--muted)',
                     opacity: 0.9,
                   }}
                 />
@@ -287,8 +265,8 @@ export function CalendarGrid({
             </div>
           ))}
         </div>
-      </div>
-      <p className="text-[length:var(--text-footnote)] text-[color:var(--label-secondary)]">
+      </Card>
+      <p className="text-xs text-muted-foreground">
         {t('grid.tapToAdd')}
       </p>
 
@@ -394,7 +372,7 @@ export function CalendarGrid({
           />
         ) : null}
       </FormSheet>
-    </div>
+    </div >
   );
 }
 
@@ -429,11 +407,10 @@ function EventButton({
         e.stopPropagation();
         onSelect();
       }}
-      className={`absolute overflow-hidden rounded-[8px] px-1.5 py-0.5 text-left text-[length:var(--text-caption)] leading-tight focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-[color:var(--tint)] ${
-        isBlock
-          ? 'border-2 border-solid border-[color:var(--control-border)] bg-[color:var(--surface)] text-[color:var(--label)]'
-          : st!.cls
-      }`}
+      className={`absolute overflow-hidden rounded-lg px-1.5 py-0.5 text-left text-xs leading-tight focus-visible:ring-[3px] focus-visible:ring-ring/50 focus-visible:outline-none ${isBlock
+        ? 'border-2 border-solid border-border bg-card text-card-foreground'
+        : st!.cls
+        }`}
       style={{
         top: `calc(var(--cal-row) * ${top})`,
         height: `max(calc(var(--cal-row) * ${height} - 2px), 1.75rem)`,
@@ -489,7 +466,7 @@ function Details({
   const row = (label: string, value: React.ReactNode) =>
     value ? (
       <div className="grid grid-cols-[7rem_1fr] gap-2 py-1.5">
-        <dt className="text-[color:var(--label-secondary)]">{label}</dt>
+        <dt className="text-muted-foreground">{label}</dt>
         <dd className="min-w-0 break-words">{value}</dd>
       </div>
     ) : null;
@@ -497,22 +474,19 @@ function Details({
   return (
     <div className="space-y-4">
       {error ? (
-        <p
-          role="alert"
-          className="rounded-[var(--radius-input)] border border-[color:var(--danger)] p-3 text-[color:var(--danger)]"
-        >
+        <p role="alert" className="rounded-md border border-destructive p-3 text-destructive">
           {error}
         </p>
       ) : null}
-      <dl className="divide-y divide-[color:var(--separator)]">
+      <dl className="divide-y divide-border">
         {row(t('details.time'), ev.timeLabel)}
         {row(t('details.staff'), ev.staffName)}
         {row(t('details.reason'), ev.title || t('details.noReason'))}
       </dl>
       <div className="flex flex-col gap-2">
-        <button type="button" disabled={busy} onClick={onAskRemove} className={dangerBtn}>
+        <Button type="button" variant="outline" size="lg" className="border-destructive text-destructive hover:bg-destructive/10 hover:text-destructive" disabled={busy} onClick={onAskRemove}>
           {t('details.removeBlock')}
-        </button>
+        </Button>
       </div>
     </div>
   );

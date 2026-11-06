@@ -2,6 +2,9 @@
 import { useState } from 'react';
 import { useTranslations } from 'next-intl';
 import { removeReviewReply, replyToReview } from '@/app/actions/review-reply';
+import { Button } from '@/components/ui/button';
+import { Label } from '@/components/ui/label';
+import { Textarea } from '@/components/ui/textarea';
 
 const MAX = 1000;
 
@@ -58,49 +61,36 @@ export function OwnerReplyForm({ reviewId, initialReply }: { reviewId: string; i
   const id = `reply-${reviewId}`;
   return (
     <form onSubmit={save} noValidate>
-      <label htmlFor={id} className="block text-[length:var(--text-subhead)] font-medium">
-        {t('label')}
-      </label>
-      <textarea
+      <Label htmlFor={id}>{t('label')}</Label>
+      <Textarea
         id={id}
         rows={3}
         autoComplete="off"
         value={text}
         aria-describedby={`${id}-hint ${id}-count`}
         onChange={(e) => setText(e.target.value)}
-        className="mt-1 block min-h-11 w-full rounded-[var(--radius-input)] border border-[color:var(--control-border)] bg-[color:var(--surface)] px-3 text-[length:var(--text-body)] text-[color:var(--label)]"
+        className="mt-1"
       />
-      <div className="mt-1 flex justify-between gap-3 text-[length:var(--text-footnote)] text-[color:var(--label-secondary)]">
+      <div className="mt-1 flex justify-between gap-3 text-xs text-muted-foreground">
         <span id={`${id}-hint`}>{t('hint')}</span>
         <span id={`${id}-count`} className="tabular-nums">
           {text.length} / {MAX}
         </span>
       </div>
       <div className="mt-3 flex flex-col gap-3 sm:flex-row">
-        <button
-          type="submit"
-          disabled={busy !== null}
-          className="inline-flex min-h-11 items-center justify-center rounded-[var(--radius-button)] bg-[color:var(--tint)] px-5 font-semibold text-[color:var(--tint-contrast)] disabled:cursor-not-allowed disabled:opacity-50"
-        >
+        <Button type="submit" size="lg" disabled={busy !== null}>
           {busy === 'save' ? t('saving') : t('save')}
-        </button>
+        </Button>
         {hasReply ? (
-          <button
-            type="button"
-            onClick={remove}
-            disabled={busy !== null}
-            className="inline-flex min-h-11 items-center justify-center rounded-[var(--radius-button)] border border-[color:var(--control-border)] px-5 font-semibold disabled:cursor-not-allowed disabled:opacity-50"
-          >
+          <Button type="button" variant="outline" size="lg" onClick={remove} disabled={busy !== null}>
             {busy === 'remove' ? t('removing') : t('remove')}
-          </button>
+          </Button>
         ) : null}
       </div>
       <p
         role={status?.kind === 'error' ? 'alert' : 'status'}
         aria-live="polite"
-        className={`mt-2 text-[length:var(--text-footnote)] font-medium ${
-          status?.kind === 'error' ? 'text-[color:var(--danger)]' : 'text-[color:var(--success)]'
-        }`}
+        className={`mt-2 text-xs font-medium ${status?.kind === 'error' ? 'text-destructive' : 'text-success'}`}
       >
         {status?.text}
       </p>

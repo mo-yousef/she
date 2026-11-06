@@ -27,12 +27,11 @@ export async function generateMetadata({
 }
 
 const navLink =
-  'inline-flex min-h-11 min-w-11 items-center justify-center rounded-[var(--radius-button)] border border-[color:var(--control-border)] px-3 font-medium';
+  'inline-flex min-h-11 min-w-11 items-center justify-center rounded-md border bg-background px-3 font-medium shadow-xs hover:bg-accent hover:text-accent-foreground';
 const chip = (active: boolean) =>
-  `inline-flex min-h-11 max-w-full items-center break-words rounded-full px-4 py-1 font-medium ${
-    active
-      ? 'bg-[color:var(--tint)] text-[color:var(--tint-contrast)]'
-      : 'border border-[color:var(--control-border)] text-[color:var(--label)]'
+  `inline-flex min-h-11 max-w-full items-center break-words rounded-full px-4 py-1 font-medium ${active
+    ? 'bg-primary text-primary-foreground'
+    : 'border bg-background text-foreground hover:bg-accent hover:text-accent-foreground'
   }`;
 
 export default async function CalendarPage({
@@ -67,10 +66,10 @@ export default async function CalendarPage({
     p.view === 'day'
       ? { ...c, heading: staffName.get(c.staffId) ?? '' }
       : {
-          ...c,
-          heading: fmt(c.dateKey, { weekday: 'short' }),
-          sub: fmt(c.dateKey, { day: 'numeric', month: 'short' }),
-        },
+        ...c,
+        heading: fmt(c.dateKey, { weekday: 'short' }),
+        sub: fmt(c.dateKey, { day: 'numeric', month: 'short' }),
+      },
   );
 
   // Week view always shows one person: link with the effective one so paging keeps it.
@@ -102,16 +101,14 @@ export default async function CalendarPage({
     p.view === 'day'
       ? t('grid.labelDay', { date: dayLabel })
       : t('grid.labelWeek', {
-          staff: staffName.get(data.activeStaffId ?? '') ?? '',
-          from: fmt(keys[0]!, { day: 'numeric', month: 'long' }),
-          to: fmt(keys[6]!, { day: 'numeric', month: 'long' }),
-        });
+        staff: staffName.get(data.activeStaffId ?? '') ?? '',
+        from: fmt(keys[0]!, { day: 'numeric', month: 'long' }),
+        to: fmt(keys[6]!, { day: 'numeric', month: 'long' }),
+      });
 
   return (
     <div className="space-y-4">
-      <h1 className="text-[length:var(--text-title1)] font-bold tracking-tight">
-        {t('title')}
-      </h1>
+      <h1 className="text-2xl font-bold tracking-tight">{t('title')}</h1>
 
       <nav aria-label={t('nav.label')} className="space-y-3">
         <div className="flex flex-wrap items-center gap-2">
@@ -140,7 +137,7 @@ export default async function CalendarPage({
           <div
             role="group"
             aria-label={t('nav.viewLabel')}
-            className="flex rounded-full border border-[color:var(--control-border)] p-0.5"
+            className="flex rounded-full border bg-background p-0.5"
           >
             {(['day', 'week'] as const).map((v) => (
               <Link
@@ -148,11 +145,10 @@ export default async function CalendarPage({
                 href={href({ view: v })}
                 locale={locale}
                 aria-current={p.view === v ? 'true' : undefined}
-                className={`inline-flex min-h-11 min-w-20 items-center justify-center rounded-full px-4 font-medium ${
-                  p.view === v
-                    ? 'bg-[color:var(--tint)] text-[color:var(--tint-contrast)]'
-                    : ''
-                }`}
+                className={`inline-flex min-h-11 min-w-20 items-center justify-center rounded-full px-4 font-medium ${p.view === v
+                  ? 'bg-primary text-primary-foreground'
+                  : 'hover:bg-accent hover:text-accent-foreground'
+                  }`}
               >
                 {t(`nav.${v}`)}
               </Link>
@@ -193,7 +189,7 @@ export default async function CalendarPage({
           <Link
             href={href({ showCancelled: !p.showCancelled })}
             locale={locale}
-            className="ml-auto inline-flex min-h-11 items-center px-2 text-[color:var(--tint)] underline-offset-2 hover:underline"
+            className="ml-auto inline-flex min-h-11 items-center px-2 text-primary underline-offset-2 hover:underline"
           >
             {p.showCancelled ? t('nav.hideCancelled') : t('nav.showCancelled')}
           </Link>
