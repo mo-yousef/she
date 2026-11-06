@@ -316,6 +316,16 @@ When a shortcut is resolved, move it to the "Resolved" section with a date.
 - Native `<select>` on the bookings filter form is kept (works without JS, shareable URL) and styled
   with a local `selectClass` that mirrors the shadcn `Input` look, rather than the Radix `Select`.
 
+## FEAT-004 — Cross-FEAT integration verification
+- **Pruned unused shadcn primitives (plan item 13).** `shadcn init`/`add` generated more
+  primitives than the restyle ended up importing. Removed `components/ui/{sidebar,sheet,skeleton,
+  tooltip,dialog,dropdown-menu,select,sonner,tabs}.tsx` and `hooks/use-mobile.ts` (the sidebar,
+  its exclusive dependents, and the independently-unused primitives). The shell uses the
+  Card + `<nav>` fallback, so Sidebar and its chain were never mounted; no toasts are shown, so
+  `sonner` was unused. Dropped the now-orphaned `sonner` runtime dependency from `package.json`
+  and the lockfile. Remaining primitives (badge, button, card, input, label, separator, table,
+  textarea) all have dashboard consumers. `radix-ui` stays (used by badge/button/label/separator).
+
 ## Task 7.3 — Legal pages
 - **The legal text (terms, privacy, cancellation in en/el/ru) is a template and must be reviewed by a lawyer before launch.** Placeholders to fill: `[Company name]`, `[Registered address]` (and el/ru equivalents), `support@she.cy`, `privacy@she.cy`. Bump `CONSENT_VERSION` in `lib/gdpr.ts` and the `updated` dates in `messages/*.json` when the text changes.
 - Resolved: the 4.2 "terms/cancellation consent has no link" and the 7.2 "/legal/privacy 404s" shortcuts.
