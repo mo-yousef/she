@@ -2,6 +2,30 @@
 
 Short log of choices that are expensive to reverse. Newest first.
 
+## 2026-11-06 — Owner-dashboard auth performance (perf/dashboard-auth)
+
+- `getCurrentUser` (lib/current-user.ts) and `requireOwnerBusiness` (lib/owner-session.ts)
+  are now wrapped in React `cache()`, so each runs at most once per server request. The
+  dashboard layout and page both call `requireOwnerBusiness`; `cache()` dedupes that
+  double call (routes are `force-dynamic`, so per-request memoisation is the right scope —
+  no cross-request leakage of auth state).
+- `requireOwnerBusiness` no longer re-reads the user row with `db.user.findUnique`. It
+  reuses `session.user.role`, which `getCurrentUser` reads FRESH from the Prisma row on
+  every call (`db.user.upsert ... select role`), never from the cached session token — so
+  the "role from DB, never from a stale session" guarantee is preserved. It also fetches the
+  owner's business in a single `business.findFirst` (oldest by `createdAt`, selecting
+  id/slug/name/status) instead of `findOwnerBusinessId` + `findUniqueOrThrow`. Redirect
+  targets and conditions (signin with callbackUrl, /for-business, /onboarding) are unchanged.
+- `getSessionEmail` (lib/current-user.ts) switched from `supabase.auth.getUser()` to
+  `supabase.auth.getClaims()` (@supabase/ssr 0.12.7 / auth-js 2.119.0). `getClaims()`
+  verifies the JWT LOCALLY (no Auth-server round-trip) only when the project signs tokens
+  with an asymmetric key; with a symmetric secret it stays correct but still round-trips.
+  A verified claim is enough for this read-only "is someone signed in + their email" check.
+- `getUser()` deliberately retained where a freshly server-verified user is required:
+  `getCurrentUser` (needs the full verified user + metadata for the Prisma upsert),
+  `deleteAccountAction` (needs `authUser.id` for `admin.auth.admin.deleteUser`), and the
+  auth callback (via `getCurrentUser`).
+
 ## 2026-11-06 — Owner calendar, manual bookings, blocks (task 6.2)
 
 - One write-side guard for everything that takes staff time: `lib/booking-lock.ts`
